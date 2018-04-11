@@ -1,0 +1,79 @@
+/**
+ * @see http://es6.ruanyifeng.com/#docs/intro
+ */
+ 
+|! Babel !|
+|+ Installation +|
+/**
+ * @see http://babeljs.io/docs/usage/cli/
+ */
+sh$ sudo yum install -y epel-release
+sh$ sudo yum install -y nodejs
+sh$ sudo yum install -y npm
+sh$ sudo npm install --global babel-cli
+sh$ sudo npm install --save babel-preset-es2015     /* in node_modules */
+sh$ sudo npm install babel-preset-react
+|- babel-node -|
+sh$ babel-node                    /* runtime test ES6 code */
+|[
+  console.log([1,2,3].map(x => x * x))
+   [1, 4, 9]
+]|
+/**
+ * Use babel-node to run es6 js file
+ */
+|[es6.js
+  console.log([1,2,3].map(x => x * x))
+]|
+sh$ babel-node es6.js
+|- babel -|
+ sh$ babel $src -o $build     /* --out-file  to output to a file */
+ sh$ babel -d $build_dir $src_dir  /* compile the directory */
+ sh$ babel -d $build_dir $src_dir -s    /* create source map */
+ sh$ babel -w $src /* --watch to compile a file every time taht you change it */
+ 
+ sh$ babel es6.js -o es5.js           /* convert es6 js to es5 */
+|[es5.js
+  console.log([1,2,3].map(function(x){return x * x;})
+]|
+ 
+|! Browerify !|
+sh$ sudo npm install --save-dev babelify babel-preset-es2015
+
+|[package.json
+{
+  /* 
+    browserify $src -o $build -t [ babelify --presets [ es2015 react ] ] 
+  */
+  "browserify": {
+    "transform": [["babelify", {"presets": ["es2015"] }]]
+  }
+}
+]|
+
+
+
+|! !|
+/* Create a .babel.rc file */
+|[.babel.rc
+  {
+    "presets": ["es2015"]
+  }
+]|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

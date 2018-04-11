@@ -1,0 +1,67 @@
+/**
+ * @see http://php.net/manual/en/reserved.variables.server.php
+ */
+ 
+/**
+ * The absolute pathname of the currently executing script.
+ * @note
+ *  By web server, $_SERVER['SCRIPT_FILENAME'] is same as __FILE__
+ *  except php-cli run php ./index.php
+ *    $_SERVER['SCRIPT_FILENAME'] returns "./index.php"
+ *    __FILE__ returns "/www/html/index.php"
+ */ 
+$_SERVER['SCRIPT_FILENAME']
+
+
+|~~|
+|+ session hijacking +|
+    if($_SESSION['http_user_agent'] != $_SERVER['HTTP_USER_AGENT']){ ... }
+|+ SSL +|
+    Using HTTPS
+|~~|
+|+ Authorize +|
+$_SERVER['PHP_AUTH_USER']
+$_SERVER['PHP_AUTH_PW'] 
+|+ +|
+$_SERVER['REQUEST_TIME'] 
+|- $_SERVER['REQUEST_METHOD'] -|
+    GET/HEAD/POST
+|- $_SERVER['QUERY_STRING'] -|
+    
+|- $_SERVER['DOCUMENT_ROOT'] -|
+    
+|+ HTTP +|
+|- $_SERVER['HTTP_ACCEPT'] -|
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/ *;q=0.8
+|- $_SERVER['HTTP_ACCEPT_CHARSET'] -|
+|- $_SERVER['HTTP_ACCEPT_ENCODING'] -|
+    Accept-Encoding:gzip, deflate, sdch
+|- $_SERVER['HTTP_ACCEPT_LANGUAGE'] -|
+    Accept-Language:en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4
+|- $_SERVER['HTTP_CONNECTION'] -|
+    Connection:keep-alive
+|- $_SERVER['HTTP_HOST'] -|
+    Host:baike.baidu.com
+|- $_SERVER['HTTP_REFERER'] -|
+    Referer:http://www.baidu.com/s?wd=%24_SERVER
+|- $_SERVER['HTTP_USER_AGENT'] -|
+    User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0
+|- $_SERVER['HTTPS'] -|
+
+|- $_SERVER['HTTP_RANGE'] -|
+|[
+ranges-specifier = byte-ranges-specifier
+byte-ranges-specifier = bytes-unit “=” byte-range-set
+byte-range-set = 1#( byte-range-spec | suffix-byte-range-spec )             
+byte-range-spec = first-byte-pos “-” [last-byte-pos]
+first-byte-pos = 1*DIGIT
+last-byte-pos = 1*DIGIT
+]|
+/**
+ * Client call "Range: bytes=0-500", Server needs response 0-500 bits, and with
+ *  a Content Range: bytes 0-500/1000    1000 is total file size
+ */
+Range: bytes=0-500      /* 0 to 500, 501 bits */
+Range: bytes=500-       /* bits after bit 500 */
+Range: bytes=-500       /* last 500 bits */
+Range: bytes=0-0, -1    /* first bit and last bit*/

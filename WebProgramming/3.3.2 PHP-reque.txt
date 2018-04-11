@@ -1,0 +1,18 @@
+|! !|
+
+
+|! Preparing !|
+Install Redis
+Download php-resque with composer
+|[
+{
+  "require": {
+    "chrisboulton/php-resque": "1.2.x"
+  }
+}
+]|
+
+
+
+|! Demo !|
+sh$ cd vendor/chrisboulton/php-resque/demo

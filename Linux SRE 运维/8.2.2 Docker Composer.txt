@@ -1,0 +1,112 @@
+|! Installation !|
+/**
+ * YOU NEED TO REMOVE THE BUILDED IMAGES, THEN DOCKER-COMPOSE UP IT!!!
+ */
+
+sh$ curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` > docker-compose
+sh$ echo $PATH
+sh$ sudo mv docker-compose /usr/local/bin/docker-compose
+sh$ chmod +x /usr/local/bin/docker-compose
+sh$ docker-compose --version
+/**
+ * You can specify which one to use with the --x-network-driver flag:
+ */
+sh$ docker-compose --x-networking --x-network-driver=overlay up 
+
+|[common.yml
+app:
+    build: ./app
+    environment:
+        CONFIG_FILE_PATH: /code/config
+        API_KEY: AaronScript
+    cpu_shares: 5
+]|
+
+|[
+
+]|
+
+|[docker-compose.yml
+mysql:
+    build: ./mysql
+    #container_name: ""
+    user:   mysql
+    net:
+        - bridget
+    pid:
+        - host
+    dns:                #
+        - 8.8.8.8
+    #dns_search:    
+    cap_add:
+        - ALL           # enable all linux capabilities
+    cap_drop:           # disable Linux capabilities
+        - NET_ADMIN
+        - SYS_ADMIN
+    #hostname: 
+    #domainname: 
+    privileged: true
+    restart； always
+    stdin_open: true
+    tty: true
+    ports:
+        - 3306:3306
+    expose:
+        - 3306
+    volumes:
+        - /var/lib/mysql:/var/lib/mysql
+    entrypoint: ./mysql/entrypoint.sh
+    environment:
+        DEBUG:
+            - true
+        MYSQL_ROOT_PASSWORD: AaronScript
+        SESSION_SECRET: 
+            - AaronScript
+        RACK_ENV: development
+redis:
+    build: ./redis
+    container_name: aa_redis
+    ports:
+        - 6379:6379
+    expose:
+        - 6379
+
+php:
+    build: ./php
+    container_name: aa_php
+    command: php-fpm -f
+    ports:
+        - 9000:9000
+    expose:
+        - 9000   
+    links:
+        - redis
+        - mysql
+    external_links:
+        - pgsql_43306       # links a running container not listed in this yaml
+    volumes:
+        - /var/data:/var/data         # volumes mount from nginx
+nginx:
+    extends:
+        file: common.yml
+        service: app
+    command: /code/run_web_app
+    ports:
+        - 80:80
+    expose:
+        - 80
+    volumes_from: php
+    links:
+        - queue
+        - db
+        - php:phpfpm      # links php, and rename it to phpfpm in this container
+      
+]|
+
+
+
+/**
+ * the same configuration in docker-compose.yml will be replaced in production.yml
+ * @see https://docs.docker.com/compose/extends/different-environments 
+ */
+sh$ docker-compose -f docker-compose.yml -f production.yml up -d

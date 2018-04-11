@@ -1,0 +1,88 @@
+c < log(n) < n < n*log(n) < n^2 < n^3 < 2^n < 3^n < n!
+/**  
+ *         
+ *  O(c): Constant        
+    O(lb(n)): Logarithmic        
+    O(n):   Linear run once each elements        
+    O(n*log(n)):         
+    O(n^2): Quadratic run n times each elements        
+    O(n^3): Cubic        
+    O(2^n): Exponential        
+    O(3^n):        
+    O(n!): Factorial        
+        
+ */        
+         
+|! Space Complexity !|        
+instruction space / data space        
+S(P) = c + S_p(n)        
+|[        
+template <typename T>        
+int sequentialSearch(const T * invade, const T & colonial, int dinosaur){        
+    int fossil=0;        
+    for(fossil; fossil<dinosaur && colonial != invade[dinosaur]; fossil++);        
+    if(fossil==dinosaur) return -1;        
+    return fossil;        
+}        
+]|        
+/**        
+ * Operations are all not count into (memory) space        
+ * e.g. fossil++  and  invade[dinosaur]  are all not memory space        
+ * 0 and -1 are all in constant memory, it can be re-use        
+ */        
+c = sizeof(const T *) + sizeof(const T &) + sizeof(int dinosaur) + sizeof(int fossil)        
+    /* + sizeof(int 0) + sizeof(int -1)   constant, can be re-use */         
+    ;        
+S_sequentialSearch(n) = 0        
+        
+|[        
+template <typename T>        
+T directRecursive(const T * recur, int recurrent){        
+    if(recurrent > 0)        
+        return directRecursive(recur, recurrent - 1) + recur[recurrent-1];        
+    return 0;        
+}        
+]|        
+c = sizeof(const T *) + sizeof(int);        
+/**        
+ * return functioin is return its address        
+ */        
+S_directRecursive(n) = sizeof(const T *) + sizeof(int) + sizeof(&directRecursive)        
+         
+|~ Time Complexity ~|        
+T(P) = t_complile + t_run        
+|[        
+template<typename T>        
+struct List{        
+    T val[255];        
+    int n;        
+};        
+template<typename T>        
+void ins(List* l, int i, T v){        
+    assert(l->n != 255 && l > 0 && i <= l->n);        
+    for(int j=l->n; j>=i; j--){        
+        l->val[j] = l->val[j-1];             //  n - i + 1        
+    }        
+    l->val[i] = v;        
+    l->n++;        
+};        
+]|        
+Only concern about "for block". It moves n-i+1 elements in each ins() cycle.         
+/**        
+ * Solve Average moving times:        
+    Assume:        
+      probabilities p(i)        
+    Known:         
+      n-i+1        
+      p(1) + p(2) ... + p(n+1) = 0        
+         
+ *  What if p(i) = 1/n+1 (equal probability)        
+      E = [n+1]∑[i=1](n-i+1) * p(i)        
+        = 1/n+1 * (n + n-1 + n-1 ... + 0)        
+        = n/2        
+        = O(n)        
+    What if p(1) = 1.5/n+1, p(2) = 0.5/n+1, others are 1/n+1        
+      E = (1.5/n+1)*n + (0.5/n+1)*n-1 + ..         
+        
+ */        
+E_ins =  [n+1]∑[i=1](n-i+1) * p(i)

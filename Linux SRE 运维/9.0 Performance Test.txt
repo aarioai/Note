@@ -1,0 +1,66 @@
+/**
+ * vmstat [$interval] [$count]
+ * @see http://linux.die.net/man/8/vmstat
+ * @param int $interval persecond
+ * @param int $count
+ * @return
+ *  Procs
+ *    r: the number of processes wating for run time
+ *      if it's greater than the core number of CPU for a lot of times, you
+ *      may need to add CPU;
+ *    b: the number of processes in uninterruptible sleep
+ *      the number of processes waiting for resource(I/O or memory swap)
+ *  Memory
+ *    free: the amount of idle memory
+ *    buff: the amount of memory used as buffers cache
+ *    cache: the amount of memory used as page cache
+ *      a nice file system: has a boundant of cached data and very few IO bi
+ *    swpd: virtual memory. Before, it's two times to physical memory size.
+ *  Swap  
+ *    si: the amount of memory swapped in from virtual memory (disk indeed)
+ *      to memory (per second)
+ *    so: the amount of memory swapped in from virtual memory (disk indeed)
+ *      disk to memory (per second)
+ *    si and so should be 0 always. Otherwise, it means the system needs
+ *    more memory space.
+ *  IO
+ *    bi: blocks received from a block device (blocks * 1024byte/block /s)
+ *    bo: blocks sent to a block device (blocks * 1024byte/block /s)
+ *  System
+ *    in
+ *    cs
+ *  CPU
+ *    us: time spent running non-kernel code (user time)
+ *    sy: time spent running kernel code (system time)
+ *    id: time spent idel, this includes IO-wait time
+ *    wa: time spent waiting for IO, included in idle. If wa is greater than
+ *      20%, the IO is so terriable.
+ *    st: time stolen from a virtual machine
+ */
+sh$ vmstat 1
+|[
+ procs -----------memory--------- --swap--  ---io--- -system- -----cpu-----
+ r  b  swpd free    buff   cache   si   so    bi  bo in   cs  us sy id wa st
+ 0  0   0  2673788 197700 777208   0    0     0    2 14   14  0  0 100 0  0	
+ ...
+ 0  0    0 2673788 197700 777232   0    0     0    0 43   35  0  0 100 0  0	
+]|
+
+
+/**
+ *
+ */
+sh$ top
+sh$ 1         // list the usage of each CPU
+
+/**
+ * 
+ */
+sh$ netstat -a 
+sh$ netstat -nat|awk '{print awk $NF}'|sort|uniq -c| sort -n
+|[
+   1 State
+   1 established)
+   3 ESTABLISHED
+   6 LISTEN
+]|

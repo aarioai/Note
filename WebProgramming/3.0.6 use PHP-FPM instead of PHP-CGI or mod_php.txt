@@ -1,0 +1,42 @@
+/**
+ * Be sure to use double quotas in the php.ini file.
+ * e.g.  to extend xdebug
+ * OK zend_extension="/usr/local/php5/lib/php/extensions/no-debug-non-zts-20060613/xdebug.so"
+ * ERROR zend_extension='/usr/local/php5/lib/php/extensions/no-debug-non-zts-20060613/xdebug.so'
+  */
+
+|~ use PHP-FPM instead of PHP-CGI or mod_php ~|
+  http://www.openlogic.com/wazi/bid/209956/mod_php-vs-FastCGI-vs-PHP-FPM-for-Web-Server-Scripting
+  |+ mod_php (module)==> Apache only+|
+  mod_php module is only available in Apache. It's a default. With mod_php, the 
+  PHP interpreter is "embedded" inside the Apache Process; Apache doesn't call any
+  extrnal PHP process (communication in PHP and Apache is better).
+  
+  |- Cons: -|
+  Forces every Apache Child to use more memory. Because every single Apache Child
+    must load mod_php£¬ which results in a bigger process than necessary being used
+    for serving static resources such as image files, CSS and JS.
+  Needs a restart of Apache to read an updated php.ini file
+  
+  |+ FastCGI (protocol) ==> Apache, Nginx, Lighttpd +|
+  FastCGI is a protocol for interfacing interactive programs with a web server.
+  Apache can use FastCGI in the form of mod_fcgid.
+` With FastCGI you can set up multiple versions of PHP(multiple process). It also utilizes seEXEC to support different users with their own instances of PHP(e.g. use FastCGI to managing multiple websites).
+  |- Pros: -|
+  More configuration options, including multiple PHP and SuEXEC (It allows users to run CGI and SSI applications as a different user)
+  
+  |+ PHP-FPM +|
+  PHP-FPM gives administrators the ability to gracefully stop and start PHP worker processes without losing any queries. This allows you to gradually update the configuration and binary without losing any queries. You can start workers with different uid, gid, and chroot environments and different php.ini options. You can also run an emergency restart on all the processes in the event of any accidental destruction of the shared memory opcodes cache, if you're using an accelerator.
+  |- Pros: -|
+  More configuration options than FastCGI 
+  
+  
+  
+|~ APC cache maybe replaced by Zend Opcache ~|
+
+
+|~ Zend OPcache ~|
+PHP 5.5.0+ 
+OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request. 
+It may replaces APC Xcache eAccelerator.
+Unlike APC, for Zend Opcache there are plenty of web-based viewer. May be reason being zend opcache's official status has something to do with it.

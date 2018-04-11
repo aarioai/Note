@@ -1,0 +1,17 @@
+sh$ sudo chkconfig --list
+
+chkconfig       [--add]      [--del]     [--list]      [系统服务] 
+chkconfig       [--level/levels]      [等级代号]      [系统服务]      [on/off/reset] 
+Linux OS 将操作 环境分为以下7个等级，即
+0：关机
+1：单用户模式（单用户、无网络）
+2：无网络支持的多用户模式（多用户、无网络）
+3：有网络支持的多用户模式（多用户、有网络）
+4：保留，未使用
+5：有网络支持有X-Window支持的多用户模式（多用户、有网络、X-Window界面）
+6：重新引导系统，即重启
+
+
+
+sh$ sudo chkconfig --add mysqld
+sh$ sudo chkconfig mysqld on

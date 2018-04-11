@@ -1,0 +1,5 @@
+Known:
+  user -> id, name
+  orders -> id, uid, price
+  Get the name of `user` who has the max number of orders 
+SELECT name,COUNT(*) FROM user JOIN orders ON orders.uid = user.id GROUP BY orders.uid ORDER BY COUNT(*) DESC

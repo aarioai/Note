@@ -1,0 +1,67 @@
+|~ Remove ~|
+sh$ brew uninstall php56
+
+
+sh$ cd /etc/
+sh$ sudo rm -rf php-fpm.conf php-fpm.conf.default php.ini php.ini.default
+sh$ cd /usr/bin/
+sh$ sudo rm -rf php php-config phpdoc phpize
+
+sh$ sudo rm -rf /usr/include/php /usr/lib/php /usr/sbin/php-fpm /usr/share/php /usr/share/man/man1/php-config.1 /usr/share/man/man1/php.1 /usr/share/man/man1/phpize.1 /usr/share/man/man8/php-fpm.8
+
+
+
+
+sh$ brew tap homebrew/dupes
+sh$ brew tap josegonzalez/homebrew-php
+
+sh$ brew search php
+sh$ brew options php56
+
+sh$ brew install php56 --prefix=/usr/local/php --with-config-file-path=/usr/local/php/lib --with-config-file-scan-dir=/usr/local/php/etc/conf.d \
+
+--with-gd --enable-gd-native-ttf --with-png --with-zlib-dir=/usr/local/lib/zlib --with-ttf --with-jpeg-dir=/usr/local/lib/jpeg-6b --with-freetype-dir=/usr/local/lib/freetype --with-xpm-dir=/usr/X11R6 --enable-exif \
+
+
+--with-bz2 --with-curl --with-mysql --with-mysqli --with-openssl --with-pcre-regex --with-pear --with-zlib --enable-bcmath --enable-fpm --enable-libxml --enable-mbstring --enable-pdo --enable-sockets --enable-inline-optimization --enable-xml --enable-zip --enable-opcache --enable-cgi --enable-json 
+
+
+/**
+ * To launch php-fpm on startup
+ *       /usr/local/opt/php56/sbin/php56-fpm
+ * @note OS X10.8+ come with php-fpm pre-installed, you need to make sure 
+ *  /usr/local/sbin is before /usr/sbin in $PATH
+ *  export PATH=“/usr/local/sbin:$PATH”
+ */
+sh$ touch ~/.bash_profile
+sh$ echo "export PATH=$(brew --prefix php56)/bin:/usr/local/sbin:$PATH" >> ~/.bash_profile
+sh$ source ~/.bash_profile
+
+sh$ sudo ln -s /usr/local/etc/php/5.6/php.ini /etc/php.ini
+sh$ sudo ln -s /usr/local/etc/php/5.6/php-fpm.conf /etc/php-fpm.conf
+
+
+
+sh$ mkdir -p ~/Library/LaunchAgents
+sh$ cp /usr/local/opt/php56/homebrew.mxcl.php56.plist ~/Library/LaunchAgents/
+sh$ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php56.plist
+
+|~ Extensions ~|
+sh$ brew search php56
+
+sh$ brew install php56-opcache
+|— Yii Framework -|
+sh$ brew install php56-imagick
+
+
+
+
+|~ PHP Control ~|
+sh$ php —ini
+
+|+ php-fpm +|
+|— php-fpm stop -|
+sh$ kill -INT `cat /usr/local/var/run/php-fpm.pid`
+|— php-fpm restart -|
+sh$ kill -INT `cat /usr/local/var/run/php-fpm.pid`
+

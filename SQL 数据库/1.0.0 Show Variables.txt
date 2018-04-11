@@ -1,0 +1,16 @@
+|! MySQL Files !|
+/**
+ * Data dir -> show variables like '%datadir%';
+ */
+|[
+  // binary redo log files
+  ib_logfile...
+ 
+  ibdata...
+]|
+
+/**
+ * Search MySQL data dir path
+ */
+db> show variables like '%datadir%';
+

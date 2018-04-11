@@ -1,0 +1,18 @@
+int a[] = {2,4,2,45,72,1,3};
+int len = sizeof(a) / sizeof(int);
+
+Bubble Sort:                                                            冒泡排序
+    compare each closed two numbers to the end, it'll move the biggest 
+    number to the end. Then repeat it (ignore the last number), to move second 
+    biggest number to second from the end. Do repeat n times.
+    time1:  O(n - 1)            O(1)
+    time2:  O(n - 2)            O(1)
+    ...
+    timeN:  O(1)
+    
+    Space Complexity:           O(1)
+    Avg case performance:       O(n^2)
+
+Quick Sort (Partition-Exchange Sort):                                   快速排序
+    time1:  O(n - 1)            O(
+    Worst Space Complexity:     O(n)

@@ -1,0 +1,35 @@
+|! switch Graphical/CMD !|
+/* to cmd */
+sh$ systemctl set-default multi-user.target
+/* to graphical */
+sh$ systemctl set-default graphical.target 
+
+
+/* mount USB in type fat32 */
+fdisk -l    # get the /dev/sd[a-z][ SECTOR ?=1 ]
+mkdir /mnt/usb
+mount -t vfat -o iocharset=utf8 /dev/sd[a-z][ SECTOR ?=1 ] /mnt/usb
+/* unmount USB */
+umount /mnt/usb
+rm -rf /mnt/usb
+
+
+
+
+sh$ sudo yum update
+sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre pcre-devel make cmake
+
+sh$ sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+sh$ sudo ntpdate us.pool.ntp.org
+
+/* change SELINUX=enforcing to */
+sh$ sudo vim /etc/selinux/config
+|[
+  SELINUX=permissive
+]|
+
+sh$ sudo vim /etc/profile
+|[
+  # add
+  export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/php/bin
+]|

@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00B6EF471C8FCF4200E8EE59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B6EF461C8FCF4200E8EE59 /* AppDelegate.swift */; };
+		00B6EF491C8FCF4200E8EE59 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B6EF481C8FCF4200E8EE59 /* ViewController.swift */; };
+		00B6EF4C1C8FCF4200E8EE59 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00B6EF4A1C8FCF4200E8EE59 /* Main.storyboard */; };
+		00B6EF4E1C8FCF4200E8EE59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00B6EF4D1C8FCF4200E8EE59 /* Assets.xcassets */; };
+		00B6EF511C8FCF4200E8EE59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00B6EF4F1C8FCF4200E8EE59 /* LaunchScreen.storyboard */; };
+		00B6EF5C1C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B6EF5B1C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveTests.swift */; };
+		00B6EF671C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B6EF661C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveUITests.swift */; };
+		00B6EF751C8FD15600E8EE59 /* Conf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B6EF741C8FD15600E8EE59 /* Conf.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		00B6EF581C8FCF4200E8EE59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00B6EF3B1C8FCF4200E8EE59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 00B6EF421C8FCF4200E8EE59;
+			remoteInfo = "10.1.0 Photo - Take and Save";
+		};
+		00B6EF631C8FCF4200E8EE59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00B6EF3B1C8FCF4200E8EE59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 00B6EF421C8FCF4200E8EE59;
+			remoteInfo = "10.1.0 Photo - Take and Save";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00B6EF431C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "10.1.0 Photo - Take and Save.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00B6EF461C8FCF4200E8EE59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		00B6EF481C8FCF4200E8EE59 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		00B6EF4B1C8FCF4200E8EE59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		00B6EF4D1C8FCF4200E8EE59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		00B6EF501C8FCF4200E8EE59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		00B6EF521C8FCF4200E8EE59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00B6EF571C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "10.1.0 Photo - Take and SaveTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00B6EF5B1C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_0_1_0_Photo___Take_and_SaveTests.swift"; sourceTree = "<group>"; };
+		00B6EF5D1C8FCF4200E8EE59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00B6EF621C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "10.1.0 Photo - Take and SaveUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00B6EF661C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "_0_1_0_Photo___Take_and_SaveUITests.swift"; sourceTree = "<group>"; };
+		00B6EF681C8FCF4200E8EE59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00B6EF741C8FD15600E8EE59 /* Conf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conf.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00B6EF401C8FCF4200E8EE59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00B6EF541C8FCF4200E8EE59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00B6EF5F1C8FCF4200E8EE59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00B6EF3A1C8FCF4200E8EE59 = {
+			isa = PBXGroup;
+			children = (
+				00B6EF451C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save */,
+				00B6EF5A1C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests */,
+				00B6EF651C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests */,
+				00B6EF441C8FCF4200E8EE59 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		00B6EF441C8FCF4200E8EE59 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00B6EF431C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save.app */,
+				00B6EF571C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests.xctest */,
+				00B6EF621C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00B6EF451C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save */ = {
+			isa = PBXGroup;
+			children = (
+				00B6EF461C8FCF4200E8EE59 /* AppDelegate.swift */,
+				00B6EF481C8FCF4200E8EE59 /* ViewController.swift */,
+				00B6EF4A1C8FCF4200E8EE59 /* Main.storyboard */,
+				00B6EF4D1C8FCF4200E8EE59 /* Assets.xcassets */,
+				00B6EF4F1C8FCF4200E8EE59 /* LaunchScreen.storyboard */,
+				00B6EF521C8FCF4200E8EE59 /* Info.plist */,
+				00B6EF741C8FD15600E8EE59 /* Conf.swift */,
+			);
+			path = "10.1.0 Photo - Take and Save";
+			sourceTree = "<group>";
+		};
+		00B6EF5A1C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests */ = {
+			isa = PBXGroup;
+			children = (
+				00B6EF5B1C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveTests.swift */,
+				00B6EF5D1C8FCF4200E8EE59 /* Info.plist */,
+			);
+			path = "10.1.0 Photo - Take and SaveTests";
+			sourceTree = "<group>";
+		};
+		00B6EF651C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests */ = {
+			isa = PBXGroup;
+			children = (
+				00B6EF661C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveUITests.swift */,
+				00B6EF681C8FCF4200E8EE59 /* Info.plist */,
+			);
+			path = "10.1.0 Photo - Take and SaveUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00B6EF421C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00B6EF6B1C8FCF4200E8EE59 /* Build configuration list for PBXNativeTarget "10.1.0 Photo - Take and Save" */;
+			buildPhases = (
+				00B6EF3F1C8FCF4200E8EE59 /* Sources */,
+				00B6EF401C8FCF4200E8EE59 /* Frameworks */,
+				00B6EF411C8FCF4200E8EE59 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "10.1.0 Photo - Take and Save";
+			productName = "10.1.0 Photo - Take and Save";
+			productReference = 00B6EF431C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save.app */;
+			productType = "com.apple.product-type.application";
+		};
+		00B6EF561C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00B6EF6E1C8FCF4200E8EE59 /* Build configuration list for PBXNativeTarget "10.1.0 Photo - Take and SaveTests" */;
+			buildPhases = (
+				00B6EF531C8FCF4200E8EE59 /* Sources */,
+				00B6EF541C8FCF4200E8EE59 /* Frameworks */,
+				00B6EF551C8FCF4200E8EE59 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				00B6EF591C8FCF4200E8EE59 /* PBXTargetDependency */,
+			);
+			name = "10.1.0 Photo - Take and SaveTests";
+			productName = "10.1.0 Photo - Take and SaveTests";
+			productReference = 00B6EF571C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		00B6EF611C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00B6EF711C8FCF4200E8EE59 /* Build configuration list for PBXNativeTarget "10.1.0 Photo - Take and SaveUITests" */;
+			buildPhases = (
+				00B6EF5E1C8FCF4200E8EE59 /* Sources */,
+				00B6EF5F1C8FCF4200E8EE59 /* Frameworks */,
+				00B6EF601C8FCF4200E8EE59 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				00B6EF641C8FCF4200E8EE59 /* PBXTargetDependency */,
+			);
+			name = "10.1.0 Photo - Take and SaveUITests";
+			productName = "10.1.0 Photo - Take and SaveUITests";
+			productReference = 00B6EF621C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00B6EF3B1C8FCF4200E8EE59 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = Aario;
+				TargetAttributes = {
+					00B6EF421C8FCF4200E8EE59 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = KVG29SQ92N;
+					};
+					00B6EF561C8FCF4200E8EE59 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = KVG29SQ92N;
+						TestTargetID = 00B6EF421C8FCF4200E8EE59;
+					};
+					00B6EF611C8FCF4200E8EE59 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = KVG29SQ92N;
+						TestTargetID = 00B6EF421C8FCF4200E8EE59;
+					};
+				};
+			};
+			buildConfigurationList = 00B6EF3E1C8FCF4200E8EE59 /* Build configuration list for PBXProject "10.1.0 Photo - Take and Save" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 00B6EF3A1C8FCF4200E8EE59;
+			productRefGroup = 00B6EF441C8FCF4200E8EE59 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				00B6EF421C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save */,
+				00B6EF561C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveTests */,
+				00B6EF611C8FCF4200E8EE59 /* 10.1.0 Photo - Take and SaveUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00B6EF411C8FCF4200E8EE59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00B6EF511C8FCF4200E8EE59 /* LaunchScreen.storyboard in Resources */,
+				00B6EF4E1C8FCF4200E8EE59 /* Assets.xcassets in Resources */,
+				00B6EF4C1C8FCF4200E8EE59 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00B6EF551C8FCF4200E8EE59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00B6EF601C8FCF4200E8EE59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00B6EF3F1C8FCF4200E8EE59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00B6EF751C8FD15600E8EE59 /* Conf.swift in Sources */,
+				00B6EF491C8FCF4200E8EE59 /* ViewController.swift in Sources */,
+				00B6EF471C8FCF4200E8EE59 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00B6EF531C8FCF4200E8EE59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00B6EF5C1C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00B6EF5E1C8FCF4200E8EE59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00B6EF671C8FCF4200E8EE59 /* _0_1_0_Photo___Take_and_SaveUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		00B6EF591C8FCF4200E8EE59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 00B6EF421C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save */;
+			targetProxy = 00B6EF581C8FCF4200E8EE59 /* PBXContainerItemProxy */;
+		};
+		00B6EF641C8FCF4200E8EE59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 00B6EF421C8FCF4200E8EE59 /* 10.1.0 Photo - Take and Save */;
+			targetProxy = 00B6EF631C8FCF4200E8EE59 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		00B6EF4A1C8FCF4200E8EE59 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				00B6EF4B1C8FCF4200E8EE59 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		00B6EF4F1C8FCF4200E8EE59 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				00B6EF501C8FCF4200E8EE59 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		00B6EF691C8FCF4200E8EE59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00B6EF6A1C8FCF4200E8EE59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		00B6EF6C1C8FCF4200E8EE59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "10.1.0 Photo - Take and Save/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Aa.-0-1-0-Photo---Take-and-Save";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		00B6EF6D1C8FCF4200E8EE59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "10.1.0 Photo - Take and Save/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Aa.-0-1-0-Photo---Take-and-Save";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		00B6EF6F1C8FCF4200E8EE59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "10.1.0 Photo - Take and SaveTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Aa.-0-1-0-Photo---Take-and-SaveTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/10.1.0 Photo - Take and Save.app/10.1.0 Photo - Take and Save";
+			};
+			name = Debug;
+		};
+		00B6EF701C8FCF4200E8EE59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "10.1.0 Photo - Take and SaveTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Aa.-0-1-0-Photo---Take-and-SaveTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/10.1.0 Photo - Take and Save.app/10.1.0 Photo - Take and Save";
+			};
+			name = Release;
+		};
+		00B6EF721C8FCF4200E8EE59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "10.1.0 Photo - Take and SaveUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Aa.-0-1-0-Photo---Take-and-SaveUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "10.1.0 Photo - Take and Save";
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		00B6EF731C8FCF4200E8EE59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "10.1.0 Photo - Take and SaveUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Aa.-0-1-0-Photo---Take-and-SaveUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "10.1.0 Photo - Take and Save";
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00B6EF3E1C8FCF4200E8EE59 /* Build configuration list for PBXProject "10.1.0 Photo - Take and Save" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00B6EF691C8FCF4200E8EE59 /* Debug */,
+				00B6EF6A1C8FCF4200E8EE59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00B6EF6B1C8FCF4200E8EE59 /* Build configuration list for PBXNativeTarget "10.1.0 Photo - Take and Save" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00B6EF6C1C8FCF4200E8EE59 /* Debug */,
+				00B6EF6D1C8FCF4200E8EE59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		00B6EF6E1C8FCF4200E8EE59 /* Build configuration list for PBXNativeTarget "10.1.0 Photo - Take and SaveTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00B6EF6F1C8FCF4200E8EE59 /* Debug */,
+				00B6EF701C8FCF4200E8EE59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		00B6EF711C8FCF4200E8EE59 /* Build configuration list for PBXNativeTarget "10.1.0 Photo - Take and SaveUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00B6EF721C8FCF4200E8EE59 /* Debug */,
+				00B6EF731C8FCF4200E8EE59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 00B6EF3B1C8FCF4200E8EE59 /* Project object */;
+}

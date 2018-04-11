@@ -1,0 +1,11 @@
+Strategy
+  forcus on:
+    make diffirent products or diffirent services from competitors
+    
+Enterprise Architecture
+  forcus on:
+    the same product, keep it better and cheaper than competitors
+    
+Mission:
+  Google:
+    to organize the world's information and make it universally accessible and useful.

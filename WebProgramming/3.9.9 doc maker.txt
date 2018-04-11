@@ -1,0 +1,23 @@
+|~ php reflection ~|
+|[
+$StealthMode = new Stealth();
+$StealthMode->steal = 'do good by stealth';
+]|
+|+ Use reflection +|
+/**
+ * @see http://php.net/manual/en/class.reflectionexception.php
+ * @param string|object
+ */
+$reflect = new ReflectionObject($StealthMode); // new ReflectionObject('Stealth')
+/**
+ * @return object array
+        getName() / isPublic() / isProtected() / isStatic()
+ */
+$properties = $reflect->getProperties();
+$methods = $reflect->getMethods();
+
+|+ +|
+get_object_vars($StealthMode);
+$class_name = $get_class($StealthMode);  // 'Stealth'
+$properties = get_class_vars($class_name);
+$methods = get_class_methods($class_name);

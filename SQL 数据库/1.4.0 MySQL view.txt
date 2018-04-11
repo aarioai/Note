@@ -1,0 +1,46 @@
+db> CREATE VIEW contact AS
+      SELECT 
+        username,
+        name,
+        CONCAT(LEFT(email, 3), '***', SUBSTRING(email, LOCATE('@', email))
+          AS email,
+        CONCAT(LEFT(phone, 3), '****', RIGHT(phone, 4))
+          AS phone
+      FROM vendor
+      
+/**
+ * for privilege controlling
+ * If we don't want to server programmers get the password
+ */
+db> CREATE VIEW viewname(v_name, v_email) AS 
+        SELECT name, email FROM user WHERE id > 10;
+    ==> [ALGORITHM=UNDEFINED]   MERGE or TEMPTABLE 
+    ==> insert into viewname (v_name, v_email) values (select name, email from
+            user where id > 10)
+    
+db> SELECT * FROM viewname;
+    ==> select * from (select name, email from user where id > 10)
+
+|- merge -|  
+db> SELECT * FROM viewname WHERE id < 10000;
+    ==> select * from (select name, email from user where id > 10) where id < 10000
+
+db> CREATE ALGORITHM=MERGE VIEW viewname AS SELECT name, email FROM user WHERE id > 0;
+db> SELECT * FROM viewname WHERE id < 10000
+    ==> select name, email from user where id > 0 and id < 10000
+    
+|- temptable -|
+get the average price of each item of products
+--> select avg(price), count(*) from tb group by item order by id desc, dtime desc
+
+db> ALTER ALGORITHM=TEMPTABLE VIEW viewname AS SELECT * FROM
+        tb ORDER BY id DESC, dtime DESC;
+    --> create a temporary table
+db> SELECT AVG(price), COUNT(*) FROM viewname GROUP BY item;
+
+/**
+ * for table spliting
+ *  using id % 9 = [0,1,...9] to split a big table into 10 smaller
+ */
+db> ALTER VIEW viewname AS
+        SELECT * FROM tb0 UNION SELECT * FROM tb1 UNION ...      

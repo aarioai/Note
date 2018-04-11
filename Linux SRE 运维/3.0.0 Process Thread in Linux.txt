@@ -1,0 +1,33 @@
+|~ Process ~|
+sh$ ps al | grep forklift.out
+|[
+    F UID  PID  PPID PRI NI WCHAN  STAT TTY    CMD
+    0 1000 5000 4000 76  0  hrtime S+   pts/0  ./forklift.out
+    1 1000 5001 5000 75  0  exit   Z+   pts/0  [forklift.out] <defunct>
+    0 1000 5002 3000 76  0  pipe_w S+   pts/0  ps
+]|
+
+|[
+/*
+* The task state array is a strange "bitmap" of
+* reasons to sleep. Thus "running" is zero, and
+* you can test for combinations of others with
+* simple bit tests.
+*/
+static const char * const task_state_array[] = {
+    "R (running)", /* 0, Runnint or in queue */
+    "S (sleeping)", /* 1, interruptible sleep */
+    "D (disk sleep)", /* 2, uninterruptible sleep */
+    "T (stopped)", /* 4 */
+    "t (tracing stop)", /* 8 */
+    "X (dead)", /* 16 */
+    "Z (zombie)", /* 32 */
+};
+]|
+sh$ kill -SIGSTOP [ PID ]
+sh$ kill -SIGCONT [ PID ]
+
+
+|+ Inter Process Communication +|
+|+ Tube +|
+|~ Thread ~|

@@ -1,0 +1,19 @@
+|! Transactions Per Second !|
+/**
+ * the server the number of transactions processed (InnoDB engine) per second.
+ */
+|- MySQL -|
+TPS = (Com_commit + Com_rollback) / Uptime
+|[
+show global status like 'Com_commit';
+show global status like 'Com_rollback';
+show global status like 'Uptime';
+]|
+
+
+|! Queries Per Second !|
+/**
+ * MyISAM engine 
+ */
+|- MySQL -|
+QPS = Questions / Uptime

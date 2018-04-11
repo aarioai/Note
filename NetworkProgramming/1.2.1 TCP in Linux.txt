@@ -1,0 +1,201 @@
+|~ ~|
+sh$ sudo ./socketServ.out &           /* TCP Serv with port 9877 */
+sh$ netstat -a | grep 9877
+|[
+Proto  RecvQ  SendQ  LocalAddr.    ForeignAddr  State
+tcp    0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
+]|
+
+/**
+ * TCPDump is listening...
+ * @param lo for local,
+ */
+sh$ sudo tcpdump -i lo -nn
+
+/**
+ * hold on it with input stream
+ */
+sh$ ./tcpCli.out         
+sh$ netstat -a
+|[
+Proto  LocalAddr.      ForeignAddr      State
+tcp    0.0.0.0:9877    0.0.0.0:*        LISTEN      --> ./socketServ.out listening
+tcp    localhost:9877  localhost:48692  ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
+tcp    localhost:48692 localhost:9877   ESTABLISHED  --> ./tcpCli.out-> ./socketServ.out
+]|
+sh$ ps al
+|[
+F   UID   PID  PPID    VSZ   RSS  WCHAN  STAT TTY    COMMAND
+/**
+ * COMMAND bash shell: parent of ./tcpCli.outand ./socketServ.out
+ * pst/1 pseudo['su:doʊ]-terminal number 1
+ * STAT S on sleeping
+ * WCHAN wait
+ */
+0  1000 10230 10226 116524  3316 wait    Ss  pts/1  bash
+/**
+ * n_tty_read blocks the process on terminal I/O input
+ */
+0  1000 10434 10230   4164  360  n_tty_  S+  pts/1  ./socketClient.out
+/**
+ * signal_stop
+ */
+4     0 10275 10230 211056  3692 signal  T   pts/1  sudo ./socketServ.out
+4     0 10299 10230 211056  3688 signal  T   pts/1  sudo ./socketServ.out
+4     0 10336 10230 211056  3692 signal  T   pts/1  sudo ./socketServ.out
+4     0 10423 10230 211084  3456 poll_s  S   pts/1  sudo ./socketServ.out
+/**
+ * Parent process
+ * @WCHAN inet_csk_accpet
+ */
+4     0 10425 10423   4168  360  inet_c  S   pts/1  ./socketServ.out
+/**
+ * Child process from fork()
+ * @WCHAN sk_wait_data socket is waiting for data
+ */
+1     0 10435 10425   4168  96   sk_wai  S   pts/1  ./socketServ.out
+]|
+
+sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
+|[
+  PID  PPID TT       STAT COMMAND                     WCHAN
+10230 10226 pts/1    Ss   bash                        wait
+10275 10230 pts/1    T    sudo ./socketServ.out       signal_stop
+10299 10230 pts/1    T    sudo ./socketServ.out       signal_stop
+10336 10230 pts/1    T    sudo ./socketServ.out       signal_stop
+10423 10230 pts/1    S    sudo ./socketServ.out       poll_schedule_timeout
+10425 10423 pts/1    S    ./socketServ.out            inet_csk_accept
+10434 10230 pts/1    S+   ./tcpCli.out         n_tty_read
+10435 10425 pts/1    S    ./socketServ.out            sk_wait_data
+]|
+
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+/**
+ * Client: Send [S]=SYN J
+ */
+.48692 > .9877: Flags [S], seq 606955278, win 43690, opt [mss 65495,sackOK,TS val 5469683 ecr 0,nop,wscale 7], length 0
+/**
+ * Serv: Respond [S]=SYN K, ACK J+1
+ */
+.9877 > .48692: Flags [S.], seq 3763551751, ack 606955279, win 43690, opt [mss 65495,sackOK,TS val 5469683 ecr 5469683,nop,wscale 7], length 0
+.48692 > .9877: Flags [.], ack 1, win 342, opt [nop,nop,TS val 5469683 ecr 5469683], length 0
+]|
+
+|~ ~|
+/**
+ * After typing into ./socketClient.out, the client socket is closed by the 
+ *  kenel. This sends a FIN to the server
+ * +-------------------------------------|-------------------------------------+
+ * | FIN_WAIT_1                --FIN M-->                                     
+ * |                                              CLOSE_WAIT  read returns EOF 
+ * |                                      <--ACK M+1--                  
+ * | FIN_WAIT_2                                                                
+ * |                                                  child process terminates 
+ * |                                      <--FIN N--                    
+ * | TIME_WAIT               --ACK N+1-->                                     
+ * |                                                                    CLOSED 
+ * |                                      child sends SIGCHLD signal to parent 
+ * |                                             child enters the zombie state 
+ * +-------------------------------------|-------------------------------------+
+ */
+sh$ netstat -a | grep 9877
+|[
+Proto  Recv-Q  Send-Q  LocalAddr.    ForeignAddr  State
+tcp      0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
+]|
+sh$ ps al
+F S   UID   PID  PPID  ADDR SZ WCHAN  TTY    CMD
+4 T     0 10275 10230  - 52764 signal pts/1  sudo
+4 T     0 10299 10230  - 52764 signal pts/1  sudo
+4 T     0 10336 10230  - 52764 signal pts/1  sudo
+4 S     0 10423 10230  - 52771 poll_s pts/1  sudo
+4 S     0 10425 10423  -  1042 inet_c pts/1  ./socketServ.out
+/**
+ * @STATE Z for zombie[ˈzɑmbi], the state of the child is now zombie
+ *  We need to clean up our zombie process with Unix signals
+ * @CMD <defunct> for a zombie process
+ */
+1 Z     0 10435 10425  -     0 exit   pts/1  [socketServ.out] <defunct>
+
+
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+/**
+ * Client: write(), [P.]=Push
+ */
+.48692 > .9877: Flags [P.], seq 1:4097, ack 1, win 342, opt [nop,nop,TS val 5732826 ecr 5469683], length 4096
+.9877 > .48692: Flags [.], ack 4097, win 1024, opt [nop,nop,TS val 5732827 ecr 5732826], length 0
+/**
+ * Serv: write() "Aario Says: Love", [P.]=Push
+ */
+.9877 > .48692: Flags [P.], seq 1:20, ack 4097, win 1024, opt [nop,nop,TS val 5732827 ecr 5732826], length 19
+.48692 > .9877: Flags [.], ack 20, win 342, opt [nop,nop,TS val 5732827 ecr 5732827], length 0
+/**
+ * Serv: send [F.]=FIN
+ */
+.9877 > .48692: Flags [F.], seq 20, ack 4097, win 1024, opt [nop,nop,TS val 5732827 ecr 5732827], length 0
+.48692 > .9877: Flags [.], ack 21, win 342, opt [nop,nop,TS val 5732867 ecr 5732827], length 0
+/**
+ * Client: write() "Love", [P.]=Push
+ */
+.48692 > .9877: Flags [P.], seq 4097:4101, ack 21, win 342, opt [nop,nop,TS val 5733828 ecr 5732827], length 4
+/**
+ * Serv: send [R]=RST
+ */
+.9877 > .48692: Flags [R], seq 3763551772, win 0, length 0
+]|
+ 
+ 
+
+
+|~ Termination of Server Process ~|
+/**
+ * Before typing into ./socketClient.out, terminates the server child.
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN M--             FIN_WAIT_1 
+ * | CLOSE_WAIT fgets(block)                                                   
+ * |                         --ACK M+1-->                                     
+ * |                                                                FIN_WAIT_2 
+ * |                                         send SIGCHLD to parent; waitpid() 
+ * +-------------------------------------|-------------------------------------+
+ */
+sh$ sudo kill -SIGSTOP 10435
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+/**
+ * Serv: send a [F.]=FIN 1=seq
+ */
+.9877 > .48692: Flags [F.], seq 1, ack 1, win 342, options [nop,nop,TS val 7192941 ecr 7162268], length 0
+.48692 > .9877: Flags [.], ack 2, win 342, options [nop,nop,TS val 7192942 ecr 7192941], length 0
+]|
+
+
+sh$ netstat -a | grep 9877
+|[
+Proto  RecvQ  SendQ  LocalAddr.      ForeignAddr     State
+tcp    0      0      0.0.0.0:9877    0.0.0.0:*       LISTEN
+tcp    0      0      localhost:9877  localhost:60461 FIN_WAIT2
+tcp    1      0      localhost:60461 localhost:9877  CLOSE_WAIT
+]|
+
+/**
+ * After typing into ./socketClient.out, the client socket is closed by the 
+ */
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+.48692 > .9877: Flags [P.], seq 263097761:263101857, ack 2963927551, win 342, options [nop,nop,TS val 7432947 ecr 7192941], length 4096
+.9877 > .48692: Flags [R], seq 2963927551, win 0, length 0
+]|

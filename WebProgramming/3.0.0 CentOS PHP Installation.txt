@@ -1,0 +1,206 @@
+
+|! Clean UP !|
+sh$ yum -y remove php
+rpm -qa|grep php
+rm -rf /usr/local/php
+rm -rf /etc/php.ini
+
+
+
+
+|! Prepare !|
+
+sh$ sudo yum update -y
+
+/**
+ * gcc gcc-c++
+ *  zlib zlib-devel:  gzip
+ */
+sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre pcre-devel make cmake libxml2 libxml2-devel openssl-devel curl curl-devel libcurl libcurl-devel libjpeg-devel libpng-devel libicu-devel openldap-devel bzip2* libtidy* freetype* gd libjpeg libjpeg-devel libpng libpng-devel glibc glibc-devel glib2 glib2-devel
+
+sh$ whereis libxml2
+sh$ whereis openssl
+sh$ whereis bzip2
+
+sh$ sudo mkdir -p /etc/php
+
+sh$ ./configure --help
+
+/**
+ *       --with-config-file-path=/usr/share/php/etc/php.ini \
+ */
+sh$ sudo ./configure --prefix=/usr/share/php\
+      --with-config-file-scan-dir=/usr/share/php/etc \
+      --with-fpm-user=www\
+      --with-fpm-group=www\
+      --enable-phpdbg\
+      --enable-phpdbg-debug\
+      --enable-debug\
+      --disable-short-tags\
+      --with-openssl\
+      --with-bz2\
+      --with-curl\
+      --with-gd\
+      --enable-gd-native-ttf\
+      --with-jpeg-dir=/usr/lib\
+      --with-freetype-dir\
+      --with-zlib\
+      --with-mhash\
+      --enable-mbstring\
+      --enable-pdo\
+      --with-mysqli\
+      --with-mysql\
+      --with-mysql-sock\
+      --with-pdo-mysql\
+      --enable-opcache\
+      --enable-zip\
+      --with-gettext\
+      --enable-sockets\
+      --enable-bcmath\
+      --enable-fpm\
+    ;
+    
+sh$ sudo make
+sh$ sudo make test
+sh$ sudo make install
+    
+    
+sh$ php -i | grep php.ini
+
+sh$ sudo cp php.ini-development /etc/php/php.ini
+
+sh$ sudo ln /usr/share/php/bin/phar.phar /usr/bin/phar
+sh$ sudo ln /usr/share/php/bin/php /usr/bin/php
+sh$ sudo ln /usr/share/php/bin/phpize /usr/bin/phpize
+sh$ sudo ln /usr/share/php/bin/php-config /usr/bin/php-config
+sh$ sudo vim /usr/share/php/bin/php-config
+|[
+  extension_dir='/usr/share/php/lib/php/extensions/debug-non-zts-20131226'
+]|
+sh$ sudo vim /etc/php.ini
+|[
+  extension_dir = "/usr/share/php/lib/php/extensions/debug-non-zts-20131226"
+  date.timezone = Asia/Shanghai
+]|
+sh$ sudo sudo ln /usr/share/php/bin/phpdbg /usr/bin/phpdbg
+
+
+
+
+sh$ sudo cp -f sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+sh$ sudo chmod +x /etc/init.d/php-fpm
+sh$ sudo chkconfig --add php-fpm
+sh$ sudo chkconfig php-fpm on
+sh$ sudo service php-fpm start
+sh$ sudo cp sapi/fpm/php-fpm.conf /etc/php/php-fpm.conf
+
+
+
+/**
+|- Installation for mcrypt -|
+sh$ yum list installed|grep mcrypt
+sh$ sudo rpm -ivh http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+sh$ sudo yum clean all
+sh$ sudo makecache
+sh$ sudo yum install libmcrypt libmcrypt-devel  mhash
+
+*/
+
+
+
+
+
+
+
+|! Extension Installation !|
+
+|- xdebug / xhprof -|
+sh$ sudo cd xdebug
+sh$ sudo phpize
+sh$ sudo ./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
+sh$ sudo make
+sh$ sudo make install
+
+sh$ sudo cd xhprof/extension
+sh$ sudo phpize
+sh$ sudo +|configure --with-php-config=/usr/local/php/bin/php-config
+
+
+
+
+
+
+
+
+|! Extensions Installation !|
+
+|+ Xdebug +|
+sh$ phpize
+sh$ ./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
+sh$ sudo make
+sh$ sudo make install
+
+|+ ImageMagick +|
+/**
+ * @see http://www.tuicool.com/articles/vmuyyy
+ * brew install php56-imagick
+ */
+|- ImageMagick -|
+wget ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick.tar.gz 
+
+./configure –prefix=/usr/local/ImageMagick 
+make 
+sudo make install 
+
+|- imagick.so -|
+wget http://pecl.php.net/get/imagick-3.1.2.tgz
+
+yum install gtk-devel gtk2-devel     /* brew install pkg-config */
+export PKG_CONFIG_PATH=/usr/local/ImageMagick/lib/pkgconfig
+
+
+./configure –with-php-config=/usr/local/php/bin/php-config –with-imagick=/usr/local/ImageMagick 
+
+Note:
+  err: checking for MagickWand.h header file… configure: error: Cannot locate header file MagickWand.h
+
+ ln -s /usr/local/ImageMagick/include/ImageMagick-6 /usr/local/ImageMagick/include/ImageMagick 
+ make clean
+ phpize
+./configure –with-php-config=/usr/local/php/bin/php-config –with-imagick=/usr/local/ImageMagick
+ make && make install
+
+  
+
+
+
+
+|+ Install Limbcrypt/Mcrypt/Mhash +|
+/**
+ * http://sourceforge.net/projects/mcrypt/files/Libmcrypt/
+ */
+sh$ wget http://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz
+sh$ sudo ./configure
+sh$ sudo make
+sh$ sudo make install
+sh$ cat /usr/local/bin/libmcrypt-config
+|[
+prefix=/usr/local
+]|
+sh$ sudo ln -s /usr/local/bin/libmcrypt-config /usr/bin/libmcrypt-config
+sh$ export LD_LIBRARY_PATH=/usr/local/lib: LD_LIBRARY_PATH
+
+sh$ wget http://sourceforge.net/projects/mhash/files/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz
+sh$ sudo ./configure
+
+
+sh$ wget http://sourceforge.net/projects/mcrypt/files/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz
+sh$ sudo LD_LIBRARY_PATH=/usr/local/lib ./configure
+sh$ sudo make && make install
+
+|- Download a PHP file -|
+sh$ cd php-5.4.39/ext/mcrypt
+sh$ phpize
+sh$ whereis php-config
+sh$ sudo ./configure --with-php-config=/usr/bin/php-config
+sh$ sudo make && make install

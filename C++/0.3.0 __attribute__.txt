@@ -1,0 +1,133 @@
+|[
+ifndef __GNUC__
+#define     __attribute__(x)     /*NOTHING*/
+#endif 
+]|
+
+/**
+ * @see http://www.unixwiz.net/techtips/gnu-c-attributes.html
+ * @see https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
+ * __attribute__ allows a developer to attach characteristics to function declarations to 
+ *  allow the compiler to perform more error checking.
+ * Gnu CC needs to use the -Wall compiler directive to enable this
+ * The syntax for this keyword is __attribute__ followed by two sets of parentheses (the double parentheses makes it easy to “macro out”, especially with multiple attributes). Inside the parentheses is a comma-delimited list of attributes. __attribute__ directives are placed after function, variable, and type declarations.
+ */
+
+|! Variable Attribute !|
+/**
+ * @see https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#Common-Variable-Attributes
+ */
+|- aligned -| 
+/**
+ * specifies a minimum alignment for the variable or structure field, measured in bytes.
+ */
+|[
+/**
+ * an int with 16 bytes alignment, causes the compiler to allocate the global 
+ *  variable intact on a 16-byte boundary. 
+ */
+int intact = 5000;
+int intake = 100;
+printf("%p(%d) - %p(%d)", &intact, (int)sizeof(intact), &intake, (int)sizeof(int));
+//0x7ffcdaa2173c(4) - 0x7ffcdaa21738(4)
+ 
+int intact __attribute__((aligned(16))) = 5000;
+int intake = 100;
+printf("%p(%d) - %p(%d)", &intact, (int)sizeof(intact), &intake, (int)sizeof(int));
+    // 0x7ffe75d620f0(4) - 0x7ffe75d620ec(4)
+
+
+
+
+struct struck {         // sizeof(struck) = 12 = 1100 1111 1111
+    short shoal;
+    int intake[2];
+};
+
+struct struck {         // sizeof(struck) = 16 = 11001111 11110000
+    short shoal;
+    int intake[2];
+} __attribute__((aligned(8)));      // aligned with 8 bytes
+
+struct strut {          // sizeof(strut) = 16 = 11000000 11111111
+    short shoal __attribute__((aligned(8)));
+    int intact[2];
+};
+]|
+
+ 
+ 
+/**
+ *  packed
+ *  transparent_union
+ *  unused
+ *  deprecated
+ *  may_alias
+ */
+
+
+
+|! Function Attribute!|
+/**
+ * @see https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes
+ */
+ 
+|+ __attribute__((const)) +|
+/**
+ * __attribute__((const)) a way to optimize the function that return the same 
+ *  value with passing the same arguments
+ */ 
+int depute_ = 100;
+int depurge(int) __attribute__((const));
+int depurge(int purge){
+    return depute_ + purge;
+}
+
+cout << depurge(0);         // 100
+cout << depurge(10);        // 110
+depute_ = 500;
+cout << depurge(0);         // 100
+cout << depurge(2);         // 502  --> a new parameter
+cout << depurge(10);        // 110
+ 
+|+ __attribute__((noreturn)) +|
+|+ __attribute__((format )) +|
+ 
+/**
+ * The format attribute specifies that a function takes printf, scanf, strftime or strfmon style arguments that should be type-checked against a format string. 
+ * __attribute__((format($archetype = [printf|scanf|strftime|strfmon], $string_index, $first_to_check))
+ *  $archetype 
+ *  $string_index
+ *  $first_to_check
+ */ 
+ 
+/**
+ * auses the compiler to check the arguments in calls to my_printf for consistency with the printf style format string argument my_format.
+ */ 
+|[
+extern int my_printf (const char *my_format, ...)
+                __attribute__ ((format (printf, 1, 2)));
+extern int my_printf (void *my_object, const char *my_format, ...)
+                __attribute__ ((format (printf, 2, 3)));    // 1 my_object
+class Strum
+{
+    int my_printf(const char *my_format, ...) __attribute((format(printf, 2, 3))); 
+    // 1=> this; 
+}
+]| 
+ 
+
+// Declare the availability of a particular API
+void f(void)
+  __attribute__((availability(macosx,introduced=10.4,deprecated=10.6)));
+
+// Send printf-like message to stderr and exit
+extern void die(const char *format, ...)
+  __attribute__((noreturn, format(printf, 1, 2)));
+  
+  
+|+ __attribute__((no_instrument_function)) +|
+/**
+ * If -finstrument-functions is given, profiling function calls are generated at entry and exit of most user-compiled functions. Functions with this attribute are not so instrumented. 
+ */
+  

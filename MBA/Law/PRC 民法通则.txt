@@ -1,0 +1,85 @@
+/**
+ *@url http://www.chinalawedu.com/news/23223/23228/9304.htm 
+ */
+|! Chapter I. Basic Principles !|
+|- Article 15. Domicile -|
+The domicile['dɒmɪsaɪl] of a citizen shall be the place where his residence['rezɪdəns] is registered['redʒɪstə]; if his habitual[hə'bɪtʃʊəl] residence is not the same as his domicile, his habitual residence shall be regarded as his domicile.
+|[
+The domicile is the place where a citizen lived in more than 1 year, except where for a cure at hospital. 
+]|
+
+|! Chapter IV. Civil Juristic[‚dʒʊ'rɪstɪk] Acts and Agency !|
+|+ Section 1. Civil Juristic Acts +|
+|- Article 56. Formal Requirements -|
+A civil juristic acts may be in written, oral['ɔːrəl] or other form. If the law stipulates['stɪpjəleɪt] that a particular form be adopted, such stipulation shall be observed.
+|[
+a tacit['tæsɪt] declaration[ˌdɛkləˈreʃən](implied[ɪm'plaɪd]) is acceptable 
+]|
+|- Article 59. Alterable or Rescissible[rɪ'sɪsəbəl] Civil Acts -|
+/**
+ *@link Article 54 of "Contract Law"
+ */
+A party shall have the right to request a people's court or an arbitration[‚ɑːbɪ'treɪʃn] agency to alter or rescind[rɪ'sɪnd] the following civil acts:
+    (1) those performed by an actor who seriously misunderstood the contents of the acts;
+    (2) those that are obviously unfair. Rescinded civil acts shall be null and void from the very beginning.
+|[
+seriously misunderstood:   
+    行为人因对行为的性质、对方当事人、标的物品种、质量、尺寸、数量等的错误认识，并造成了较大损失的。
+obviously unfair: 
+    一方当事人利用优势或者利用对方没有经验，致使双方的权利与义务明显违反公平、等价有偿原则的。
+Limitation of Action: 1 year
+]|
+|! Chapter V. Civil Rights !|
+|+ Section 1. Property Ownership and Related Property Rights +|    
+|- Article 83. Neighboring Users -|
+In the spirit of helping production, making things convenient for people's lives, enhancing unity['juːnətɪ] and mutual assistance, and being fair and reasonable, neighboring users of real estate shall maintain proper neighborly relations over such matters as water supply, drainage['drenɪdʒ], passageway[ˈpæsɪdʒˌwe], ventilation[ˌvɛntlˈeʃən] and lighting. Anyone who causes obstruction[əbˈstrʌkʃən] or damage to his neighbor, shall stop the infringement[ɪnˈfrɪndʒmənt], eliminate[ɪˈlɪməˌnet] the obstruction and compensate[ˈkɑ:mpenseɪt] for the damage.    
+
+|+ Section 2. Creditors' Rights +|  
+|- Article 88. Apply A Contract -|
+The parties to a contract shall fully fulfill their obligations[ˌɑ:blɪˈgeɪʃn] pursuant[pərˈsu:ənt] to the terms of the contract.
+If a contract contains ambiguous[æmˈbɪɡjuəs] terms regarding quality, time limit for performance, place of performance, or price, and the intended meaning cannot be determined from the context of relevant['relɪvənt] terms in the contract, and if the parties cannot reach an agreement through consultation[ˌkɑ:nslˈteɪʃn], the provisions[prəˈvɪʒən] below shall apply:
+    (1) If quality requirements are unclear, state quality standards shall apply; if there are no state quality standards, generally held standards shall apply.
+    (2) If the time limit for performance is unclear, the debtor[ˈdɛtɚ] may at his convenience fulfill his obligations towards the creditor; the creditor may also demand at any time that the debtor perform his obligations, but sufficient[səˈfɪʃənt] notice shall be given to the debtor.
+    (3) If the place of performance is unclear, and the payment is money, the performance shall be effected[ɪˈfɛkt] at the seat[sit] or place of residence of the party receiving the payment; if the payment is other than money, the performance shall be effected at the seat or place of residence of the party fulfilling the obligations.
+    (4) If the price agreed by the parties is unclear, the state-fixed price shall apply. If there is no state-fixed price, the price shall be based on market price or the price of a similar article or remuneration[rɪˌmjunəˈreʃən] for a similar service.
+If the contract does not contain an agreed term regarding rights to patent[ˈpætnt] application, any party who has completed an invention-creation shall have the right to apply for a patent.
+If the contract does not contain an agreed term regarding rights to patent application, and technological research achievements, the parties shall all have the right to use such achievements.
+
+
+|- Article 89. Guarantee[ˌɡærənˈti] of a Debt -|
+In accordance[əˈkɔ:rdns] with legal[ˈliɡəl] provisions the agreement between the parties on the performance of a debt may be guaranteed['gærən'ti:d] using the methods below:
+    (1) A guarantor[ˌɡærənˈtɔr] may guarantee to the creditor that the debtor shall perform his debt. If the debtor defaults, the guarantor shall perform the debt or bear joint liability according to agreement. After performing the debt, the guarantor shall have the right to claim[klem] repayment from the debtor.
+    (2) The debtor or a third party may offer a specific property as a pledge[plɛdʒ]. If the debtor defaults, the creditors shall be entitled[ɪn'taɪtld] to keep the pledge to offset[ˈɔ:fset] the debt or have priority in satisfying[ˈsætɪsfaɪɪŋ] his claim out of the proceeds[ˈproʊsi:dz] from the sale of the pledge pursuant[pərˈsu:ənt] to relevant legal provisions.
+    `(3) Within the limits of relevant legal provisions, a party may leave a deposit[dɪˈpɑ:zɪt](保证金) with the other party. After the debtor has discharged his debt, the deposit shall either be retained[rɪˈten] as partial[ˈpɑ:rʃl] payment of the debt or be returned. If the party who leaves the deposit defaults, he shall not be entitled to demand the return of the deposit; if the party who accepts the deposit defaults, he shall repay the deposit in double.
+    (4) If a party has possession[pəˈzɛʃən] of the other party's property according to contract and the other party violates[ˈvaɪəˌlet] the contract by failing to pay a required sum of money within the specified time limit, the possessor[pəˈzɛsɚ] shall have a lien[lin] on the property and may keep the retained property to offset the debt or have priority in satisfying his claim out of the proceeds from the sale of the property pursuant to relevant legal provisions.
+|! Chapter VI. Civil Liability !|
+|+ Section 1. General Stipulations[ˌstɪpjəˈleʃən] +|
+|-Article 107. Liability Avoid -|
+Civil liability shall not be borne[bɔ:rn] for failure['feɪljər] to perform a contract or damage to a third party if it is caused by force majeure[ma:'ʒɜ:], except as otherwise provided by law.
+|[
+force majeure: 
+    (1) a result of Acts of God (including fire, serious flood[flʌd], storm, hurricane[ˈhɜ:rəkən], typhoon, earthquake or other natural disaster[dɪˈzæstər])
+    `(2) a result of government (interruption[ˌɪntəˈrʌpʃən] or failure of electricity or telephone service, sanction[ˈsæŋkʃən], embargo[ɪmˈbɑ:rgoʊ])
+    (3) labor[ˈlebɚ] dispute, strike, lockout[ˈlɑ:kaʊt]
+Force majeure is compelling[kəmˈpɛlɪŋ]:
+    不可抗力条款是法定免责规定，无论合同中是否约定（不得约定将不可抗力排除在免责事由之外），都强制执行。
+Exclusion[ɪkˈskluʒən]: 
+    (1) 金钱的债务的延迟责任不得因不可抗力而免除。
+    (2) 延迟履行期间发生的不可抗力不具有免责效力。
+]|
+|+ Chapter VII. Limitation of Action +|
+/**
+ * A limitation of action shall begin when the entitled person knows or should know that his rights have been infringed[ɪnˈfrɪndʒ] below.
+ */
+|- Article 135. -|
+Except as otherwise stipulated by law, the limitation of action regarding applications to a people's court for protection of civil rights shall be two years.
+|- Article 136. -|
+The limitation of action shall be one year in cases concerning[kənˈsɜ:rnɪŋ] the following:
+    (1) claims for compensation[ˌkɑ:mpenˈseɪʃn] for bodily injuries;
+    (2) sales of substandard goods without proper notice to that effect;
+    (3) delays in paying rent or refusal[rɪˈfjuzəl] to pay rent; or
+    (4) loss of or damage to property left in the care of another person.
+|- Article 155. -|
+In this law, the terms "not less than", "not more than", "within" and "expires[ɪk'spaɪə]" shall include the given figure; the terms "under" and "beyond" shall not include the given figure.
+
+第一百五十五条 民法所称的“以上”、“以下”、“以内”、“届满”，包括本数；所称的“不满”、“以外”，不包括本数。

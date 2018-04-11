@@ -1,0 +1,17 @@
+/**
+ * @param $cmd
+ *  ping
+ *  status
+ *  processlist
+ */
+sh$ mysqladmin -uroot -p -h localhost $cmd
+
+/**
+ * http://dev.mysql.com/doc/refman/5.7/en/mysqldump.html
+ * @param $opt
+ *  --single-transaction 
+ *  --lock-tables
+ *  --lock-all-tables
+ *  --replace Write REPLACE statements rather than INSERT statements
+ */
+sh$ mysqldump -uroot -p  $opt $db [$tb] > [$save_to]

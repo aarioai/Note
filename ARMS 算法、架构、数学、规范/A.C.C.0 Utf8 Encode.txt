@@ -1,0 +1,34 @@
+/**
+ * @see https://en.wikipedia.org/wiki/UTF-8
+ * ASCII [\x00-\x7F]    0-127
+ * Unicode [
+ *  Plane 0
+ *    0000-007F     C0 ASCII
+ *    0080-00FF     C1 Control and Latin 1 Supplement
+ *    0100-024F     Latin Extended A/B
+ *    0250-02AF     IPA e.g. [fə'netɪk] 
+ *    02B0-02FF     Sacping Modifiers
+ *    0300-036F     Combining Diacritics Marks
+ *    4E00-9FBF     Chinese-Japanese-Korean Unified Ideographs(Chinese)
+ *    ...
+ *    E000-F8FF
+ *  Plane 1
+ *    10000-1FFFF   
+ *    1F601-1F64F   Emoji
+ *  Plane 2
+ *  Plane 3
+ *  Plane 4 - Plane D
+ *  Plane E
+ *  Plane F
+ * UTF-8  [\u0000-\uFFFF]    1-4 bytes = 1-8 bits
+ * UTF-16 @see https://en.wikipedia.org/wiki/UTF-16    
+ *  iOS uses BE, Win/Linux uses LE;
+ * Emoji  [\u1F601-\u1F64F] 
+ *  e.g.
+ *    \x25  and \u0025 both are  character `%`
+ *    \ud83d\ude22  is a crying face
+ *    \ud83d\ude04  is a smiling face, LOL
+ * I try to range it in ([\uD83C\uD83D][\uDC00-\uFFFF])
+ * @see http://www.msxindl.com/tools/unicode16.asp
+ * @see http://apps.timwhitlock.info/emoji/tables/unicode
+ */

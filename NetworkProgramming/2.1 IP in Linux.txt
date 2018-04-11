@@ -1,0 +1,19 @@
+sh$ cat /etc/resolv.conf        /* IP addr. of local ns */
+sh$ cat /etc/services
+|[
+ [service] [port]/[proto_nm]
+ domain      53/tcp
+ domain      53/udp
+ domaintime  9909/tcp
+ domaintime  9909/udp
+ http        80/tcp
+ http        80/udp
+ http        80/sctp
+ https       443/tcp
+ https       443/udp
+ https       443/sctp
+ netstat     15/tcp
+ ssh         22/tcp
+ ssh         22/udp
+ ssh         22/sctp
+ ]|

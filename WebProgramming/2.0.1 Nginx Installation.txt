@@ -1,0 +1,88 @@
+|! Add An User Under /home/www !|
+/**
+ * It'll create add a no-login user www in group www
+ *   usermod -s /sbin/nologin <user>      
+ */
+sh$ sudo useradd -s /sbin/nologin www
+|- cloase port 9000 -|
+sh$ sudo netstat -anp|grep 9000
+tcp 0 0 :::9000 :::* LISTEN 1900/php-fpm
+sh$ sudo kill 1900
+
+|! Basis !|
+/**
+ * GCC(GNU Compiler Collection) is used to compile C(gcc)/C++(gcc-c++).
+ *  It's necessary for writing Nginx HTTP module
+ */
+sh$ yum install -y gcc gcc-c++
+/**
+ * PCRE(Perl Compatible Regular Expression) is used to support regular expression
+ *  like `rewrite`.
+ */
+sh$ yum install -y pcre pcre-devel
+
+/**
+ * to support `gzip on` in nginx.conf.
+ */
+sh$ yum install -y zlib zlib-devel
+
+/**
+ * to suport https
+ */
+sh$ yum install -y openssl openssl-devel
+|! Nginx !|
+/* http://wiki.nginx.org/Install */
+sh$ sudo rpm -ivh  http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+sh$ cat /etc/yum.repos.d/nginx.repo
+|[
+# nginx.repo
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/7/$basearch/
+gpgcheck=0
+enabled=1
+
+
+]|
+/* sh$ sed -i 's/gpgcheck=0/gpgcheck=1\ngpgkey=file:\/\/\/etc\/pki\/rpm-gpg\/RPM-GPG-KEY-CentOS-7/g' /etc/yum.repos.d/nginx.repo */
+|[
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+]|
+sh$ yum update -y
+
+/* it'll list the newest stable Nginx, but not Mainline */
+sh$ sudo yum list | grep nginx
+
+/**
+ * Requires python-daemon
+ */
+sh$ sudo yum install nginx -y
+
+/* sh$ sudo userdel nginx
+sh$ sudo groupdel nginx
+sh$ sudo vim /etc/nginx/nginx.conf
+|[
+user www
+root /usr/www/htdocs
+]|
+ */
+sh$ sudo systemctl enable nginx.service
+sh$ sudo systemctl start nginx.service
+
+
+sh$ nginx -t
+
+
+
+/**
+ * Don't set html document root under '/home/lef', otherwise it'll display 304
+ * permission error -- No matter you chown or chomd  to the file or not.
+ */
+
+
+
+|~ ~|
+http://wiki.nginx.org/RedHatNginxInitScript
+if /etc/init.d/nginx exists, but it still displays '/etc/init.d/nginx not found' when you run sh$ sudo service nginx start still.
+sh$ dos2unix /etc/init.d/nginx     

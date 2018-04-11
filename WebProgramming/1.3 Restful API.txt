@@ -1,0 +1,42 @@
+|! curl !|
+sh$ curl -i -H "Accept:application/json" -H "Content-Type:applicatoin/json" -X PUT 'http://127.0.0.1' -d '{"title":"PostMan","article":"PUT修改后的", "summary":"总计","id":38}'
+
+|! Error !|
+|- 405 when transfer by PUT/PATCH/DELETE/OPTION -|
+You need to transfer to the full path with `index.php`. For example,
+`curl -i -X PUT 'http://127.0.0.1/'` displays 405 METHOD NOT ALLOWED error.
+Meanwhile, `curl -i -X PUT 'http://127.0.0.1/index.php'` runs well
+So you'd better add `rewrite ^(.*)/$    $1/index.php last;
+
+|+ jQuery +|
+|- Receiving k-v string instead of json string -|
+|[
+$.ajax({
+  method: 'PUT',
+  contentType: 'application/json',
+  accepts: 'application/json',
+  dataType: 'json',
+  data: {"project": "AaronScript", "author": "Aaron Script"},
+});
+]|
+Even though, it sets contentType and dataType, but it still sends 'project=AaronScript&author=Aaron Script' to server;
+Using string data instead.
+|[
+  data: Json.stringify({"project": "AaronScript", "author": "Aaron Script"}),
+  or
+  data: '{"project": "AaronScript", "author": "Aaron Script"}',
+]|
+
+
+
+
+|! Suggetion !|
+GET (select)
+POST (create)
+PUT/PATCH (update)
+DELETE (delete)
+
+?limit=10
+?offset=10
+?page=2&perpg=100
+?sortby=name&order=asc

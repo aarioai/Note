@@ -1,0 +1,132 @@
+/**
+ * @see http://en.wikipedia.org/wiki/Transmission_Control_Protocol
+ */
+TCP contains algorithms['ælgərɪðəm] to estimate['estɪmeɪt] the Round-Trip Time (RTT) between a client and server dynamically so that is knows how long to wait for an acknowledgment.
+|---------------- ----------------|0   it a 32bit sys, 1 word = Databus = 32bits
+| Source Port-16 | Destination-16 |                 2^16
+|---------------- ----------------|32
+|        Sequence No.             |
+|---------------- ----------------|64
+|       Acknowledgement No.       |
+|---------------- ----------------|96
+|OffsRsvNCEUAPRSF|   Window Size  | NS CWR ECE URG ACK PSH RST SYN FIN
+|---------------- ----------------|128
+|    Checksum    |   Urgent Ptr   |
+|---------------- ----------------|160
+|       TCP Options(optional)     |
+=                                 =
+|---------------- ----------------|448
+
+UDP itself does not provide acknowledgments, sequence numbers, RTT estimation, timeouts or retransmissions. 
+TCP provides flow control. TCP advertised['ædvətaɪz] window(say the advertised window is the amount of room currently available in the receive buffer) tells its peer(say the peer thought a segment was lost and retransmitted it, when it wasn't really lost, the network was just overloaded) exactly how any bytes of data it is willing to accept from the peer at any one time.
+TCP and UDP can both be full-duplex[ˈdu:pleks] connection.
+
+/**
+ *  FIN the peer process terminates
+ *  RST the peer host has crashed and rebooted
+ */
+|[
+ * +-------------------------------------|-------------------------------------+
+ * | sock() connect(block)                          socket() bind() listen()
+ * |                                                     LISTEN(passive open)
+ * |                           --SYN J-->
+ * |                                                     SYN_RCVD
+ * |                                      <--SYN J+1, ACK K--
+ * | connect() returns send ACK K+1 ->             
+ * |                                                     ESTABLISHED
+ * |                             --RST-->
+ * |                                              client connection() queued
+ * |                                                         accept() called
+ * +-------------------------------------|-------------------------------------+
+ * | FIN_WAIT_1              --FIN M -->                                     
+ * |                                              CLOSE_WAIT  read returns EOF 
+ * |                                      <--ACK M+1--                  
+ * | FIN_WAIT_2                                                                
+ * |                                                  child process terminates 
+ * |                                      <--FIN N--
+ * | TIME_WAIT   send ACK N+1        -->                                     
+ * |                                                                    CLOSED 
+ * |                                      child sends SIGCHLD signal to parent 
+ * |                                             child enters the zombie state 
+ * +-------------------------------------|-------------------------------------+
+]|
+
+|~ Way to detect TCP crash conditions ~|
+|+ TCP sends data actively +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    select() readable
+ * |-------------------------------------|-------------------------------------+
+ * |     if another write()               
+ * |                                      <--RST--     
+ * |      SIGPIPE                               
+ * | -------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+Out TCP'll time out and out socket's pending error will be set to ETIMEDOUT
+|- Peer Host Unreadable -|
+Out TCP'll time out and out socket's pending error will be set to EHOSTUNREACH
+|+ TCP receives data actively +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    read() as EOF
+ * |-------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+We'll stop receiving data
+|- Peer Host Unreadable -|
+We'll stop receiving data
+|+ Connection idles, Keep-Alive Set +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    select() readable
+ * |-------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+Nine keep-alive probes are sent after two hours of inactivity and then our
+socket's pending error is set to ETIMEDOUT
+|- Peer Host Unreadable -|
+Nine keep-alive probes are sent after two hours of inactivity and then our
+socket's pending error is set to EHOSTUNREACH
+
+|+ Connection idles, Keep-Alive Not Set +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    select() readable
+ * |-------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+(Nothing)
+|- Peer Host Unreadable -|
+(Nothing)
+
+
+|~ TCP Options ~|
+|+ End Of Options List (8 bits) +|
+|+ NOP (No Operation Padding) (8 bits) +|
+|+ MSS(Maximum Segment Size) +|
+the maximum amount of bytes data that it's willing to accept in each TCP segment.
+the MSS should be set small enough to avoid IP fragmentation,
+|+ MSL(Maximum Segment Lifetim) (32 bits)+|
+|+ Window Scale (24 bits) +|
+/**
+ * @see http://en.wikipedia.org/wiki/TCP_window_scale_option
+ */
+a Window Size field (16 bits) is limited to [2,65535] bytes. Scale it with Win
+-dow Scale Option to increase from [65535, 1Gigabyte]
+|- TCP Windows : Send buffer-|
+window = n * MSS;
+The throughput of a communication is limited by two windows: the congestion window and the receive window. The former tries not to exceed the capacity of the network (congestion control) and the latter tries not to exceed the capacity of the receiver to process data (flow control). The receiver may be overwhelmed by data if for example it is very busy (such as a Web server). Each TCP segment contains the current value of the receive window. If for example a sender receives an ack which acknowledges byte 4000 and specifies a receive window of 10000 (bytes), the sender will not send packets after byte 14000, even if the congestion window allows it.
+|+ SACK (Selective Acknowledgement Permitted) (16 bits) +|
+|+ Timestamp (80 bits)+| 
+to prevent possible data corruption caused by old, delayed, or duplicated segments.
+
+TIME_WAIT State

@@ -1,0 +1,29 @@
+|~ UDP Server Not Running ~|
+sh$ sudo tcpdump -i lo -nn
+sh$ ./udpCli.out      /* no UDP server */
+
+
+sh$   /* TCP Dump */
+|[
+22:27:02.952524 IP 127.0.0.1.40418 > 127.0.0.1.9877: UDP, length 16
+22:27:02.952538 IP 127.0.0.1 > 127.0.0.1: ICMP 127.0.0.1 udp port 9877 unreachable, length 52
+]|
+
+
+sh$ sudo ./udpServ.out
+sh$ ./udpCli.out
+
+sh$  /* TCP Dump */
+|[
+22:32:05.073041 IP 127.0.0.1.57672 > 127.0.0.1.9877: UDP, length 16
+22:32:05.073179 IP 127.0.0.1.9877 > 127.0.0.1.57672: UDP, length 40
+]|
+
+|~ Multiple write() ~|
+sh$ ./udpCli.out        /* two write() without sleep(1) */
+|[
+20:30:54.139437 IP 127.0.0.1.48812 > 127.0.0.1.9877: UDP, length 16
+20:30:54.139451 IP 127.0.0.1.48812 > 127.0.0.1.9877: UDP, length 16
+20:30:54.139531 IP 127.0.0.1.9877 > 127.0.0.1.48812: UDP, length 40
+20:30:54.139540 IP 127.0.0.1.9877 > 127.0.0.1.48812: UDP, length 40
+]|

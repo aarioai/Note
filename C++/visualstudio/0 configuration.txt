@@ -1,0 +1,8 @@
+Tools -> Text Editor -> All Lauange -> General 
+Line numbers
+
+Tools -> Debugging -> Symbols 
+Microsoft Symbol Servers
+
+Right Click the space of tool bar
+click  --> Standard & Debug  &  Build

@@ -1,0 +1,30 @@
+|- UTF8/Unicode -|
+- transfer data with C; 
+- serialize binary
+- operate binary files
+
+
+$str = '我';   /* UTF8 string */
+/**
+ * http://php.net/manual/zh/function.unpack.php
+ * @return array ['codes']
+ */
+$unicode = unpack('H6codes', $str);
+
+/**
+ * http://php.net/manual/zh/function.pack.php
+ * @return array ['codes']
+ */
+$unicode_to_str = pack('H6', $unicode['codes']);   /*  我 */
+|- -|
+string iconv ( string $in_charset , string $out_charset , string $str )
+
+|- detect encoding -|
+mb_detect_encoding([ STR=\w+ ], [ ENCODING_LIST ?= mb_detect_order() ], [ STRICT ?= false ] )
+$str = '我';  /* UTF8 string */
+echo mb_detect_encoding($str);   /* 'UTF-8' */
+echo mb_detect_encoding($str, 'UTF-8');   /* 'UTF-8' */
+
+
+|- -|
+mb_convert_encoding()

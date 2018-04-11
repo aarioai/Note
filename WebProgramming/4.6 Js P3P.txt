@@ -1,0 +1,36 @@
+P3P(Platform for Privacy Preferences): Cross Domain Cookie Reading
+
+/**
+ * @see http://www.w3.org/2002/04/P3Pv1-header.html
+ * @see http://www.w3.org/P3P/details.html
+ * @param $p3p_header_compact_policy
+ */
+|[
+compact-access        = NOI | ALL | CAO | IDC | OTI | NON
+compact-disputes      = DSP 
+compact-remedies      = COR | MON | LAW
+compact-non-identifiable = NID 
+compact-purpose       = CUR        | ADM [creq] | DEV [creq] | TAI [creq] | 
+                        PSA [creq] | PSD [creq] | IVA [creq] | IVD [creq] | 
+                        CON [creq] | HIS [creq] | TEL [creq] | OTP [creq]
+creq                  = a | i | o
+compact-recipient     = OUR | DEL [creq] | SAM [creq] | UNR [creq] | 
+                        PUB [creq] | OTR [creq]
+compact-retention     = NOR | STP | LEG | BUS | IND
+compact-category      = PHY | ONL | UNI | PUR | FIN | COM | 
+                        NAV | INT | DEM | CNT | STA | POL | 
+                        HEA | PRE | LOC | GOV | OTC
+compact-test          = TST
+]|
+CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR
+
+|- Set P3P Header by PHP -|
+/* www.a.com */
+header( 'P3P: CP="$p3p_header_compact_policy"' );
+setcookie('extinct', 100, time()+3600);
+
+|- Set P3P Header by JS -|
+xmlhttp.setRequestHeader( "P3P" , 'CP="$p3p_header_compact_policy"' );
+
+|- Set P3P Header by HTML -|
+<meta http-equiv="P3P" content='CP="$p3p_header_compact_policy"'>

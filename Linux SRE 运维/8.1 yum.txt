@@ -1,0 +1,3 @@
+|- yum makecache -| Download and make usable all the metadata for currently enabled yum repos, it'll help search efficacy['efɪkəsɪ]
+yum clean
+yum clean all

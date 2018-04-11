@@ -1,0 +1,17 @@
+/**
+ * SHOW STATUS
+ *  Innodb_buffer_pool_pages_data: 52434
+ *  Innodb_buffer_pool_bytes_data: 858521685 
+ *  Innodb_buffer_pool_pages_dirty:
+ *  Innodb_buffer_pool_bytes_dirty:
+ *  Innodb_data_read: 840908888
+ *  Innodb_data_reads: 54321
+ *  Innodb_data_writes: 319211
+ *  Innodb_data_written: 642713689
+ *  
+ *  Questions:  the amount of queries from client
+ *  Slow_queries:  the amount of queries last more time than long_query_time
+ *  Uptime:  how long the server works (sec)
+ *  Uptime_since_flush_status:
+ */
+sh$ SHOW STATUS;

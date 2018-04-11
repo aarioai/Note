@@ -1,0 +1,37 @@
+use_frameworks!
+platform :ios, '8.0'
+
+
+
+############ Network #################
+
+############ Images ##################
+#pod 'Alamofire'
+
+##
+# animated Gif
+##
+#pod 'Gifu'
+
+
+############ Storage and Cache ####################
+##
+# provides compile-time confidence in SQL statement syntax and intent.
+# https://github.com/stephencelis/SQLite.swift
+##
+pod 'SQLite.swift', '~> 0.10.1'
+
+
+
+##
+# a lightweight generic cache
+# https://github.com/Haneke/HanekeSwift
+##
+pod 'HanekeSwift'
+
+#pod 'SwiftyJSON'
+#pod 'OAuthSwift'
+
+#pod 'AlecrimCoreData'
+
+

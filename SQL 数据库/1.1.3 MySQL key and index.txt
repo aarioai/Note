@@ -1,0 +1,256 @@
+|! !|
+db> CREATE TABLE tb(
+    ...
+    [?UNIQUE|FULLTEXT|SPATIAL] INDEX | KEY  [?ALIAS_NAME]([FIELDS])
+    ..
+    ) ENGINE=InnoDB;
+db> ALTER TABLE tb ADD INDEX(fld);              /* add an index */
+db> ALTER TABLE tb ADD INDEX(fld(prefix_len));  /* add a prefix index */
+db> DROP INDEX index_name ON tb;
+db> SELECT pro_id FROM orders WHERE order_id in (100,2340,210,225);
+   
+|+ Distinct Ratio +|
+/**
+ * The distinct ratio in a field to a table
+ * count(distinct fld)  divides  count(all)
+ * @return 1.0 on unique, no duplicated data;
+ */
+db> SELECT 1.0*COUNT(DISTINCT fld)/COUNT(*) FROM tb;
+
+|! Determination !|
+/**
+ * InnoDB/MyISAM BTree index;  Memory Hash+BTree index
+ * Unique Index has a size of the total bytes. e.g. 100row char(10) = 1000byte
+ * Prefix index only has the size of the prefix chars.
+ */
+
+db> CREATE TABLE tb (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user` CHAR(14) NOT NULL,
+    perfix_index VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE INDEX (user),
+    ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+db> SELECT id, collation, distil FROM tb WHERE distil = 1 LIMIT offset, limit;
+db> ALTER TABLE tb ADD INDEX(distil);     
+
+db> SELECT id, collation FROM tb ORDER BY collation LIMIT offset, limit;
+db> ALTER TABLE tb ADD INDEX(collation);  
+
+db> SELECT * FROM tb WHERE distil = 1 ORDER BY collation LIMIT offset, limit;
+db> ALTER TABLE tb ADD INDEX(distil, collation);
+
+db> SELECT * FROM tb WHERE distil IN (1,3,5,7,9) ORDER BY collation LIMIT of,li;
+
+
+
+
+．选择唯一性索引
+唯一性索引的值是唯一的，可以更快速的通过该索引来确定某条记录。例如，学生表中学号是具有唯一性的字段。为该字段建立唯一性索引可以很快的确定某个学生的信息。如果使用姓名的话，可能存在同名现象，从而降低查询速度。
+2．为经常需要排序、分组和联合操作的字段建立索引
+经常需要ORDER BY、GROUP BY、DISTINCT和UNION等操作的字段，排序操作会浪费很多时间。如果为其建立索引，可以有效地避免排序操作。
+3．为常作为查询条件的字段建立索引
+如果某个字段经常用来做查询条件，那么该字段的查询速度会影响整个表的查询速度。因此，为这样的字段建立索引，可以提高整个表的查询速度。
+
+6．尽量使用前缀来索引
+如果索引字段的值很长，最好使用值的前缀来索引。例如，TEXT和BLOG类型的字段，进行全文检索会很浪费时间。如果只检索字段的前面的若干个字符，这样可以提高检索速度。
+
+
+
+|! Prefix index !|
+For CHAR, VARCHAR, BINARY, and VARBINARY columns, indexes (called prefixed indexes) can be created that use only part of a column, using col_name(length) syntax to specify an index prefix length.
+With this statement you can find out the optimal length of an prefixed index. Optimal means close than or equal cardinality to the full index.
+
+db> UPDATE tb SET prefix_index=concat(user, 'ALL THE FIELDS ARE ALL END WITH 
+    WORDS LIKE THIS; CONCAT(char(14),..) WILL ONLY LOAD THE CHARACTERS IN FIELD
+    USER, BUT NOT KEEP 14 CHARACTER-SPACE. FOR EXAMPLE, CONCAT(`user`, " Well"),
+    THE DATUM `user`="Aaron", IT'LL RETURN "Aaron", not "Aaron            Well"
+    ');
+    
+/**
+ * Dinstinct Radio in Unique filed is 1.0
+ */
+db> SELECT 1.0*COUNT(DISTINCT `user`)/COUNT(*) FROM tb;
+
+/**
+ * @return 1.0 Unique Rows;
+ */
+db> SELECT 1.0*COUNT(DISTINCT prefix_index)/COUNT(*) FROM tb;
+
+/**
+ * Testing left n characters to get a distinct radio similar to above
+ */
+db> SELECT 1.0*COUNT(DINSTINCT LEFT(prefix_index, 10))/COUNT(*) FROM tb;
+                        .
+                        .
+                        .
+db> SELECT 1.0*COUNT(DINSTINCT LEFT(prefix_index, 14))/COUNT(*) FROM tb;
+
+
+db> ALTER TABLE tb ADD KEY(column_name(prefix_length));
+
+|+ Prefix Index Failure +|
+/**
+ * Prefix Index fails in 'ORDER BY', 'GROUP BY' and covering index
+ */
+db> explain SELECT * FROM tb LIMIT 10000,10;
+|[
+id  select_type  table  type  possible_keys  key  key_len  ref rows  Extra
+1     SIMPLE      tb                                          331143
+]|
+db> explain SELECT * FROM tb ORDER BY predix_index LIMIT 10000,10;
+|[
+id  select_type  table  type  possible_keys  key  key_len  ref rows     Extra
+1     SIMPLE      tb                                          331143  Using filesort
+]|
+/**
+ * Prefix index makes query slower when using in 'ORDER BY' or 'GROUP BY'
+ */
+db> show profiles;
+|[
++----------+------------+-------------------------------------------------------+
+| Query_ID | Duration   | Query                                                 |
++----------+------------+-------------------------------------------------------+
+|        1 | 0.00440825 | SELECT * FROM tb LIMIT 10020,10                       |
+|        1 | 0.00440825 | SELECT * FROM tb ORDER BY id LIMIT 10020,10           |
+|        2 | 1.60964050 | SELECT * FROM tb ORDER BY prefix_index LIMIT 10020,10 |
++----------+------------+-------------------------------------------------------+
+]|
+
+|+ Get The Proper Prefix Length Automatically +|
+|[
+db>
+DROP PROCEDURE IF EXISTS prefixindex;
+DELIMITER $$
+CREATE 
+    DEFINER=root@localhost
+    PROCEDURE prefixindex(IN tb varchar(20), IN fld varchar(20), OUT prefixlen int(11))
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE dif INT DEFAULT 1;
+    SET @qs=CONCAT('SELECT COUNT(DISTINCT ', fld, ') INTO @distinct_count FROM ', tb);
+    PREPARE s1 FROM @qs;
+    EXECUTE s1;
+    DEALLOCATE PREPARE s1;
+    w1: WHILE 1 DO
+        SET i=i+1;
+        SET @qs=CONCAT('SELECT COUNT(DISTINCT LEFT(', fld, ', ', i, ')) INTO @left_distinct_count FROM ', tb);
+        PREPARE s2 FROM @qs;
+        EXECUTE s2;
+        DEALLOCATE PREPARE s2;
+        
+        SET dif=@distinct_count-@left_distinct_count;
+        IF dif=0 or dif<0 THEN
+            leave w1;
+        END IF;
+     END WHILE;
+     SET @prefix_len=i;             /* global */
+     SET prefixlen=i;               /* output */
+     SET @qs="";
+END
+$$
+DELIMITER ;
+
+db> CALL prefixindex('tb', 'fld', @len);
+db> SELECT @prefix_len;             /* using global */
+db> SELECT @len;                    /* using ouput */
+]|
+
+
+
+|! Index Failure !|
+Index won't work in following sentences:
+如果某个数据列里包含着许多重复的值，就算为它建立了索引也不会有很好的效果。比如说，如果某个数据列里包含了净是些诸如“0/1”或“Y/N”等值，就没有必要为它创建一个索引。
+
+/**
+ * Any a NULL value in a index field will fail index
+ */
+db> CREATE TABLE tb(
+    name VARCHAR(20)
+    INDEX (name)        /* Err: INDEX fields must be NOT NULL */
+    ) ENGINE=InnoDB CHARSET;
+ 
+/**
+ * LIKE start with wildcard '%' or '_'
+ * db> LIKE 'gum%'              index works
+ */
+db> LIKE '%gum'   or    LIKE '_gum'  or  LIKE '%gum%' ...
+    
+/**
+ * index calculating fails index
+ * db> dt > '2013-01-01'        index works 
+ */
+db> YEAR(dt) > 2015
+
+/**
+ *
+ */
+db> WHERE fld != ..    
+
+
+         
+|! Foreign Key Constraint[kənˈstrent] !|
+/**
+ * ref_option:
+ *  RESTRICT
+ *  CASCADE[kæ'skeɪd]
+ *  SET NULL
+ *  NO ACTION
+ */
+db> constraint [FOREIGN_KEY_SYMBOL] foreign key
+     [?INDEX_NAME] ([INDEX_FLDS_SLAVE])
+     references [TB_MASTER] ([INDEX_FLDS_MASTER])
+     [?ON DELETE ref_option]
+     [?ON UPDATE ref_option]
+
+/**
+ * http://dev.mysql.com/doc/refman/5.7/en/create-table-foreign-keys.html
+ * Foreign key constraint is supported in InnoDB only (not MyISAM), which help
+ * keep this spread-out data consistent.
+ *  1. Same Storage Engine: The parent and child tables must use the same 
+ *      storage engine. They must not be temporary tables.
+ *  2. Same Field Design: Corresponding[ˌkɔ:rəˈspɑ:ndɪŋ] columns[ˈkɑ:ləm] in the 
+ *      foreign key and the referenced key must have similar data types. The 
+ *      size and sign of integer types must be the same. The length of string
+ *      types need not be the same. For nonbinary (character) string columns, 
+ *      the character set and collation must be the same.
+ *  3. Index: MySQL requires indexes on foreign keys and referenced keys 
+ */
+
+db> CREATE TABLE tb_master(
+     mid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+     nm VARCHAR(35) DEFAULT '',             /* len of str needn't be the same*/
+     PRIMARY KEY (mid)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+db> CREATE TABLE tb_slave(
+     sid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+     masid INT(11) UNSIGNED NOT NULL,
+     nm varchar(10) DEFAULT '',             /* len of str needn't be the same*/
+     PRIMARY KEY (sid),
+     KEY masid(masid),
+     CONSTRAINT f_k_name FOREIGN KEY (masid) REFERENCES tb_master(mid)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+db> SHOW CREATE TABLE tb_slave;    
+db> INSERT INTO tb_master (nm) VALUES ('M1');
+db> INSERT INTO tb_slave (masid, nm) VALUES (1, 'S1');
+
+|[
+db> DELETE FROM tb_master WHERE mid = 1;
+    ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`capability`.`tb_slave`, CONSTRAINT `f_k_name` FOREIGN KEY (`masid`) REFERENCES `tb_master` (`mid`))
+db> INSERT INTO tb_slave(masid, nm) VALUES (2, 'S2');
+    ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`capability`.`tb_slave`, CONSTRAINT `f_k_name` FOREIGN KEY (`masid`) REFERENCES `tb_master` (`mid`))
+
+]|
+
+    
+db> ALTER TABLE tb_slave DROP FOREIGN KEY foreign_key_name;
+db> ALTER TABLE tb_slave 
+     ADD FOREIGN KEY (key_slave) 
+     REFERENCES tb_master(key_master);
+db> ALTER TABLE tb_slave
+     ADD FOREIGN KEY (key_slave)
+     REFERENCES tb_master(key_master)
+     ON DELETE CASCADE          /* delete tb_master is okay */
+     ON UPDATE CASCADE;         /* update tb_master is okay */
+     

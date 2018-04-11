@@ -1,0 +1,208 @@
+
+/* 
+ * add a backtick ` to indicate the importance
+ * [ Ctrl+x ] both click Ctrl and x
+ * [ :! or :~! ] input ! after inputing :
+ * n[] or n~[]  normally n is a number
+ * n * []  n times inputs, e.g. 3 * [ > ]  is [ >>> ]
+ * [?] it's an option, normally the selection will list below
+ */
+ 
+ 
+do "ls -a", you'll find ".filename.swp" the temporary file.
+if you sure the origin file is safe, you can rm -rf the swp file manually
+~/.viminfo  the log of vim
+
+|+ /etc/vimrc +|
+/**
+ * vim /etc/vimrc and add the strings below 
+ * you can also use :set xxx in vim command mode
+ * @notice Mac /usr/share/vim/vimrc
+ * @see https://github.com/AarioAi/Conf/blob/master/vimrc
+ */
+
+
+/*
+ * short cuts of vim command
+ */
+[ :set nonu ] cancle line numbers temporarily
+[ :set backup ] copy origin to "filename~"
+[ :set backspace=(012) ] 
+[ :set bg=] dark or light  = set background colod
+
+
+|+ Insert Mode +|
+|- Insert Mode -|
+[ a ] insert from next char
+[ A ] insert from last char of this line
+[ i ] insert from this char (which the cursor holds)
+[ I ] insert from the start of this line
+[ o ] insert a line below this line
+[ O ] insert a line above this line
+[ r ] replace a char ( which the cursor holds)
+[ R ] replace when the cursor moves
+
+|- Calculate -|
+Insert Mode, Press Ctrl + r, then, you can calculate, e.g. input "=10*20"   
+
+|+ Command Mode +|
+[ Ctrl+s ] lock the screen
+[ Ctrl+q ] unlock the screen
+[ :!! ]  repeat last system command
+[ :!~↑ ] select a previous system command
+[ :~↑ ] select a previous command
+[ zi ] enclose all fold indents
+[ zM ] close all fold indents
+
+` [ u ] undo
+` [ . ] repeat last command
+` [ Ctrl+r ] redo last undo
+
+|+ Search & Replace +|
+` [ /str ] search 'str' below the cursor
+` [ /str~N ?str ] search 'str' above, /str~N is very useful
+` [ :noh ] cancle the search
+[ n ] repeat last search
+[ N ] search last str above
+[ s/str1/str2/ ] replace the first str1 to str2 of this line
+[ s/str1/str2/g ] replace all str1 to str2 of this line
+[ s/str1/str2/c ] replace with confirmation
+[ :3,9s/^/#/ ] insert # to line 3 to 9
+[ :g/^\s*$/d ] delete all the lines of /^\s*$/
+[ :%s=*$==] remove all the space end of lines
+` [:3, 9] [ s/str1/str2/g ] replace all str1 to str2 in lines between 3 to 9
+` [:%] [ s/str1/str2/gc ] replace lines between 1 to end with confirmation
+[ :%!xxd ] convert into hexadecimal[‚heksə'desɪml]
+[ :%!xxd -r ] convert from hexadecimal to normal text
+
+|- Tabs -|
+[ > ] insert a tab before first char of this line
+n * [ > ] do insert a tab n times 
+[ < ] remove a tab before the first not-tab char
+n * [ < ]
+n[ >> ] insert a tab before line n
+` [ :3,5> ] insert tabs for line 3 to 5
+[ :3,5< ] to the contrary of above
+` [ :3,5 ] n * [ > ]  = insert n tabs for line 3 to 5
+[ :3,5 ] n * [ < ] = to the contrary of above
+
+
+|+ Save +|
+[ Ctrl + g ] show current filename
+[ :x | :wq ] save and quit
+[ :w ] store it to disk
+[ :w! ] forced to store changes to -r--(read only) file
+[ :w ] filename  = store to filename, then turn back to this file
+[ :r ] filename  =  add chars in filename below this line 
+[ ZZ ] store changes or quite, likes [ :wq ] 
+[ :1, 3 w ] filename = delete lines outer 1 to 3, and rename file name to filename
+` [ :!  Ctrl+z] command = pause vim, do another command
+/* [ :! ls /home ] it'll do ls /home then turn to vim */
+` [ :e! ] reload and refresh current file buffers
+` [ :w !sudo tee % ] save a read-only file
+    %   means current file
+    %:h     header, /var
+    %:t     tail, plaque.cpp
+    %:r     filename without extension, plaque
+    %:e     extension, cpp
+|- n to indicates n times -|
+[ k ↑ ] up 
+[ l → space ] right
+[ j ↓ ] down
+[ h ← ] left
+` [ G ] the last line
+[Enter] the next line
+// n[Direction] equals multi-movements ==> e.g. 20k or 20↑ equals 20 ups
+* // n[ G ] turn to the n line 
+[gg 1G] turn to the first line
+` [ Ctrl+f PageDown ]  page down
+` [ Ctrl+b PageUp ]  page up
+[ Ctrl+d ]  half page down
+[ Ctrl+u ] half page up
+[ Shift++ ] next line
+[ - ]   previous line
+` [ 0 Home ]  home, the start of this line, same as :1
+` [ $ End ] end, the end of this line
+[ : ] number  = move to line n,  :3 move to line 3
+[ H ] the start of the first line (full file)
+[ M ] the start of the middle line
+[ L ] the start of the last line
+[ Ctrl+o | Ctrl+i ] Go back to where you were
+    
+|+ Delete & Cut +| 
+` [ x X ] delete this char
+n[ x ] delete next n chars
+[ d ] cut this char
+n[ d ] cut next n chars
+[ D ] cut from cursor to end of this line
+[ dd ] cut this line
+n[ dd ] cut next n lines
+[ d1G ] cut the first line
+[ dG ] cut from this line to the end of the file
+[ d$ ] cut all the chars after the cursor in the line
+[ d0 ] cut all the chars before the cursor in the line
+[ c ]  cut this line then turn to edite mode
+n[ cj ] cut next n lines then turn to edite mode
+/**
+ * Go to the first marker( ( { [ " or ') and simply use the syntax:
+ */
+[ di( | di [ | di{ | di" ..]  delete between parenthesis[pə'renθɪsɪs]
+[ dt + MARKER] delete from cursor to the MARKER
+ 
+
+` [ y ] copy
+[ :,5 ] [ y ] copy lines from the line the cursor holds to line 5
+` [ yy ] copy this line
+n[ yy ] copy n lines below
+[ yw ] copy the word where the cursor holds
+[ y1G ] copy the first line
+[ yG ] copy everything below this line
+[ y0 ] copy every chars before the cursor in the line
+[ y$ ] copy every chars after the cursor in the line
+` [ p ] paste after this line
+` [ P ] paste before this line
+` [ J ] remove the EOL char of this line
+
+
+|+ selection +|
+[ v ] select the chars that the cursor moved
+[ V ] select the lines where the selection holds or this line
+[ Ctrl+v ] block selection
+[ y ] copy the selection
+[ d ] delete the selection
+
+[ Ctrl+w~c :only ] close current window
+[ Ctrl+w~q ] close current window or quit if this is the last window
+[ Ctrl+w~o ] close others windows
+
+[ Ctrl+w ] switch windows that separated by [ :sp ]
+[ Ctrl+w~j ] switch to the window below
+[ Ctrl+w~k ] switch to the window above
+[ Ctrl+w~q ] quite [ :sp ] mode
+[ Ctrl+w~v ] split the file vertically
+
+[ Shift+% ] move to the outer brackets
+
+|+ edit multiple files +|
+vim $filename1 $filename2 ...   /* open multiple files to buffer */
+[ :n ] turn to next file (filename2 or next)
+[ :2n ] turn to the file next to next file
+[ :N ] turn to previous file
+[ :rew ] turn to the first file (filename1)
+[ :args ] the buffer status of current files (quoted with [])
+[ :ls ] list all the files, % indicates the file in editing
+
+[ :sp ] $filename  = separate both this file and filename in one windows
+[ :vsp ] $filename = separate vertically 
+` [ :set diff ] ~ [ :vsp ] $filename  =  show difference between these files
+[ :resize +1  Ctrl+w+\+ ]  =  resize  horizontal size (expend)
+[ :resize -1  Ctrl+w+\- ]  = resize horizontal size (shorten)
+[ :vertical resize +1 ]  = vertically resize +1
+[ :vertical resize -1 ]
+
+|+ Extensions +|
+|- ctags -|
+
+
+
+

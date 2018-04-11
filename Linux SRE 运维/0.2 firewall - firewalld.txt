@@ -1,0 +1,93 @@
+
+|+ firewalld.service in CentOS7 +|
+
+/**
+ * http://www.certdepot.net/rhel7-get-started-firewalld/
+ * http://ktaraghi.blogspot.fr/2013/10/what-is-firewalld-and-how-it-works.html
+ * http://fanli7.net/a/bianchengyuyan/JS-HTML-WEB/20140906/528198.html
+ */
+CentOS7 uses firewalld to replace iptables
+
+
+sh$ sudo systemctl start firewalld.service
+sh$ sudo systemctl enable firewalld.service
+
+/* sudo systemctl firewalld status */
+sh$ sudo firewall-cmd --state
+
+    
+
+/* open Applications -> Sundry -> Firewall -> Zones 
+    all zones'll listed on the left
+    ...
+    external
+    home
+    internal
+    public   ==> normall default zone
+    work
+    
+    ...
+*/
+sh$ firewall-cmd --get-zones
+
+/* changed by firewall-cmd --set-default-zone=home */
+sh$ firewall-cmd --get-default-zone
+|[
+  public
+]|
+sh$ firewall-cmd --get-active-zones
+|[
+  interfaces: enp0s3
+]|
+/* to get all the details about the public zone */    
+sh$ sudo firewall-cmd --zone=public --list-all
+
+/* to get the list of services in the default zone */
+sh$ sudo firewall-cmd --list-services
+|[
+dhcpv6-client ssh
+]|
+sh$ firewall-cmd --get-service
+
+/**
+ * it's very important, --permanent
+ */
+sh$ sudo firewall-cmd --get-service --permanent
+/* allow mysql */
+sh$ sudo firewall-cmd --add-service http
+sh$ sudo firewall-cmd --add-service http --permanent
+sh$ sudo firewall-cmd --add-service https
+sh$ sudo firewall-cmd --add-service https --permanent
+sh$ sudo firewall-cmd --add-service mysql
+sh$ sudo firewall-cmd --add-service mysql --permanent
+
+
+sh$ sudo vim /usr/lib/systemd/system/firewalld.service
+
+
+/*sh$ sudo firewall-cmd --zone=public --remove-port=80/tcp */
+sh$ sudo firewall-cmd --zone=public --add-port=80/tcp
+sh$ sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+sh$ sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+sh$ sudo firewall-cmd --zone=public --add-port=3306/tcp --permanent
+/*
+sh$ sudo firewall-cmd --reload
+*/
+
+
+sh$ sudo firewall-cmd --zone=public --list-ports
+|[
+firewall-cmd --direct --remove-rule ipv4 filter INPUT 0 -p tcp --dport 80 -j ACCEPT
+sh$ sudo firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp --dport 80 -j ACCEPT
+sh$ sudo firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp --dport 8080 -j ACCEPT
+sh$ sudo firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp --dport 3306 -j ACCEPT
+]|
+
+/* sh$ sudo firewall-cmd --direct --get-rules ipv4 filter INPUT */
+sh$ sudo firewall-cmd --direct --get-all-rules
+
+/** 
+ * stop firewalld
+sh$ sudo systemctl stop firewalld.service
+sh$ sudo systemctl disable firewalld.service
+*/

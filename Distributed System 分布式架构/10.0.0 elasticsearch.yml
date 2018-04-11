@@ -1,0 +1,60 @@
+cluster.name: my-application
+
+node.name: node-1
+node.attr.rack: r1
+# store the data, separate multiple locations by comma
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+bootstrap.memory_lock: true
+
+### HTTP
+http.host: 0.0.0.0
+
+# Accepts a single value or a range. Defaults to 9200-9300.
+http.port: 9200-9300
+
+
+### Network Settings
+### https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html
+
+# Set the bind address to a specific IP (IPv4 or IPv6): defaults to _local_
+network.host: 192.168.0.1
+
+# to listen for incoming requests, A node can bind to multiple interfaces, e.g. two network cards, or a site-local address and a local address.  defaults to network.host
+# network.bind_host: network.host
+# 
+#network.publish_host: network.host
+
+network.tcp.no_delay: true
+network.tcp.keep_alive: true
+network.tcp.reuse_address: true
+#network.tcp.send_buffer_size: 0
+#network.tcp.receive_buffer_size: 0
+
+
+## Accepts a single value or a range. If a range is specified, the node will bind to the first available port in the range. Defaults to 9300-9400.
+transport.tcp.port: 9300-9400
+
+# Pass an initial list of hosts to perform discovery when new node is started:
+# The default list of hosts is ["127.0.0.1", "[::1]"]
+discovery.zen.ping.unicast.hosts: ["127.0.0.1", "[::1]"]
+
+# Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
+#
+discovery.zen.minimum_master_nodes: 3
+#
+# For more information, consult the zen discovery module documentation.
+#
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+gateway.recover_after_nodes: 3
+#
+# For more information, consult the gateway module documentation.
+#
+# ---------------------------------- Various -----------------------------------
+#
+# Require explicit names when deleting indices:
+#
+action.destructive_requires_name: true

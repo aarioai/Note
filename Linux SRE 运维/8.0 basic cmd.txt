@@ -1,0 +1,162 @@
+|! Basic Terminal Shortcuts !|
+[ Ctrl+L clear ]  Clear the terminal
+[ Ctrl+D ]  Logout
+[ Ctrl+p ↑ ] last command
+[ Ctrl+n ↓ ] next command
+[ Ctrl+A ]  Cursor to start of line
+[ Ctrl+E ]  Cursor the end of line
+[ Ctrl+U ]  Cut left of the cursor 
+[ Ctrl+K ]  Cut right of the cursor
+[ Ctrl+W ]  Cut word on the left 
+[ Ctrl+Y ]  Paste (after [ Ctrl+U,K or W)
+[ TAB ]  auto completion of file or command
+[ Ctrl+R ]  reverse search history
+` [ !! ]  repeat last command
+` [ sudo !! OR sudo !-1 ] repeat last command with sudo privilege
+` [ sudo !-2 ] repeat the command before last
+` [ Ctrl+Z ]  stops the current command (resume with fg in foreground or bg in background)
+
+
+|~ Basic Terminal Navigation ~|
+` [ ln ] source-file target-file  =  physical link
+` [ ln ] -s source-file target-file  =  symbolic link
+
+
+[ man ] command  =  show manual (RTFM)
+[ ll ]  or [ ls -lh ] 
+[ ll ] <DIRECTORY> or <FILENAME>
+[ ls -l *.jpg ] 
+    -c order by last modification time
+[ du -h ]   disk usage of current folders
+[ du -ah ]  list each file & folders disk usage of current folders 
+[ du -sh ]  only show disk usage of folders
+[ pwd ]   print working directory
+
+[ cat ]  filename  =  content of file
+` [ cate LOCAL_FILENAME | ssh HOST "cat > REMOTE_FILE" ] copy remote file by ssh
+
+
+[ cp ] filename directory/filename  == copy to a new name to directory
+[ cp ] filename  directory/   ==  copy filename to directory
+[ cp *.txt ] directory/  =  copy all .txt to directory
+ [ cp -R ] folder1 folder2  =  copy and rename a folder
+ 
+[ mv ] filename directory/  = move file to directory
+[ mv ] filename1 filename2   == rename file
+ 
+` [ rm ] [?] filename1 filename2 
+    [ -i ]  ask for cofirmation each file
+    [ -f ] force deletion of a file without confirmation
+    [ -r ] folder  = delete everything in a folder
+    rm -i *.cpp
+[ rmdir ]
+
+[ touch ] filename =  update the changed date of a file
+
+
+|! search !|
+|- whereis -|
+` [whereis] <APPLICATION>   = search the application's location
+    e.g. whereis PHP  /  whereis MySQL
+|- find is fast search -|
+` [ find -name ] "filename"  
+` [ find -name ] "text"  =  search for files who start with the word text
+` [ find -name ] "*text" =  files end with text
+[ find ~ -size +2M ]  search files bigger than 2M
+
+[ find -name ] "filetype" -atime +5  =  access time more than or exactly 5
+[ find ] [?] [ -type d ]  find directories, e.g. find /var -name "log" -type d 
+   [ -type f ]  find files
+
+
+|- locate is slow search -|
+[ locate ] text  =  search the content of all the files
+[ locate ] filename =  search for a file
+[ sudo updatedb ]  update database of files
+
+|- search for text in file -|
+` [ grep -r ] text directory/  = search for file names with occurrence of the text
+
+[ grep ] text filename [?]  =  search for text in file
+    -i  =  ignore case
+    -I  =  exclude binary files
+[ sed 's/^M$//' ] source-file [ > ] save-file  =  stream editor for filtering 
+ EOL of DOS (CR/LF) to Linux's.
+
+[ w ] who is logged on and what they are do'ng
+[ tload ] graphic representation of system load average
+[ ps ] static process list
+[ ps -u ] accoutName [ | grep ] application
+[ top ] dynamic process list
+[ kill ] [?] pid  =  kill a process
+     -9  =  violent kill
+[ killall ]  =  kill multiple process's, e.g. killall locate
+[ halt ] halt the computer
+
+
+|- file permission -|
+0(-) no privilege
+1 executable
+2 writeable
+4 readable
+add them for u(user) g(group) o(others) 
+[^] e.g.  ll vince.cpp ./vincedir [^]
+-rw-r--r--. 1 root root 238 Oct  5 21:05 b.cpp   /* same as 644 */
+d---------       /* first char 'd' indicates it's a directory */
+
+
+` [ chmod ] [?] <FILENAME>
+    chmod 700 vince.cpp   ===>    -rwx------ 
+    chmod 644 vince.cpp
+    
+[ chmod ] [WHO][OPT][MODE] <FILENAME>
+    [WHO] u=user /  g = group  /  o = other users  /  a = all
+    [OPT] + = add a privilege  /  - = cancel   /  =  assign
+    [MODE]  r / w / x
+    chmod g+w vince.cpp       ===>   -rwxrw---
+    chmod go+x vince.cpp      ===>   -rwxrwx--x
+    chmod g-r,o+w vince.cpp   ===>   -rwx-wx-wx
+    chmod go=r                ===>   -rwxr--r--
+    
+[ chown ] [?] USER-NAME directory
+    -R  :  all the sub-folders and files
+    chown -R bob:bob /home/vince
+    
+[ chgrp ] <GROUP-NAME> <FILENAME>
+
+|- archive and compress -|
+[ tar ] [?] save.tar folder/   or  compressed.tar
+    -c  =  creates an archive
+    -v  =  verbose
+    -f  =  assembles the archive into one file
+    -x  =  extract files
+    -r  =  append files to end of an archive
+    -z  =  filter the archive through gzip
+    e.g. 
+        tar -cv compress.tar vince.txt                   ==> compress 
+`        tar -cvf compress.tar /home/vince/Downloads       ==> compress
+        tar -zcvf compress.tar.gz /home/vince/Downloads ==> compress with gzip
+        tar -xvf decompress.tar                           ==> decompress
+`        tar -zxvf decompress.tar.gz                        ==> decompress gzip
+    
+
+    
+[ gzip zip] filename folder/ =  gzip file or zip file
+[ gunzip unzip] filename  =  decompress file
+    
+[ rar ] [?] save.rar folder/   or compressed.rar 
+        -x  =  decompress
+        -a  =  compress
+    
+|+ execute programs in the bg or fg +|
+add an '&' at the end of a command, to execute in bg
+    e.g. 
+    
+|~ chain command ~|
+[ ; ] chain commands
+    e.g. ll -a; echo "Aaron";
+    e.g. find -type f | while read i; do echo "$i"; done
+
+[ sleep ] seconds  =  pause between commands
+    e.g. ll -a; sleep 4; echo "Aaron";
+

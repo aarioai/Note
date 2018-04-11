@@ -1,0 +1,32 @@
+/**
+ * @param [ PRIVILEGES ]
+ *  all privileges
+ *  select,update,delete,drop,rule,insert
+ *  alter, alter routine(e.g. procedure, function, trigger)
+ *  create, create routine, create temporary tables, create user, create view
+ *  index
+ *  lock tables: run 'LOCK TABLES'
+ *  process: run 'SHOW PROCESSLIST'
+ *  show databases: run 'SHOW DATABSES'
+ *  show view: run 'SHOW CREATE VIEW'
+ *  shutdown
+ *  usage
+ *  super:  run kill thread CHANGE MASTER, PURGE MASTER LOGS, SET GLOBAL etc.
+ *  reload
+ *  replication client
+ *  replication slave
+ * @param [ HOST ] localhost on default; % on all ip;
+ *  e.g. grant all privileges on *.* to aa@'%' identified by "aa" with grant option;
+ */
+db> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST=localhost ] identified by "[ PASSWD ]"
+db> flush privileges;
+db> show grants for [ USERNAME ];
+
+db> grant select(id, title) ON [ DB ].[ TB] to [ USERNAME ]
+/**
+ * Via Update
+ */
+db> use mysql; update user set host='%' where user='root';
+
+|- drop user -|
+db> drop user [ USERNAME ]@[ HOST ]

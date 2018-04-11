@@ -1,0 +1,28 @@
+sh$ ./tcpCli.out            // two write() without sleep(2)
+|[
+02:54:25.882474 IP 127.0.0.1.44959 > 127.0.0.1.9877: Flags [S], seq 4166450704, win 43690, options [mss 65495,sackOK,TS val 32218849 ecr 0,nop,wscale 7], length 0
+02:54:25.882474 IP 127.0.0.1.9877 > 127.0.0.1.44959: Flags [S.], seq 1596829905, ack 4166450705, win 43690, options [mss 65495,sackOK,TS val 32218849 ecr 32218849,nop,wscale 7], length 0
+20:54:25.882474 IP 127.0.0.1.44959 > 127.0.0.1.9877: Flags [.], ack 1, win 342, options [nop,nop,TS val 32218849 ecr 32218849], length 0
+20:54:30.408852 IP 127.0.0.1.44959 > 127.0.0.1.9877: Flags [P.], seq 1:17, ack 1, win 342, options [nop,nop,TS val 32223375 ecr 32218849], length 16
+20:54:30.408866 IP 127.0.0.1.9877 > 127.0.0.1.44959: Flags [.], ack 17, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 0
+20:54:30.408874 IP 127.0.0.1.44959 > 127.0.0.1.9877: Flags [P.], seq 17:33, ack 1, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 16
+20:54:30.408878 IP 127.0.0.1.9877 > 127.0.0.1.44959: Flags [.], ack 33, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 0
+20:54:30.408938 IP 127.0.0.1.9877 > 127.0.0.1.44959: Flags [P.], seq 1:41, ack 33, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 40
+20:54:30.408942 IP 127.0.0.1.44959 > 127.0.0.1.9877: Flags [.], ack 41, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 0
+20:54:30.408950 IP 127.0.0.1.9877 > 127.0.0.1.44959: Flags [P.], seq 41:81, ack 33, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 40
+20:54:30.408953 IP 127.0.0.1.44959 > 127.0.0.1.9877: Flags [.], ack 81, win 342, options [nop,nop,TS val 32223375 ecr 32223375], length 0
+]|
+
+sh$ ./tcpCli.out            /* two write() with sleep(2) */
+|[
+02:53:31.026856 IP 127.0.0.1.44958 > 127.0.0.1.9877: Flags [S], seq 1515688099, win 43690, options [mss 65495,sackOK,TS val 32163993 ecr 0,nop,wscale 7], length 0
+02:53:31.026870 IP 127.0.0.1.9877 > 127.0.0.1.44958: Flags [S.], seq 2344011705, ack 1515688100, win 43690, options [mss 65495,sackOK,TS val 32163993 ecr 32163993,nop,wscale 7], length 0
+20:53:31.026881 IP 127.0.0.1.44958 > 127.0.0.1.9877: Flags [.], ack 1, win 342, options [nop,nop,TS val 32163993 ecr 32163993], length 0
+20:53:37.833393 IP 127.0.0.1.44958 > 127.0.0.1.9877: Flags [P.], seq 1:17, ack 1, win 342, options [nop,nop,TS val 32170800 ecr 32163993], length 16
+20:53:37.833407 IP 127.0.0.1.9877 > 127.0.0.1.44958: Flags [.], ack 17, win 342, options [nop,nop,TS val 32170800 ecr 32170800], length 0
+20:53:37.833465 IP 127.0.0.1.9877 > 127.0.0.1.44958: Flags [P.], seq 1:41, ack 17, win 342, options [nop,nop,TS val 32170800 ecr 32170800], length 40
+20:53:37.833469 IP 127.0.0.1.44958 > 127.0.0.1.9877: Flags [.], ack 41, win 342, options [nop,nop,TS val 32170800 ecr 32170800], length 0
+20:53:39.833630 IP 127.0.0.1.44958 > 127.0.0.1.9877: Flags [P.], seq 17:33, ack 41, win 342, options [nop,nop,TS val 32172800 ecr 32170800], length 16
+20:53:39.833844 IP 127.0.0.1.9877 > 127.0.0.1.44958: Flags [P.], seq 41:81, ack 33, win 342, options [nop,nop,TS val 32172800 ecr 32172800], length 40
+20:53:39.833867 IP 127.0.0.1.44958 > 127.0.0.1.9877: Flags [.], ack 81, win 342, options [nop,nop,TS val 32172800 ecr 32172800], length 0
+]|

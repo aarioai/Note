@@ -1,0 +1,69 @@
+|! !|
+[] optional
+|[
+    sh$ git log [--online] [--decorate] [--graph]       /* 6 kinds of choice */
+]|
+{} opt one of inside
+<> repeatable, at least one times
+|[
+    db> set autocommit = {0|1} 
+    db> start transaction [$transaction_characteristic];    |   begin;
+    db> <...; commit;>                  /* it's repeatable, do one or more than one times */
+    db> [...; rollback;]
+]|
+
+send time--DATA-->  send DATA    <--DATA--recv time
+# blocking
+
+ 
+|! Commentory !|
+
+->> concur:  returns ->> by-product
+    e.g. var arr=[1,2,3]; arr.pop();  // 3 ->> arr = [1,2]
+
+|! range !|
+[1,99]      ==>  1 <= x <= 99
+[1,]        ==>  1 <= x
+[1,50,99]   ==>  1 <= x <=99,   suggest x = 50
+[1,50+,99]  ==>  1 <= x <=99,   suggest x = 50+
+[,1+,99]    ==>  MIN <  x <= 99,  MIN < 1, and suggest MIN = 1+
+[1,99,]     ==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
+
+
+
+|! Shorts !|
+ioo   is out of 
+
+
+`  backquote/backtick
++addition   -subtraction     *multiplication /division  =assignment
+-unary minus    +unary plus
+>> right shift
+~  tilde
+!  exclamation point
+-- dash
+-  hyphen
+.  period / dot / full stop
+, comma
+# pound
+...   dots/ellipsis
+&  ampersand
+/  slash
+// slash-slash / comment
+\  backslash
+: colon
+;  semicolon
+?  question mark
+'  apostrophe
+
+|  vertical bar / vertical virgule
+
+[]  square brackets
+[  open bracket
+]  close bracket
+()  parentheses
+(  open paren / open parenthesis
+)  close paren / close parenthesis
+{}
+{  open brace  / open curly
+} close brace / close curly

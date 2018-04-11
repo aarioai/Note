@@ -1,0 +1,55 @@
+sh$ docker rmi $(docker images --filter dangling=true)
+sh$ docker rmi $(docker images -a | awk '/^<none>/ {print $3}')
+sh$ docker ps -a
+|[
+1f33ec567411        aa/mysql            "/docker/entrypoint.s"     12 hours ago        Removal In Progress          0.0.0.0:3306->3306/tcp
+51e1d8c524f8        c97c54935cec        "/bin/sh -c '{ \t\techo"   12 hours ago        Exited (100) 12 hours ago                                                         sick_bardeen
+0c3a65ff1e91        c97c54935cec        "/bin/sh -c '{ \t\techo"   12 hours ago        Exited (100) 12 hours ago     
+...
+]|
+|- Kill All Running Containers -|
+sh$ docker kill $(docker ps -a -q)
+|- Remove All Stoped Containers -|
+sh$ docker rm $(docker ps -a -q)
+
+
+sh$ docker ps 
+|[
+CONTAINER ID        IMAGE               COMMAND             CREATED            
+e19b324f3483        aario/nginx        "/bin/bash"         16 seconds ago
+]|
+
+
+
+/**
+ * nsenter  two sessions in one container
+ */
+sh$ nsenter --help
+|[
+ -t, --target <pid>     target process to get namespaces from
+ -m, --mount[=<file>]   enter mount namespace
+ -u, --uts[=<file>]     enter UTS namespace (hostname etc)
+ -i, --ipc[=<file>]     enter System V IPC namespace
+ -n, --net[=<file>]     enter network namespace
+ -p, --pid[=<file>]     enter pid namespace
+ -U, --user[=<file>]    enter user namespace
+ -S, --setuid <uid>     set uid in entered namespace
+ -G, --setgid <gid>     set gid in entered namespace
+     --preserve-credentials do not touch uids or gids
+ -r, --root[=<dir>]     set the root directory
+ -w, --wd[=<dir>]       set the working directory
+ -F, --no-fork          do not fork before exec'ing <program>
+ -Z, --follow-context   set SELinux context according to --target PID
+
+ -h, --help     display this help and exit
+ -V, --version  output version information and exit
+]| 
+sh$ PID=$(docker inspect --format {{.State.Pid}} e19b324f3483)
+sh$ sudo nsenter --target $PID --mount --uts --ipc --net --pid
+
+
+/**
+ * Monitor a container
+ *  One session in one container with muliple monitors
+ */
+sh$ docker attach e19b324f3483

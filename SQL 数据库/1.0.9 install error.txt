@@ -1,0 +1,20 @@
+
+
+/. ERROR 1045 (28000): 
+    Access denied for user 'root'@'localhost' (using password: NO) ./
+sh$ /etc/init.d/mysql stop
+/*  --skip-grant-tables  skip grant priveleges to boot MySQL*/
+sh$ mysqld_safe --user=mysql --skip-grant-tables --skip-networking & 
+sh$ mysql -uroot mysql
+mydb> UPDATE user SET Password=PASSWORD("newpassword") where USER="root"; 
+mydb> FLUSH PRIVILEGES; 
+mydb> quit 
+# /etc/init.d/mysql restart 
+/. You must SET PASSWORD before executing this statement ./
+mydb> SET PASSWORD = PASSWORD('password'); 
+
+
+|- ERROR 111 -|
+(1) my.cnf
+    skip-networking 
+    bind-address:127.0.0.1

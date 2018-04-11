@@ -1,0 +1,71 @@
+<!--
+ @see https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget
+ e.target
+	nodeName
+-->
+<style>
+body {
+  padding: 25px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#outer {
+  float: left;
+  padding: 50px;
+  margin: 0 0 25px;
+  background-color: #086FA1;
+}
+
+#inner {
+  width: 100px;
+  height: 100px;
+  background-color: #3CA0D0;
+}
+
+#result {
+  clear: left;
+}
+
+code {
+  font-size: 1.2em;
+}
+
+p, ul {
+  margin: 0 0 25px;
+}
+</style>
+<body>
+<p>One event listener is bound to the outer (dark blue) element. Clicking either the outer or inner element will trigger the listener due to event bubbling. The values of <code>e.target</code> and <code>e.currentTarget</code> will change depending on which blue element is clicked.</p>
+<div id="outer">
+  <div id="inner"></div>
+</div>
+<div id="result"></div>
+
+<script>
+var outer = document.getElementById('outer'),
+    result = document.getElementById('result');
+
+outer.addEventListener('click', function (e) {
+  var html = '';
+  if (e.target === outer && e.currentTarget === outer) {
+    html += '<p>Outer element was clicked directly - it is <code>e.target</code> <em>and</em> <code>e.currentTarget</code>.</p>';
+  }
+  
+  if (e.target !== outer && e.currentTarget === outer) {
+    html += '<p>Outer element is the current target, but it was not clicked directly - it is <code>e.currentTarget</code>.</p>';
+  }
+  
+  html += [
+    '<ul>',
+      '<li><code>e.target === &lt;div id="', e.target.id, '"&gt;</code></li>',
+      '<li><code>e.currentTarget === &lt;div id="', e.currentTarget.id, '"&gt;</code></li>',
+    '</ul>'
+  ].join('');
+
+  result.innerHTML = html;
+    
+});
+
+</script>
+
+</body>

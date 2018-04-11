@@ -1,0 +1,62 @@
+|! Wildcard character %_ !|
+%  ==>  one or more characters
+_  ==>  one characters
+[] ==>  char range
+[^] [!]  ==> not in the range
+db> SELECT * FROM tb WHERE fld like '%Aaron_Well%';   /* error */
+db> SELECT * FROM tb WHERE fld like '%Aaron\_Well%'; 
+
+
+|+ Dinstinct and count(dinstinct fld) +|
+db> select distinct $fld from $tb;    /* dinstict */
+db> select count(dinstinct $fld) from $tb;
+|+ Exists(bool) +|
+db> select * from $tb where exists (
+        select * from $tb where $constraint        
+    )
+|+ <ANY()  >ALL() +|
+db> select * from $tb where $id<ANY(select $id from $tb);
+db> select * from $tb where $id>ALL(select $id from $tb);
+
+|! GROUP BY With COUNT() !|
+db> SELECT *, COUNT(*) FROM tb GROUP BY fld ORDER BY COUNT(*)
+
+|! JOIN !|
+(INNER) JOIN = intersection ∩
+CROSS JOIN = Cartesian[kɑ:rˈti:ziən] Product: TB1xTB2
+LEFT (OUT) JOIN / RIGHT (OUT) JOIN
+[USING(id)] is same as [ON tb_a.id = tb_b.id], but the list will show one `id`
+|[
++-----------------------------------------------+   +-----------------------------------------------
+|  [tb_a]   |      [tb_b]     |     [tb_c]      |   |   SELECT *, COUNT(*) FROM tb_a 
++-----------+-----------------------------------+   |     JOIN tb_b
+|  id  nam  |   id  aid  nam  |   id  bid  nam  |   |       ON tb_a.id = tb_b.aid
+|   1   L   |   1    1    P   |   1    2    U   |   |     ORDER BY COUNT(*) DESC
+|   2   E   |   2    3    Q   |   2    4    V   |   +----------------------------------------------- 
+|   3   F   |   3    1    R   |   3    5    X   |   |  id  nam  id1  aid  nam1  count(*)
+|           |   4    3    S   |   4    5    Y   |   |  1    L    1    1    P      2
+|           |   5    8    T   |   5    5    Z   |   |  3    F    2    3    Q      2
++-----------+-----------------------------------+   +-----------------------------------------------
+
++-----------------------------------------------------------------------------------+
+|                select * from tb_a ??? tb_b on tb_a.id = tb_b.aid                  |
++---------------------------+---------------------------+---------------------------+
+|        left join          |       (inner) join        |         right join        |
++---------------------------+---------------------------+---------------------------+
+|  id  nam  id1  aid  nam1  |  id  nam  id1  aid  nam1  |  id  nam  id1  aid  nam1  |
+|  1    L    1    P    1    |  1    L    1    1    P    |  1    L    1    1    P    |
+|  3    F    2    Q    3    |  3    F    2    3    Q    |  1    L    3    1    R    |
+|  1    L    3    R    1    |  1    L    3    1    R    |  3    F    2    3    Q    |
+|  3    F    4    S    3    |  3    F    4    3    S    |  3    F    4    3    S    |
+|  2    E                   |                           |            5    8    T    |
++---------------------------+---------------------------+---------------------------+
+
+select * from tb_a 
+  join tb_b on tb_b.aid = tb_a.id 
+  join tb_c on tb_c.bid = tb_b.id
+
+SELECT name,COUNT(*) FROM user
+  JOIN orders ON orders.uid = user.id 
+  GROUP BY orders.uid 
+  ORDER BY COUNT(*) DESC
+]|

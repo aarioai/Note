@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "0730"
+   version = "1.3">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00781FDF1CB4C9E200388FC0"
+               BuildableName = "10.9.0 App with News, Chat, Cart and User.app"
+               BlueprintName = "10.9.0 App with News, Chat, Cart and User"
+               ReferencedContainer = "container:10.9.0 App with News, Chat, Cart and User.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00781FF61CB4C9E200388FC0"
+               BuildableName = "10.9.0 App with News, Chat, Cart and UserTests.xctest"
+               BlueprintName = "10.9.0 App with News, Chat, Cart and UserTests"
+               ReferencedContainer = "container:10.9.0 App with News, Chat, Cart and User.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "007820011CB4C9E200388FC0"
+               BuildableName = "10.9.0 App with News, Chat, Cart and UserUITests.xctest"
+               BlueprintName = "10.9.0 App with News, Chat, Cart and UserUITests"
+               ReferencedContainer = "container:10.9.0 App with News, Chat, Cart and User.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "00781FDF1CB4C9E200388FC0"
+            BuildableName = "10.9.0 App with News, Chat, Cart and User.app"
+            BlueprintName = "10.9.0 App with News, Chat, Cart and User"
+            ReferencedContainer = "container:10.9.0 App with News, Chat, Cart and User.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "00781FDF1CB4C9E200388FC0"
+            BuildableName = "10.9.0 App with News, Chat, Cart and User.app"
+            BlueprintName = "10.9.0 App with News, Chat, Cart and User"
+            ReferencedContainer = "container:10.9.0 App with News, Chat, Cart and User.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "00781FDF1CB4C9E200388FC0"
+            BuildableName = "10.9.0 App with News, Chat, Cart and User.app"
+            BlueprintName = "10.9.0 App with News, Chat, Cart and User"
+            ReferencedContainer = "container:10.9.0 App with News, Chat, Cart and User.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

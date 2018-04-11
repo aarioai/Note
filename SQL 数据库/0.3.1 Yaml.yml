@@ -1,0 +1,95 @@
+# https://en.wikipedia.org/wiki/YAML
+#   Case-Senstive
+#   Support Objects(Mapping/Hashes/Dictionary), Array(Sequence/List), Scalars
+# Notice that strings do not require enclosure in quotations. The specific number of spaces in the indentation is unimportant as long as parallel elements have the same left justification and the hierarchically nested elements are indented further. This sample document defines an associative array with 7 top level keys: one of the keys, "items", contains a 2-element array (or "list"), each element of which is itself an associative array with differing keys. Relational data and redundancy removal are displayed: the "ship-to" associative array content is copied from the "bill-to" associative array's content as indicated by the anchor (&) and reference (*) labels. Optional blank lines can be added for readability. Multiple documents can exist in a single file/stream and are separated by "---". An optional "..." can be used at the end of a file (useful for signaling an end in streamed communications without closing the pipe).
+
+---
+
+Aario:
+    - type:
+        # Use ~ to express NULL
+        null: ~
+        int: 10
+        str: !!str 10
+        str: "10"
+        float: 10.0
+        float: !!float 10
+        bool: true
+        strBool: !!str true
+        
+        picture: !!binary |
+                R0lGODdhDQAIAIAAAAAAANn
+                Z2SwAAAAADQAIAAACF4SDGQ
+                ar3xxbJ9p0qa7R0YxwzaFME
+                1IAADs=
+                
+        class: !!myClass {name: Aario, age: 10}
+        
+        # {iso8601: new Date('2016-12-14t21:59:43.10-05:00')}
+        iso8601: 2016-12-14t21:59:43.10-05:00  
+        # {date: new Date('2016-07-31')}
+        date: 2016-07-31
+    
+    - {name: Aario Ai, age: 10}
+    - name: Aario Ai
+      age: 10
+    
+    - aario: &id1      # define anchor lable &id1
+        name: Aario Ai
+        age: 10
+    
+    - aario: &id2
+        name: Aario Ai
+        age: 20
+    
+    - young: *id1
+    - yong: {name: Aario Ai, age: 10}
+    
+    - adult: 
+        gender: male
+        <<: *id2
+    - adult: {gender: male, name: Aario Ai, age: 20}    
+        
+    
+    # Strings do not require quotation. There are two ways to write multi-line strings, one preserving newlines (using the | character) and one that folds the newlines (using the > character), both followed by a newline character.
+    illustrate: |
+        javascript: {
+            Newlines Preserved
+            By default, the leading indent (of the first line) and trailing white space is stripped, 
+                though other behavior can be explicitly specified.
+            Folded text converts newlines to spaces and removes leading whitespace.
+        }
+    data:   >
+        <html>
+        <body>
+        Newlines Folded
+        Wrapped text
+        will be folded
+        into a single
+        paragraph
+        
+        Blank lines denote
+        paragraph breaks
+        </body>
+        </html>
+    
+    s1: | 
+        Foo
+        Bar
+        
+    - {s1: "Foo\nBar\n"} 
+    
+    # |+ reserve the break lines at end
+    s2: |+
+        Foo
+        Bar
+        
+    - {s2: "Foo\nBar\n\n"}
+    
+    # |- ignore the break lines
+    s3: |-
+        Foo
+        Bar
+        
+    - {s3: "Foo\nBar"}
+...

@@ -1,0 +1,47 @@
+|---------------- ----------------| it a 32bit sys, so 1 word = Databus = 32bits
+| Source Port-16 | Destination-16 |         2^16
+|---------------- ----------------|
+|        Sequence No.             |
+|---------------- ----------------|
+|       Acknowledgement No.       |
+|---------------- ----------------|
+|OSe|Res|CEUAPRSF|     Window     |
+|---------------- ----------------|
+|    Checksum    |   Urgent Ptr   |
+|---------------- ----------------|
+|       TCP Options(optional)     |
+|---------------- ----------------|
+
+Well Known Ports：Assigned by IANA(Internet Assigned Numbers Authority), [0,1023]
+IANA Registered Ports：[1024, 49151]
+Dynamic/Private Ports: ephemeral[ɪˈfɛmərəl] Ports [49152, 2^16=65535]
+
+|~ TCP Port Numbers and Concurrent['kʌrənt] Servers~|
+{LocalAddr.:LocalPort, ForeignAddr.:ForeignPort}
+
+|[
+server IP addr.: 12.106.32.254 / 192.168.42.1       {*:21, *:*}          ==> listening socket
+                                                        ↓ fork
+     server(child 1) {12.106.32.254:21, 206.168.112.219:1500}            ==> connected socket
+     server(child 2) {12.106.32.254:21, 206.168.112.219:1503}            ==> connected socket
+                                    
+client IP addr.: 206.168.112.219
+    client 1 {206.168.112.219:1500, 12.106.32.254:21}       <--->    server(child 1)
+    client 2 {206.168.112.219:1503, 12.106.32.254:21}       <--->    server(child 2)
+]|
+We use the notation {*.21, *:*} to indicate the server's socket pair. It's a listening socket which is waiting for a connection request on any local interface (the asterisk in *:21) on port 21. We denote[dɪ'nəʊt] foreign IP addr. and port as *:*.
+We assume the ephemeral port chosen by the client TCP is 1500.
+When the server receives and accepts the client's connection, it forks a copy of itself, letting the child handle the client.
+
+|[
+UDP 42端口 NAMESERVER  主机名服务器
+UDP 53 DOMAIN 域名服务器
+UDP 67 BOOTP Client 客户端启动协议服务
+UDP 68 BOOTP Server 服务器端启动协议服务
+UDP 69 TFTP Trivial File Transfer Protocol
+TCP 20 FTP Data 文件传输协议(数据连接)
+TCP 21 FTP Control 文件传输协议(控制连接)
+TCP 23 Telent 远程终端服务器
+TCP 25 SMTP 简单邮件传输协议
+TCP 80 HTTP 超文本传输协议
+]|

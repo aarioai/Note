@@ -1,0 +1,45 @@
+/**
+ * @see http://dev.mysql.com/doc/refman/5.6/en/replication.html
+ */
+|+ master +|
+sh$ sudo vim /etc/my.cnf
+|[
+[mysqld]
+log-bin=mysql-bin
+server-id=1
+auto_increment_increment = 10
+auto_increment_offset = 1
+
+sync-binlog=1
+
+binlog-do-db=test_tb
+binlog-do-db=test_tb2
+binlog-ignore-db=mysql
+]|
+sh$ sudo chmod 644 /etc/my.cnf
+sh$ sudo service mysql restart
+sh$ mysql -uroot -p
+db> CREATE lefbk@'%' IDENTIFIED BY 'lef';
+db> GRANT SELECT, PROCESS, FILE, SUPER, REPLICATION CLIENT, REPLICATION SLAVE, RELOAD ON *.* TO lefbk@'%';
+db> flush privileges;
+
+|+ slave +|
+db> CHANGE MASTER TO MASTER_HOST='192.168.1.8', MASTER_USER='lefbk', MASTER_PASSWORD='lef';
+db> start slave;
+db> show slave status\G;
+
+sh$ sudo vim /etc/my.cnf
+|[
+[mysqld]
+log-bin     =   mysql-bin
+server-id   =   2
+auto_increment_increment = 10
+auto_increment_offset = 2
+sync_binlog =   1
+]|
+sh$ sudo chmod 644 /etc/my.cnf
+sh$ sudo service mysql restart
+db> GRANT SELECT, PROCESS, FILE, SUPER, REPLICATION CLIENT, REPLICATION SLAVE, RELOAD ON *.* TO lefbk@'%';
+db> flush privileges;
+db> Load Data from Master;
+db> start slave;

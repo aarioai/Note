@@ -1,0 +1,50 @@
+{
+  "name": "Aario",
+  "version": "0.0.1",
+  "description": "ERROR: No README data found!",
+  "man": {
+
+  },
+  "author": "",
+  "license": "BSD"
+  /**
+   * dependencies is for work environment; devDependencies is for developing
+   * Version
+   *  $version        e.g.   "gulp" : "3.8.8"
+   *  1.2.x           all 1.2.x version
+   *  *               all
+   *  > >= < <=       e.g. "gulp" : ">3.8.7"
+   *  ~$ver           approximately equivalent to $ver, e.g. ~1.2.2   >=1.2.x < 1.3.0
+   *  ^$ver           compatible with $ver, e.g. ^1.2.2    >=1.2.2 && < 2.0.0  
+   *  $ver1 - $ver2   from $ver1(include) to $ver2(include)
+   *  http:// ...     relies on this url
+   *
+   */
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.10.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-webpack": "^1.4.0"
+  },
+  "peerDependencies": {
+  },
+  
+  
+
+  "bin": {
+    "npm" : "./cli.js"
+  },
+
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+}

@@ -1,0 +1,43 @@
+docker run 创建 Docker 容器时，可以用 --net 选项指定容器的网络模式，Docker 有以下 4 种网络模式：
+
+host 模式，使用 --net=host 指定。
+container 模式，使用 --net=container:NAME_or_ID 指定。
+none 模式，使用 --net=none 指定。
+bridge 模式，使用 --net=bridge 指定，默认设置。
+
+sh$ docker network --help
+|[
+    create
+    connect
+    disconnect
+    inspect
+    ls
+]|
+
+
+sh$ docker network ls
+|[
+NETWORK ID          NAME                DRIVER
+8ea8888888aa        host                host
+89a888888862        bridge              bridge
+897888888886        none                null
+]|
+
+/**
+ * You can see this bridge as part of a host’s network stack by using the 
+ *  ifconfig command on the host.
+ */
+sh$ ifconfig
+|[
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 0.0.0.0
+        inet6 fe80::42:d9ff:fe95:7c24  prefixlen 64  scopeid 0x20<link>
+        ether 02:42:d9:95:7c:24  txqueuelen 0  (Ethernet)
+        RX packets 85767  bytes 4380392 (4.1 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 153233  bytes 259558652 (247.5 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+]|
+
+sh$ docker run --net=897888888886

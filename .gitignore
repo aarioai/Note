@@ -1,0 +1,6 @@
+.DS_Store
+*.~$lock
+.idea
+# Fuck the file name /SQLite/Extensions/R*Tree.swift on Windows  
+/SQLite
+node_modules

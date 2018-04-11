@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "4E0DD30334D0845C4555AC89483397FDCE67EE83",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "4E0DD30334D0845C4555AC89483397FDCE67EE83" : 0,
+    "4F201322DFCBE25D8D43B7E20BE17D99A7146515" : 0,
+    "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "06249E20-68CD-4DFE-A3D3-6E853B9BE77F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "4E0DD30334D0845C4555AC89483397FDCE67EE83" : "NotesOpen\/",
+    "4F201322DFCBE25D8D43B7E20BE17D99A7146515" : "NotesOpen\/Swift\/10.1.1%20Photo%20-%20Avatar\/10.1.1%20Photo%20-%20Avatar\/Gifu\/",
+    "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA" : "NotesOpen\/Swift\/10.1.1%20Photo%20-%20Avatar\/10.1.1%20Photo%20-%20Avatar\/SwiftGif\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "10.1.1 Photo - Avatar",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Swift\/10.1.1 Photo - Avatar\/10.1.1 Photo - Avatar.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AarioAi\/NotesOpen.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4E0DD30334D0845C4555AC89483397FDCE67EE83"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/kaishin\/Gifu.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4F201322DFCBE25D8D43B7E20BE17D99A7146515"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/bahlo\/SwiftGif.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA"
+    }
+  ]
+}

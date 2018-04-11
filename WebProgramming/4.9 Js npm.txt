@@ -1,0 +1,39 @@
+/**
+ * src/
+ *  $sub/
+ *    css/
+ *    font/
+ *    img/
+ *    js/
+ *    scss/ 
+ * dist/
+ * gulpfile.js
+ * node_modules/
+ * package.json 
+ */
+ 
+sh$ npm init
+|[
+  name:
+  version:
+  description:
+  entry point:
+]|
+
+|! Gulp !|
+/**
+ * it'll create a gulp directory under node_modules
+ */
+sh$ sudo npm install gulp --save-dev
+|[guildfile.js
+var gulp = require('gulp');
+guilp.task('task-name', function(){
+  console.log('Hello');
+});
+]|
+sh$ gulp hello
+
+sh$ sudo npm install webpack -g
+
+sh$ sudo npm install -g grunt-cli
+sh$ sudo npm install grunt-init -g

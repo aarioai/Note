@@ -1,0 +1,160 @@
+/**
+ * After ./configure 
+ */
+|[src/core/aa_debug.h
+#ifndef _AA_DEBUG
+#define _AA_DEBUG
+#include <stdio.h>
+void aa_debug_enable(void) __attribute__((no_instrument_function));
+void aa_debug_disable(void) __attribute__((no_instrument_function));
+void __cyg_profile_func_enter(void *, void *) __attribute__((no_instrument_function));
+void __cyg_profile_function_exit(void *, void *) __attribute__((no_instrument_function));
+#ifndef AA_DEBUG_MAIN
+extern FILE *aa_debug_fd_;
+#else
+FILE *aa_debug_fd_;
+#endif
+#endif
+]|
+
+|[src/core/aa_debug.c
+#include "aa_debug.h"
+#define AA_DEBUG_LOG_FILE "/var/log/nginx/aa_debug.log"
+static int flag = 0;
+
+#define aa_debug_print(args, fmt...) \
+    do{ \
+        if(0 == flag)   \
+            break;  \
+        if(NULL == aa_debug_fd_ && NULL == (aa_debug_fd_ = fopen(AA_DEBUG_LOG_FILE, "a"))){  \
+            printf("Err: Cant open file: %s\n", AA_DEBUG_LOG_FILE); \
+            break;  \
+        }   \
+        fprintf(aa_debug_fd_, args, ##fmt); \
+        fflush(aa_debug_fd_);   \
+    } while(0)
+
+void aa_debug_enable(void){
+    flag = 1;
+}
+
+void aa_debug_disable(void){
+    flag = 0;
+}
+void __cyg_profile_func_enter(void *this, void *call){
+    aa_debug_print("Enter\n%p\n%p\n", call, this);
+}
+
+void __cyg_profile_func_exit(void *this, void *call){
+    aa_debug_print("Exit\n%p\n%p\n", call, this);
+}
+]|
+
+
+
+|[objs/Makefile
+CFLAGS =  -pipe  -O0 -W -Wall -Wpointer-arith -Wno-unused-parameter -Wunused-function -Wunused-variable -Wunused-value -Werror -g -finstrument-functions
+
+CORE_DEPS = ... \ 
+    src/core/aa_debug.h \
+
+HTTP_DEPS = ... \
+    src/core/aa_debug.h \
+
+objs/nginx: ... \
+    objs/src/core/aa_debug.o   \
+    ...
+    
+    $(LINK) -o objs/nginx \
+    objs/src/core/aa_debug.o   \
+             
+objs/src/core/aa_debug.o: $(CORE_DEPS) \
+	src/core/aa_debug.c
+	$(CC) -c $(CFLAGS) $(CORE_INCS) \
+		-o objs/src/core/aa_debug.o \
+		src/core/aa_debug.c
+]|
+
+|[src/core/ngx_core.h
+#include "aa_debug.h"
+]|
+|[src/core/nginx.c
+
+#define AA_DEBUG_MAIN 1             // must before #include <nginx_core.h>
+#include <ngx_config.h>
+#include <ngx_core.h>
+#include <nginx.h>
+
+main(int argc, char *const *argv){
+
+    aa_debug_enable();
+    ...
+    aa_debug_disable();                 // any place is fine
+    
+    /* TODO */ ngx_max_sockets = -1;
+}
+]|
+
+sh$ sudo make
+sh$ sudo make install
+sh$ sudo vim /etc/nginx/nginx.conf
+|[
+    master_process off;
+]|
+
+
+sh$ sudo nginx -c /etc/nginx/nginx.conf
+
+|[addr2line.sh
+#!/bin/sh
+if [ $# != 3 ]; then
+echo 'Usage: addr2line.sh executefile addressfile functionfile'
+exit
+fi;
+cat $2 | while read line
+do
+if [ "$line" = 'Enter' ]; then
+read line1
+read line2
+addr2line -e $1 -f $line1 -s >> $3
+echo "--->" >> $3
+addr2line -e $1 -f $line2 -s | sed 's/^/ /'>> $3
+echo >> $3
+elif [ "$line" = 'Exit' ]; then
+read line1
+read line2
+addr2line -e $1 -f $line2 -s | sed 's/^/ /'>> $3
+echo "<---" >> $3
+addr2line -e $1 -f $line1 -s >> $3
+echo >> $3
+fi;
+done
+]|
+
+sh$ sudo ./addr2line.sh /usr/sbin/nginx /var/log/nginx/aa_debug.log /var/log/nginx/aa_debug.line
+sh$ head -n 23 /var/log/nginx/aa_debug.line
+|[
+main
+nginx.c:192
+--->
+ ngx_strerror_init
+ ngx_errno.c:47
+
+ngx_strerror_init
+ngx_errno.c:86
+--->
+ __cyg_profile_func_exit
+ aa_debug.c:29
+
+ ngx_strerror_init
+ ngx_errno.c:47
+<---
+main
+nginx.c:192
+
+__cyg_profile_func_exit
+aa_debug.c:31
+--->
+ __cyg_profile_func_exit
+ aa_debug.c:29
+]|

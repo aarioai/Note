@@ -1,0 +1,47 @@
+# http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html
+
+
+[mysqld]
+
+log-bin=mysql-bin
+# master id: [1, 2^32 - 1]
+# slave id: [1, 2^32 - 1]
+server-id = 1
+
+#only allow localhost connection
+skip-networking 
+
+# only allow 127.0.0.1 connection, may cause 111 error 
+bind-address:127.0.0.1
+
+skip-host-cache
+
+# skip resolve ip to domain, to make the db response faster
+skip-name-resolve
+
+# cache both InnoDB table data and indices
+# MyISAM caches only the keys ==> 
+innodb_buffer_pool_size = 128M
+
+#There is no gain from setting the buffer larger than required to hold each matching row, and all joins allocate at least the minimum size, so use caution in setting this variable to a large value globally. It is better to keep the global setting small and change to a larger setting only in sessions that are doing large joins. Memory allocation time can cause substantial performance drops if the global size is larger than needed by most queries that use it.
+# allocates memory for join/union statements
+# e.g.
+
+join_buffer_size = 128M
+
+# [2^16, ] : Setting it larger than required globally will slow down most queries that sort. It is best to increase it as a session setting, and only for the sessions that need a larger size. On Linux, there are thresholds of 256KB and 2MB where larger values may significantly slow down memory allocation (...). Experiment to find the best value for your workload.
+sort_buffer_size = 2M
+
+# is used after a sort when reading rows in sorted order
+# If you use many queries with ORDER BY, upping this can improve performance
+# http://www.percona.com/blog/2007/07/24/what-exactly-is-read_rnd_buffer_size/
+read_rnd_buffer_size = 2M
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+
+symbolic-links=0
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

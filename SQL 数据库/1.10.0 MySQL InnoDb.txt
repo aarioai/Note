@@ -1,0 +1,207 @@
+/**
+ * DDL(Database Definition Lang)  create alter drop truncate 
+ * DML(Database Manipulate Lang)  insert delete update 
+ * DCL(Database Control Lang)     grant deny revoke
+ * DQL(Database Query Lang)       select
+ * There're three lists in innodb buffer pool
+ *  Free List:  free pages
+ *  LRU List:   clean and dirty pages
+ *  Flush List: dirty pages ordered by oldest_modification time desc
+ * The minimum unit of innodb buffer pool is page which takes 16KB memory.
+ *  Free Page: exits in free list, the page that has never been used
+ *  Clean Page: exits in LRU list, the page that has never been modified
+ *  Dirty Page: exits in LRU and Flush list, the recent modified pages, which 
+ *    means the diffirent pages from buffer to disk. It's size is modified db 
+ *    pages 132121 in db> SHOW ENGINE INNODB STATUS
+ */
+|[
+  DML(Delete Update Insert) changes the buffer first (dirty pages), then flush to disk asynchronously
+      |
+      |
+  *********************************************************************************************
+  *  Redo Log Buffer                     
+  *********************************************************************************************   
+     |                                                    |
+     |                                                    |
+     |                                      Flush Redo Log to disk Asynchronously (even before commit)
+     | 
+     |
+  *********************************************************************************************
+  *  Buffer Pool
+  *   Free List   |-----------------|     
+  *     if no enough space in free list, flush
+  *     allocate space
+  *                                               +<----------< new data insert into here
+  *                                      midpoint |
+  *   LRU List    |----------new-----------------*-->-->old>-->|   (with dirty pages)
+  *                |                              |  
+  *                +<---------------<------------<+   pages made young or not made young              
+  *     size: database pages, increase with data insert
+  *     if no enough free pages, re-allocate last recent used pages
+  *       if it's a dirty page, do checkpoint to flush the dirty page to disk
+  *       
+  *   Flush List  |------------------------------------| dirty pages
+  *     newest modified            last modifed (smaller oldest_modification)
+  *********************************************************************************************           
+     |                        
+     |
+  *********************************************************************************************
+  * Master Thread
+  *   flush redo log to ib_logfileN every second
+  *   flush dirty page from Flush List to disk asynchronously
+  *   merge insert buffer
+  *   recover undo pages
+  *********************************************************************************************
+    |
+  [Disk]
+  
+]|
+|! Thread !|
+db> show variables like 'innodb_version'\G;
+db> show variables like 'innodb_%io_threads'\G;
+|[
+  innodb_read_io_thread     4
+  innodb_write_io_thread    4
+]|
+db> show engine innodb status\G;
+|[
+  --------
+  FILE I/O
+  --------
+  I/O thread 0 state: waiting for completed aio requests (insert buffer thread)
+  I/O thread 1 state: waiting for completed aio requests (log thread)
+  I/O thread 2 state: waiting for completed aio requests (read thread)
+  I/O thread 3 state: waiting for completed aio requests (read thread)
+  I/O thread 4 state: waiting for completed aio requests (read thread)
+  I/O thread 5 state: waiting for completed aio requests (read thread)
+  I/O thread 6 state: waiting for completed aio requests (write thread)
+  I/O thread 7 state: waiting for completed aio requests (write thread)
+  I/O thread 8 state: waiting for completed aio requests (write thread)
+  I/O thread 9 state: waiting for completed aio requests (write thread)
+]|
+
+|! Memory !|
+|+ Innodb Buffer Pool +|
+/**
+ * Innodb Buffer Pool buffers data from disk to CPU and CPU to disk
+ *  select
+ *    if exists in buffer pool, read from buffer pool; otherwise from disk;
+ *  update
+ *    modify data in buffer pool, then flush to disk periodically.   
+ *    
+ *******************************************************************************
+ *  Redo log_buffer   *   *  data page         |         index page
+ **********************   *----------------- Innodb ----------------------------
+ *  innodb_additional *   *---------------- Buffer Pool ------------------------
+ *  _mem_pool_size    *   * insert buffer | lock info | hash index | dictionary
+ **********************   ******************************************************
+ */
+db> show variables like 'innodb_buffer_pool_size'\G;
+
+
+/**
+ * show the status of last 9 seconds
+ */
+db> show engine innodb status\G;
+|[
+  =====================================
+  Per second averages calculated from the last 9 seconds
+  ----------------------
+  BUFFER POOL AND MEMORY
+  ----------------------
+  Buffer pool size   8191   // buffer frames, 8191 frames * 16KB / 1024KB/M = 127M
+                            // each buffer frame is 16KB
+  Free buffers       7771   // free buffer frames,  
+  Database pages     419    // size of LRU list, in use
+  Modified db pages  12323  // dirty pages size
+  Pages made young  644888, not young 0   // pages made young: pages moved from old to new
+                                          // innodb_old_blocks_time
+  Buffer pool hit rate 1000 / 1000     // 100% hit; Normally this should be greater than
+                                       // 95%.
+  LRU len: 519, unzip_LRU len: 10      // LRU len = ziped LRU len + unzip_LRU len
+                                       // unzip_LRU len is 16KB/frame
+                                       // ziped LRU len may be 1, 2, 4 or 8KB per frame
+]|
+
+|- LRU-list (Least Recent Used) -|
+/**
+ * LRU
+ *******************************************************************************
+ * head(frequent) |------------------------------*---------------| tail(seldom)
+ *                       [new data]          midpoint   [old data]
+ *******************************************************************************
+ */
+db> show variables like 'innodb_old_blocks_pct'\G;      // midpoint
+|[
+  innodb_old_blocks_pct   37         // 37% (pct=percent) of the total buffer pool from the tail
+]|
+
+|- Pages Made Young -|
+/**
+ * Pages Made Young
+ *  In LRU list, new pages will be inserted in old sublist where after midpoint.
+ *  If after innodb_old_blocks_time, there's one query that hit the pages in old
+ *  sublist. These pages should be moved from old sublist to the new sublist.
+ * Why should innodb_old_blocks_time be greater than 0 ?
+ *  If innodb_old_blocks_time = 0, the pages will be made young as soon as a
+ *  query hits the pages in old sublist. Increasing this value protects against 
+ *  the buffer pool being filled up by data that is referenced only for a brief 
+ *  period, such as during a full table scan.
+ * @see https://dev.mysql.com/doc/refman/5.6/en/glossary.html#glos_full_table_scan 
+ *  
+ */
+db> show variables like 'innodb_old_blocks_time';
+
+
+|- Redo Log Buffer -|
+/**
+ *  redo log data --> innodb log buffer --> ib_logfileN 
+ *  Why 8MB is enough for innodb_log_buffer_size? Because it'll flush log buffer to file:
+ *    Master Thread will flush innodb log buffer to file every second
+ *    After the submit of every affair
+ *    When it remains less than half of innodb_log_buffer_size
+ */
+db> show variables like 'innodb_log_buffer_size'\G;     // 8MB is enough
+
+
+|- Checkpoint -|
+/**
+ * Flush dirty pages to disk
+ *  Sharp Checkpoint: flush all the buffer to disk when MySQL shutdown
+ *    innodb_fast_shutdown=1    default in my.cnf
+ *  Fuzzy Checkpoint
+ *    Master Thread Checkpoint (asynchronous)
+ *      Flush part dirty pages to disk asynchronously
+ *    FLUSH_LRU_LIST Checkpoint
+ *      keep at least (innodb_lru_scan_depth) empty pages in LRU list
+ *        db> show variables like 'innodb_lru_scan_depth';
+ *          innodb_lru_scan_depth:  1024
+ *    Async/Sync Flush Checkpoint
+ *    Dirty Page too much Checkpoint
+ *      db> show variables like 'innodb_max_dirty_pages_pct';
+ *        innodb_max_dirty_pages_pct: 75        // if more than 75%, flush.
+ */
+
+
+|- Log Sequence Number -|
+/**
+ * LSN is an 8 bit integer.
+ */
+db> show engine innodb status\G;
+|[
+  ---
+  LOG
+  ---
+  Log sequence number 753136544
+  Log flushed up to   753136544
+  Pages flushed up to 753136544
+  Last checkpoint at  753136544
+]|
+
+|! Innodb Features !|
+|+ Insert Buffer +|
+|+ Double Write +|
+|+ Adaptive Hash Index +|
+|+ Asynchronous I/O +|
+|+ Flush Neighbor Page +|
+

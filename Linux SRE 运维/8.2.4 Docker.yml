@@ -1,0 +1,70 @@
+net:  bridge        // global arg
+services:
+  aa_redis:
+    build: ./redis
+    container_name: "aa_redis"
+
+  aa-php:
+    image: aario/php
+      pid:                // Sets the PID mode to the host PID mode. This turns on sharing between container and the host operating system the PID address space. Containers launched with this (optional) flag will be able to access and be accessed by other containers in the namespace belonging to the host running the Docker daemon.
+    command: echo 100
+    links:                  // 由 yaml 管理的链接
+      - redis
+    external_links:         // 非 yaml 管理的链接
+      - mysql:last
+    ports:
+      - "9000"
+      - "9001:9001"
+      - "127.0.0.1:9002:9002"
+    expose:
+      - "9000"
+      - "9001"
+    volumes:
+      - /var/lib/htdocs
+      - /var/aario/log:/var/log
+    volumes_from:
+      - aa_nginx
+    volume_driver: mydriver
+    read_only: "false"      // 是否对volumes 文件只能读
+    environment:
+      - ENV: prod
+      - MYSQL_PASSWORD: aario
+    env_file:
+      - ./a.env
+    extends:
+      file: nginx.yml
+      service: aa_nginx
+    net:  "bridge | none | container:[name or id] | host"
+
+    dns:
+      - 8.8.8.8
+      - 4.4.4.4
+    cap_add:
+      - ALL
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    dns_search:
+      -
+    ulimits:
+        nproc: 65535
+        nofile:
+          soft: 20000
+          hard: 40000
+
+    cpu_shares: 73
+    cpuset: 0,1
+
+    log_driver: "syslog | json-file | none"
+    log_opt:
+      syslog-address: "tcp://192.168.0.42:123"
+
+
+    restart: always
+    privileged: true
+    working_dir, entrypoint, user, hostname, domainname,
+    mem_limit,
+memswap_limit
+ipc:
+    stdin_open:  true   // 接受外部输入
+    tty: true           // 模拟假的控制台

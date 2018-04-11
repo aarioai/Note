@@ -1,0 +1,75 @@
+|+ Guess a number with returning value +|
+Known:
+  ioctl(sockfd, SIOCGIFCONF, &ifc)
+  1 ifc is a value-result, you need pass a ifc.ifc_len to it as a value.
+  2 if passed ifc.ifc_len is lesser than the real
+      in some OS, ioctl() returns -1 with errno EINVAL
+      in some OS, ioctl() returns 0, and ifc.ifc_len will not change
+  3 if success, ifc.ifc_len returns the real space it holds
+      The real space may not be multiple to sizeof(struct ifreq)
+        if all the ifreqs are all IPv4 (struct sockaddr), the real space is equal
+          multiple sizeof(struct ifreq)
+        if with IPv6 (struct sockaddr_in6), the real space need more space for it
+  
+Logical Map:
+  Guess a positive number, e.g. guess = 10
+  fn(&guess);
+  if fn() returns -1 with errno EINVAL.
+    guess is lesser than the real, do guess += 5; repeat comparing
+  if fn() returns 0, maybe success or error for guess is lesser than the real
+    fn() sets rnt_nm; last_guess = rnt_n; guess += 5; 
+      if last_ifc_len == new rnt_nm success;
+      else repeat comparing
+    
+    
+Solution:
+  int guess_len, last_ifc_len, sockfd;
+  char *ptr;
+  struct ifconf ifc;
+  struct ifreq *ifr;
+  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+  guess_len = 10 * sizeof(struct ifreq);/* guess a positive number, e.g. 10 */
+  for(;;){
+    ifc.ifc_buf = malloc(guess_len);
+    ifc.ifc_len = guess_len;
+    if(ioctl(sockfd, SIOCGIFCONF, &ifc) < 0){   /* error */
+      if(errno != EINVAL)
+        err_exit("");
+    } else{
+      if(last_ifc_len == ifc.ifc_len)
+        break;
+      last_ifc_len = ifc.ifc_len;
+    }
+    guess_len += 5 * sizeof(struct ifreq);
+    free(ifc.ifc_buf);
+  }
+  /**
+   * IPv6 ifreq takes more space
+   * @note 
+   *  if all the interfaces (e.g. lo, enp0s3) are all IPv4
+   *    if_s equals ifc.ifc_len / sizeof(struct ifreq)
+   *  if with IPv6
+   *    (double)if_s less than (double)ifc.ifc_len / sizeof(struct ifreq)
+   */
+  int len, if_s = 0;
+  for (ptr = ifc.ifc_buf; ptr < ifc.ifc_buf + ifc.ifc_len) {
+    ++if_s;
+    ifr = (struct ifreq *)ptr;
+    #ifdef HAVE_SOCKADDR_SA_LEN
+      len = max(sizeof(struct sockaddr), ifr->ifr_addr.sa_len);
+    #else
+      switch (ifr->ifr_addr.sa_family){
+        #ifdef IPV6
+          case AF_INET6:
+            len = sizeof(struct sockaddr_in6);
+            break;
+        #endif
+          case AF_INET:
+            len = sizeof(struct sockaddr);
+            break;        
+      }
+    #endif
+      ptr += sizeof(ifr->ifr_name) + len;
+  }
+  printf("%d ===> %d", ifc.ifc_len, ifc.ifc_len / sizeof(struct ifreq)); 
+  printf("Interfaces Number:%d", if_s); 

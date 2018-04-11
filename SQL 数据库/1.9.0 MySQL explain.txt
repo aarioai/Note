@@ -1,0 +1,45 @@
+
+|+ DESC/DESCRIBE/EXPLAIN [EXTENDED] +|
+db> DESC tb;
+db> DESC select * from tb;
+
+/**
+ * @see http://www.sitepoint.com/using-explain-to-write-better-mysql-queries/
+ */
+select_type:    
+    SIMPLE query without any subqueries or UNION s
+    PRIMARY query is in the outermost query in a JOIN
+    DERIVED query is a part of subquery within a FROM clause
+    SUBQUERY
+    DEPENDENT SUBQUERY
+    UNCACHEABLE SUBQUERY
+    UNION
+    DEPENDENT UNION
+    UNION RESULT
+type: 
+    system:     best, 
+    const:      
+    eq_reg: 
+    ref:    
+    fulltext:   
+    ref_or_null:        same as ref but also contains rows with a null value
+    index_merge:
+    unique_subquery:    
+    index_subquery:     same as unique_subquery but returns more than one result row
+    range:              scanned an index
+    index:              scanned the entire index tree
+    ALL:                worst, scanned the entire table
+possible_keys:          suggested key
+key:                    the key in suing
+key_len:    
+ref: 
+rows:      
+/**
+ * @see http://dev.mysql.com/doc/refman/5.6/en/explain-output.html#explain-extra-information
+ */ 
+Extra:                  multiple selection
+    Using filesort:     worst, need optimize
+    Using temporary:    
+    Using where
+    Using index
+    

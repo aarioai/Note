@@ -1,0 +1,1 @@
+UDP is a simple transport-layer protocol. The application writes a message to a UDP socket, which is then encapsulated[ɪn'kæpsjʊleɪt] in a UDP datagram, which is then further encapsulated as an IP datagram, which is then sent to its destination.

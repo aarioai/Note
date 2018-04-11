@@ -1,0 +1,84 @@
+/**
+ * We use 2000-line file and the same server(a 175-ms RTT from the client)
+ *  354.0 sec, while(fgets()){write();read();} 
+ *   12.3 sec, select() Multiplexing I/O (blocking I/O)
+ *    6.9 sec, fcntl() + select() nonblocking I/O
+ *    8.7 sec, fork() 
+ *    8.5 sec thread 
+ */
+|[
+stdin --> buf --> sockfd send buf -- TCP seg. 
+                                             |
+                                          [Serv]
+                                             |
+stdout <-- buf <-- sockfd receive buf <-- TCP seg.
+]|
+
+
+
+|~ Blocking I/O ~|
+/**
+ * BUF kernel buffer
+ * Process is blocked in the entire time from when it calls recvfrom() until 
+ *  it returs
+ */
+|[
+  stdin -->   buf+x = &buf[x]                            
+              stdin -->   buf+x+x2
+                    ...   buf+x+x2+... <= buf+SERV_BUF_SIZE
+          +----------------------------------------+
+          | &buf | ...BUF... | &buf[SERV_BUF_SIZE] |
+          +----------------------------------------+
+          --> sockfd sendto()   buf+y = &buf[y]
+                    --> sockfd  buf+y+y2
+                    ...         buf+y+y2+.. <= stdin buf
+   
+
+]|
+
+|~ I/O Multiplexing ~|
+/**
+ * I/O Multiplexing is blocking I/O
+ * @example select(maxfds, &readfds, NULL, NULL, NULL)
+ */
+
+
+
+|~ Nonblocking I/O called polling ~|
+/**
+ * @example
+ *  fcntl(sockfd, F_SETFL, val | O_NONBLOCK);
+ *  fcntl(STDIN_FILENO, F_SETFL, val | O_NONBLOCK);
+ *  fcntl(STDOUT_FILENO, F_SETFL, val | O_NONBLOCK);
+ *  select(maxfds, &readfds, &writefds, NULL, NULL)
+ * @example
+ * @note Wheneve poll()r we find the need to sue nonblocking I/O, it'll be simpler to 
+ *  split the application into either process(using fork()) or threads.
+ */
+
+ 
+ 
+
+
+|~ Signal-Driven I/O ~|
+/**
+ * Use signal SIGIO to notify the descriptor is ready
+ * deliver SIGIO;  initiate ---blocked--->complete
+ */
+
+
+|~ Asynchronous[æ'sɪŋkrənəs] I/O ~|
+/**
+ * Use signal SIGIO to notify the descriptor is ready
+ * Synchronous I/O: block the process until I/O operations completes
+ * Asynchronous I/O: not
+ */
+
+
+
+
+
+
+
+
+

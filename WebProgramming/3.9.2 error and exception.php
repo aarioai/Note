@@ -1,0 +1,5 @@
+<?php
+/**
+ *
+ */
+triggle_error();

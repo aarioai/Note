@@ -1,0 +1,2 @@
+http = HTTP + TCP + IP
+https = HTTP + SSL or TLS + TCP + IP

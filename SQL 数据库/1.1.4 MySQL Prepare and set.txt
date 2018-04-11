@@ -1,0 +1,26 @@
+|- Set -|
+declare staggering float;
+set staggering = rand();        /* partial variables */
+declare stagger float;
+set @stagger = rand();          /* session variables */
+
+|- Prepare -|
+|[
+PREPARE [prepare_name] FROM "SELECT * FROM tb WHERE id=? AND name=?";  /* using double quotation mark*/
+SET @cleave = 100;                                      /* int */
+SET @cleavage = 'Aaron-Script';                           /* string */
+SET @field = `id`;          /* Error: */
+EXCUTE [prepare_name] USING @cleave, @cleavage;
+DEALLOCATE PREPARE [prepare_name];          /* remove this prepare*/
+]|
+
+|[
+DELIMITER //                                  /* convert delimiter from semicolon to double-slashes */
+SET @fld = "id";
+SET @qs = CONCAT("SELECT ", @fld, " FROM tb WHERE id=?");
+PREPARE prp FROM @qs;
+SET @i=100;
+EXECUTE prp USING @i;
+DEALLOCATE prp;
+//                                          /* converted delimiter */
+]|

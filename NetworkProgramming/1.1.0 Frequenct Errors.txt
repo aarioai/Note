@@ -1,0 +1,9 @@
+|~ SCTP ~|
+sh$ sudo yum install lksctp*
+
+sh$ gcc sock.h sctpServ.c -o sctpServ.out
+/tmp/ccd4uMbG.o: In function `main':
+sctpServ.c:(.text+0x1ed): undefined reference to `sctp_recvmsg'
+sctpServ.c:(.text+0x25b): undefined reference to `sctp_sendmsg'
+collect2: error: ld returned 1 exit status
+sh$ gcc -Wall -g sock.h sctpServ.c -lsctp -o sctpServ.out

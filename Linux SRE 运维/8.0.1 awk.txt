@@ -1,0 +1,273 @@
+/**
+ * awk [$opt] $file
+ *  -F $fs  to specify the file separator, default is blank chars   
+ *  -v $var=$val  pass variable into awk
+ *      e.g. sh$ me='Aario Script' && echo | awk -v me=$me '{print me}'
+ *  -f
+ *  -m
+ */
+sh$ awk '{print $1, $3}' aaron.txt    /* list line 1 and line 3 */
+sh$ awk '{print $1..$3}' aaron.txt    /* list from line 1 to line 3 */
+sh$ awk 'length>80' aaron.txt     /* list the lines that greater than 80 chars*/
+
+|- awk 'BEGIN{} pattern {} END { }' $file -|
+/**
+ * read line by line
+ */
+sh$ echo -e "line1\nline2" | awk 'BEGIN{ i=0 } { i++ } END { print i }'
+|[
+2
+]|
+sh$ echo -e "line1\nline2" | awk 'END{ print NR }'
+|[
+2
+]|
+
+
+sh$ echo -e "line1\nline2" | awk 'BEGIN{ print "Start"}{print} END{print "End"}'
+|[
+Start
+line1
+line2
+End
+]|
+
+/**
+ * Reserved Variables
+ *  $n  the n-th element that separated by '$separator' of current line
+ *      e.g. $1
+ *  $0  the content of this line
+ *  [N] ARGC    arguments counter, same as int main(int argc, char **argv)
+ *  [G] ARGIND  
+ *  [N] ARGV
+ *  [G] CONVFMT converting format of number, default is %.6g
+ *  [P] ENVIRON
+ *  [N] ERRNO
+ *  [G] FIELDWIDTHS
+ *  [A] FILENAME
+ *  [P] FNR   
+ *  [A] NR    current line number
+ *  [A] FS    separator
+ *  [G] IGNORECASE
+ *  [A] NF      number of field, the number variables that separated by separator
+ *  [A] OFMT  output format of number, default is %.6g
+ *  [A] OFS     output field separator, default is a blank
+ *  [A] ORS     output recorder seperator, default is a "\n"
+ *  [A] RS      recorder seperator, default is a "\n"
+ *  [N] RSTART  the start of matching string
+ *  [N] RLENGTH the string length of mathing string
+ *  [N] SUBSEP  sub-separator, default is 34
+ */
+sh$ echo -e "line1\nline2" | awk 'BEGIN{ print "Start";i=0}{i++;print "#"i,$0} END{print "End"}'
+|[
+Start
+1 line1
+2 line2
+End
+]|
+
+|[aa.txt
+line1 f2 f3
+line2 f4 f5
+line3 f6 f7
+]|
+sh$ awk '{print "#"NR ", $0=",$0";  NF:" NF         \
+        "\n $NF="$NF, "; $NF-1="$(NF-1)             \
+        "\n $1="$1, "$2="$2, "$3="$3}' aa.txt
+|[
+#1, $0= line1 f2 f3;  NF:3
+     $NF=f3 ; $NF-1=f2
+     $1=line1 $2=f2 $3=f3
+#2, $0= line2 f4 f5;  NF:3
+     $NF=f5 ; $NF-1=f4
+     $1=line2 $2=f4 $3=f5
+#3, $0= line3 f6 f7;  NF:3
+     $NF=f7 ; $NF-1=f6
+     $1=line3 $2=f6 $3=f7
+]|
+
+
+
+sh$ cat /etc/passwd
+|[
+  root:x:0:0:root:/root:/bin/bash
+  ...
+  Aario:x:500:500::/home/Aario:/bin/bash
+]|
+
+sh$ awk -F ':' '{print $1, $NF}' /etc/passwd
+sh$ awk 'BEGIN{FS=":"}{print $1, $NF}' /etc/passwd
+
+
+|! awk inline functions !|
+/**
+ * System
+ *  system("$sys_cmd")  e.g. b = system("ls -al"); print b;
+ * File
+ *  close($file)    close a file that opened by getline or stdin like print/printf
+ * String
+ *  gsub($regexp, $repl, [$in])
+ *  sub($regexp, $repl, [$in])
+ *  index($base_str, $idx_str)
+ *  length($str)
+ *  blength($str)   byte length
+ *  substr($str, int $start, $len)
+ *  match($str, $regexp) : int position of matched
+ *  split($str, array $return, $regexp)
+ *  split($str, array $return, $separator = FS) return int length of array
+ *  tolower($str)
+ *  touppper($str)
+ *  sprintf($fmt, $expr, $expr ..)
+ * Time
+ *  systime():int       timestamp
+ *  strftime($fmt[, int $timestamp])
+ *  mktime("YYYY MM dd HH MM ss[ DST ]")
+ * Math
+ *  atan2(y, x)
+ *  cos(x)
+ *  sin(x)
+ *  exp(x)
+ *  log(x)
+ *  sqrt(x)
+ *  int(x)
+ *  rand()
+ *  srand($expr)
+ * printf()
+ *  %d %u %f %s %c %p %e %x %o %g
+ */
+sh$ awk '
+        BEGIN{
+            "date" | getline date;
+            split(date, dt_arr);
+            y = dt_arr[6];
+            info="Hello, 2015!";
+            last_y = match(info, /20[0-9]{2}/);
+            last_y = substr(info, last_y, 4);
+            if(last_y < y){
+                print "Bye:", last_y;
+                gsub(/20[0-9]+/, y, info);
+            }
+            print info;
+        }
+    '
+    
+    
+|+ getline +|
+/**
+ *  getline $v1;    get variable from input
+ *  "$sys_cmd" | getline $return
+ *  getline < "$sys_cmd"    read line by line
+ */
+sh$ awk 'BEGIN{getline name; getline age; print "Name:",name,"\nAge:",age}' 
+ 
+sh$ awk 'BEGIN{"getconf PAGESIZE" | getline page_size; print page_size}' pagesz
+sh$ awk 'BEGIN{"getconf PAGESIZE" | getline; print}' pgsz
+|[
+4096
+]|
+sh$ date
+|[
+Fri Jan  1 18:20:33 CST 2016
+]|
+sh$ awk 'BEGIN {"date" | getline date; split(date, arr); print arr[4]}' date
+sh$ awk 'BEGIN{while("cat /etc/passwd"|getline){print $0;};close("/etc/passwd");}'
+
+sh$ awk 'BEGIN{while(getline < "/etc/passwd"){print $0;};close("/etc/passwd");}'
+
+
+|! If and Loops !|
+/**
+ *  if($exp){$stmt}else if($exp){$stmt}else{$stmt}
+ *  ^ ***  power
+ *  ~ ~!  match regexp or not
+ *  next  continue in loop
+ */
+sh$ echo $((100*100))
+sh$ awk 'BEGIN{a=10;if(a >= 5){print 10^3}}'
+sh$ awk 'BEGIN{a=10;print a != 10 ? 10^3 : "equal 10"}'
+sh$ awk 'BEGIN{a="Aario Script"; if(a~/^Aa\s*/){print "matched"}}'
+sh$ awk 'BEGIN{a="A";arr[0]="H"; arr[1]="A"; print (a in arr)}'
+
+
+
+
+
+sh$ me='Aario Script'
+sh$ echo | awk -v me=$me '{ print me }'
+
+|[aa.txt
+#a
+b
+#c
+d
+#e
+]|
+sh$ awk 'NR%2==1{next}{print "#"NR,$0}' aa.txt
+|[
+#2 b
+#4 d
+]|
+sh$ awk '/^#/{v=$0;next;}{print v":"$0}' aa.txt
+|[
+#a:b
+#c:d
+]|
+
+sh$ awk 'BEGIN { while ("ls" | getline) print }'
+
+sh$ echo | awk '{printf("Aario Script!\n") > "aa.txt"}'
+sh$ echo | awk '{printf("Aario Script!\n") >> "aa.txt"}'
+
+sh$ awk '
+        BEGIN{
+            rename_from = "rename";
+            rename_to = "__RENAME__";
+            count_txt = 0;
+            count_cc = 0;
+            count_rename = 0;
+            count_others = 0;
+            while("ls" | getline file){
+                n = split(file, arr, ".");
+                if(arr[n] == "txt"){
+                    count_txt++;
+                    print "txt"count_txt, substr(file, 0, 5);
+                } else if(arr[n] == "cc"){
+                    count_cc++;
+                    print "cc:"count_cc, substr(file, 0, 5);
+                } else if(arr[n] == "rename"){
+                    count_rename++;
+                    f_len = length(file);
+                    fnm=substr(file, 0, f_len - 6);
+                    system("mv "file" "fnm""rename_to);
+                } else {
+                    count_others++;
+                    print "oth"count_others, substr(file, 0, 5);
+                }
+            }
+            print "\n txt: ", count_txt ,";\n cc: ", count_cc, ";\n total: ", count_txt + count_cc + count_rename + count_others;
+        }
+    '
+
+|! examples !|
+|[my.cnf
+[mysqld]
+log-bin         = mysql-bin
+server-id      = 101
+user            = mysql
+]|
+sh$ awk '{ print} $1 ~/^\[mysqld\]/ && c == 0 { c = 1; print "------" }' my.cnf
+|[
+[mysqld]
+------
+log-bin         = mysql-bin
+server-id      = 101
+user            = mysql
+]|
+sh$ echo "skip-host-cache\nskip-name-resolve" | awk '{ print } $1 ~/^\[mysqld\]/ && c == 0 { c = 1; system("cat") }' my.cnf > m2.cnf
+
+sh$ echo | awk '{
+        "cat /proc/sys/vm/nr_hugepages" | getline s; 
+            if(s > 0){
+                print("opcache.huge_code_pages=1") >> "opcache.ini"
+            }
+        }'

@@ -1,0 +1,27 @@
+/**
+ * @see https://dev.mysql.com/doc/refman/5.7/en/trigger-syntax.html
+ * CREATE TRIGGER trigger_name <AFTER|BEFORE> <INSERT|DELETE|UPDATE> ON tb
+ *  FOR <EACH ROW> ...
+ * DROP TRIGGER tigger_name 
+ * NEW alias to the data after updating
+ * OLD alias to the data before updating (deleting included)
+ */
+
+db> CREATE TRIGGER get_username AFTER INSERT ON user
+    FOR EACH ROW SET @username = NEW.username
+
+db> CREATE TRIGGER registry_log AFTER INSERT ON user
+    FOR EACH ROW
+    BEGIN
+      INSERT INTO log_registry
+        SET reg_date = NOW(), NEW.username, NEW.email);
+    END;
+    
+db> CREATE TRIGGER delete_log BEFORE DELETE ON user
+    FOR EACH ROW
+    BEGIN
+      INSERT INTO delete_bk
+        SET del_date = NOW(), useranme = OLD.username, email = OLD.email);
+      INSERT INTO user_archive
+        SET del_date = NOW(), useranme = OLD.username, email = OLD.email); 
+    END;

@@ -1,0 +1,65 @@
+/**
+ * @see http://dev.mysql.com/doc/refman/5.7/en/func-op-summary-ref.html
+ */
+ 
+/**
+ * := assign a value
+ */ 
+db> SELECT @var1, @var2;
+db> SELECT @var1:=COUNT(*) FROM tb;
+ 
+|! String Functions !|
+LEFT(const char *$str, uint pos_end)      /* substr($str, 0, pos_end) */
+RIGHT(const char *$str, uint pos_start)   /* substr($str, pos_start) */
+
+/**
+ * POSITION is synonym for LOCATE()
+ */
+LOCATE(const char *$needle, const char *$haystack)   /* strpos($haystack, $needle) */
+
+
+BIT_LENGTH(const char * $str)     /* the bit size of a string */
+CONCAT(const char * $str1, const char *$str2[, ...])
+
+/**
+ * concat with separator
+ *  e.g. CONCAT_WS('-_-', 'Aaron', 'Well', '!')   ==> Aaron-_-Well-_-!
+ */
+CONCAT_WS(const char *$separator, const char * $str1, const char * $str2[, ...])
+
+QUOTE(const char *$str)     /* add back-slash to the single-quotes */
+
+/**
+ * @param uint $pos is start from 1
+ * e.g. INSERT("Aaron makes Uncle Sam's cut.", 4, 5, '')
+ */
+INSERT(const char *$str, uint $pos, uint $length, const char *$inserted_str)
+FIND_IN_SET(const char *$str, const char *$str)
+ASCII(char $char)   LOWER(const char *$str) UPPER(const char *$str) 
+LENGTH(const char *$str)
+LTRIM(const char *$str)  RTRIM(const char *$str)  TRIM(const char *$str)
+
+|! GROUP BY !|
+AVG(col)
+COUNT(col)
+MIN(col)
+MAX(col)
+SUM(col)
+GROUP_CONCAT(col)
+
+|! Encrypt !|
+MD5(const char *$str)
+PASSWORD(const char *$str)
+ENCRYPT(const char *$str, const char *$salt)
+SHA(const char *$str)
+
+|! Date !|
+NOW()  FROM_UNIXTIME(UNIX_TIMESTAMP());    /* 2015-09-07 21:17:54 */
+CURDATE() CURRENT_DATE()      /* 2015-09-07 */
+CURTIME() CURRENT_TIME()      /* 21:17:54 */
+DATE_FORMAT()
+HOUR(NOW() | CURTIME())       /* 21*/
+
+
+INET_ATON(const char * $ip)
+INET_NTOA(int $ip)

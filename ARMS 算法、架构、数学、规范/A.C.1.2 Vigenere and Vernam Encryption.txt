@@ -1,0 +1,35 @@
+|! Vigenere Encryption !|
+Private Key:  K = k0,k1...km-1      deceptive           
+Proclaim:     P = p0,p1...pn-1      We Are Discovered
+Cipher Code:  C = E(K,P) 
+                = E[(k0,k1...km-1),(p0,p1...pn-1)]            (m < n)
+                = (p0 + k0) mod 26, (p1 + k1) mod 26 ..., (pm-1 + km-1) mod 26,
+                  (pm + k0) mod 26, (pm+1 + k1) mod 26 ..., (p2m-1 + km-1) mod 26.
+                  ...
+  e.g.
+    K = abc     =>  1 2 3
+    P = jklmnop =>  10 11 12 13 14 15 16
+    C = [1,2,3] + [10,11,12,13,14,15,16]
+      = [ 1+10, 2+11, 3+12, 
+          1+13, 2+14, 3+15,
+          1+16]
+      = [ 11, 13, 15, 14, 16, 18, 17 ]
+      = kmonprq
+
+3   4   2   4   15  19  8   21  4   3   4   2   4   19  8
+d   e   c   e   p   t   i   v   e   d   e   c   e   p   t ...
+22  4   0   17  4   3   8   18  2   14  21  4   17  4   3 
+W   e   A   [r   e   D]   i   s   c   o   v   e   [r   e   d]
+
+25  8   2   21  19  22  16  13  6   17  25  6   21  19  22
+Z   I   C   [V   T   W]   Q   N   G   R   Z   G   [V   T   W]
+
+
+It's much better than Playfair Encryption. But you can still find some information
+from the encrypted string.
+e.g.   There are two [V T W], they may be the same proclaim string that encrypted
+with the same part of the private key. And there are 9 characters inside the two
+[V T W], so the Private key may be 3 or 9 characters.
+
+|! Vernam Encryption !|
+ci = pi ^ ki           

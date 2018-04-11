@@ -1,0 +1,18 @@
+|~ File Descriptor ~|
+/**
+ * @param lo localhost
+ * @param -nn display in type IP.port
+ */
+sh$ sudo tcpdump -i lo -nn
+/**
+ * @param Flags
+ *  S SYN Synchronize[ˈsɪŋkrəˌnaɪz]
+ *  F FIN Finish
+ *  P PUSH
+ *  R RST Rest
+ *  . NONE
+ */
+|[
+20:47:31.252205 IP 127.0.0.1.48693 > 127.0.0.1.9877: Flags [S], seq 263097760, win 43690, options [mss 65495,sackOK,TS val 7162268 ecr 0,nop,wscale 7], length 0
+20:47:31.252220 IP 127.0.0.1.9877 > 127.0.0.1.48693: Flags [S.], seq 2963927549, ack 263097761, win 43690, options [mss 65495,sackOK,TS val 7162268 ecr 7162268,nop,wscale 7], length 0
+]|

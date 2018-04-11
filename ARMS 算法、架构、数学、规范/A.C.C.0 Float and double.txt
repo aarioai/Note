@@ -1,0 +1,12 @@
+In IEEE 754, S for Sign, E for Exponent[ek'spəʊnənt], M for Mantissa[mæn'tɪsə]
+N=R^e * M
++------------------------------------------------------------------------------+
+|- Type  | bits | S | E  | E bias | bits precision                            -|
++--------+------+---+----+--------+----------------
+| float  |  32  | 1 | 8  |   127  |     24 
+| double |  64  | 1 | 11 |  1023  |     53
++------------------------------------------------------------------------------+
+ 32bit float                S (1 minus/0 plus) 1 bit, E 8 bits, M 23 bits
+ 64bit float = double       S (1 minus/0 plus) 1 bit, E 11 bits, M 52 bits
+
+ 

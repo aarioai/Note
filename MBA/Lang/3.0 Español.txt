@@ -1,0 +1,123 @@
+|! Input !|
+\       ==> ç
+;       ==> ñ
+[ + e   ==> è 
+‘ + e   ==> é
+【hold on SHIFT + [】 + u  ==>  û
+【hold on SHIFT + [ + u 】 ==>  Û
+【hold on SHIFT + '】+ u  ==>  ü
+SHIFT + - ==> ?
+SHIFT + +           ==>  ¿
+Right-Alt + [   ==> [
+          + '   ==> {
+          + \   ==> }~
+          + `   ==> \
+          + 1   ==> |
+          + 2   ==> @
+          + 3   ==> #
+          + 4   ==> ~
+          + 【5|E】   ==> €
+          + 6   ==> ¬
+          
+          
+
+
+|! Letters and Sounds !|
+a/ah/   ah de Ana;                      jajaja/ha:ha:ha:/   paella/ba:e ya:/
+b/be/   beh de Burro
+        ------------------------------------------------------------------------
+                            B/be/           V/u:be/
+        ------------------------------------------------------------------------
+        burro/bu:`ro/                               vaca/ba:ga:/
+        bailarín/bai'la'`rin/                       vainilla/ba:ni:ja:/
+        besar/be'sa`r/                              vampiro/bam'bi:'`ro/
+        beso/beso/                                  vanidad/bani:da:d/
+        bigote/bi'go'de/                            vela/bela/
+        cambiar/gam'bi:a`r/                         convenir/gon've'ni:~/
+        emborracharse/embo``ra:`tʃa:se/             convivir/gon'vivi:/
+        embustero/embus'de``ro/                     envidia/en'vi:'di:a/
+        embobado/embo'ba:do/                        enviar/en'via`r/
+        ------------------------------------------------------------------------
+        El viento soplaba fuerte en el verde valle de Bonampak. Los bailarines
+        embobados gritaban y observaban las hojas del bosque que el viento barría
+        Yo bromeaba y besaba al bailarín. No conviví con él. Medaba envidia y lo
+        envenené
+        ------------------------------------------------------------------------
+                
+c/se/   c + e,i = /s/       c + a,o,u = /g/
+         a: casa/ga:sa:/ 
+         e: César/sesa:/    cero/se`ro/       
+         i: cielo/si:elo
+         o: cosa/gosa:/
+         u: cuerpo/gu:e`rpo/    
+d/de/   deh de dedo
+e/e/    eh de Eduardo;                  jejeje/heh/      poeta/boe da:/
+f/efe/  ehfeh de foco   
+g/he/   g + e,i = /h/       g + a,o,u = /g/
+         a: gato/ga:do/
+         e: Genaro/he:na:`ro/
+         i: girasol/hi:`ra:sol/
+         o: gordo/go`r do/
+         u: gutural/gu: du: `ra:l/
+          e/e/:     guerra/ge`ra:/          
+                    vergüenza/be`r gu:en sa:/
+          i/i:/:    guitarra/gi:da:`ra:/  
+                    lingüística/li:n gu:is diga/
+                    güiro/gu:i`ro/
+h/ah'tʃe/    ahche de historia/i:s'do`ria/
+ch/tʃ/      cheh de churro
+i/i:/       ee de Inés                  jijiji/hi:/ pierna/bi:e`r na:/
+j/hota/     hota de julio
+k/ga:/      Kah de kilo
+l/ele/      eleh de loco
+ll/eje/        ehye | double l de lluvia
+  /dob'le'ele/
+        ------------------------------------------------------------------------
+                            ll//           y//
+        ------------------------------------------------------------------------
+        llano/dʒa:no/
+        lloviendo/dʒo'vi:en'do/            yellow/dʒe'lo/
+        Padilla/ba'di'dʒa:/                Yo/dʒo/ no sé
+        llueva/dʒu:e'va:/                  Yo no quiero/gie`ro/ que/ge/ llueva
+        Me gusta la villa de Tom Cruise
+        ------------------------------------------------------------------------
+m/eme/      ehme de mama
+n/ene/           ehne de no
+ñ/enie/           de niño
+o/o/        oh de ola                               jojojo/ho/  peatón/bea:don/
+p/be/       peh de Pedro
+q/gu:/      koo de queso/geso/
+r/e`re/      ehre de Ramón
+rr/         Perro/be`ro/
+s/ese/      ehse de Sol
+t/teh/      teh de Tonto
+u/u:/       ooo de huracán/u:`rakan/                jugo/hugo/  cuerno/gu:e`rno/
+v/u'be/     uhbeh de vaca
+w/dob le u:/ doble u de Washington
+x/eki:s/    ehquis de México
+y/i:/       ee griega de voy caray yo vaya
+z/se'ta/    sehta de zanahoria
+
+|! Numbers !|
+0   cero/se`ro/ 
+1-9 uno  dos tres/d`res/ cuatro cinco seis siete ocho nueve 
+10  diez
+10+ once doce trece cartorce quince dieciséis diecisiete dieciocho diecinueve
+20  veinte/bein'de/
+20+ veinti/bein'di/ + uno/dos ... / nueve
+30  treinta/d`rein'da/
+40  cuarenta
+50  cincuenta
+60  sesenta
+70  setento
+80  ochenta
+90  noventa
+30+/40+../90+     treinta y uno ... noventa y nueve
+
+¿Cuánto/gu'an'do/ cuesta/gue'sda/?      ---> how much is it?
+    cuesta dos dólar                      -> it's $2
+¿Cuál/gua:l/ es tu número/nu:me`ro/ de teléfono/delefono/? 
+                                        ---> what's your phone number?
+    Mi número es ...                      -> my number is ...
+¿Cuántos años/a:nios/ tienes/dienes/?   ---> how old are you?
+    

@@ -1,0 +1,31 @@
+db> show profiles;
+db> show variables like "%pro%";
+|[
++---------------------------+-------+ 
+| Variable_name             | Value | 
++---------------------------+-------+ 
+| profiling                 | OFF   | 
+| profiling_history_size    | 15    | 
+| protocol_version          | 10    | 
+| slave_compressed_protocol | OFF   | 
++---------------------------+-------+ 
+4 rows in set (0.00 sec)
+]|
+
+db> set profiling=1;
+db> reset query cache;
+db> flush tables;
+db> ...
+db> show profiles;
+
+db> show global status
+
+|- Queries -|
+The number of statements executed by the server. This variable includes statements executed within stored programs, unlike the Questions variable. It does not count COM_PING or COM_STATISTICS commands.
+db> show status like 'queries';
+|- Questions -|
+The number of statements executed by the server. this includes only statements sent to the server by clients and no longer includes statements executed within stored programs, unlike the Queries variable. This variable does not count COM_PING, COM_STATISTICS, COM_STMT_PREPARE, COM_STMT_CLOSE, or COM_STMT_RESET commands.
+Questions 是记录了从mysqld启动以来所有的select，dml 次数包括show 命令的查询的次数。这样多少有失准确性，比如很多数据库有监控系统在运行，每5秒对数据库进行一次show 查询来获取当前数据库的状态，而这些查询就被记录到QPS,TPS统计中，造成一定的"数据污染".
+如果数据库中存在比较多的myisam表，则计算还是questions 比较合适。
+如果数据库中存在比较多的innodb表，则计算以com_*数据来源比较合适。
+db> show status like 'questions';

@@ -1,0 +1,145 @@
+|! gdb !|
+sh$ ps -efH | grep nginx
+|[
+root      5206     1  0 20:10 ?        00:00:00   nginx: master process nginx
+nobody    5207  5206  0 20:10 ?        00:00:00     nginx: worker process
+root      5242     1  0 20:17 ?        00:00:00   nginx: master process nginx
+nobody    5250  5242  0 20:17 ?        00:00:00     nginx: worker process
+nobody    5251  5242  0 20:17 ?        00:00:00     nginx: worker process
+nobody    5252  5242  0 20:17 ?        00:00:00     nginx: worker process
+nobody    5253  5242  0 20:17 ?        00:00:00     nginx: worker process
+root      5255     1  0 20:17 ?        00:00:00   grep --color=auto nginx
+]|
+/**
+ * Open multiple sessions in a docker container
+ *  open a new host session
+ *  sh$ docker run -p 10080:10080 -it lef/nginxsrc /bin/bash
+ *  sh$ docker ps
+ *    |[
+ *      CONTAINER ID        IMAGE               COMMAND           
+ *      e19b324f3483        lef/nginxsrc        "/bin/bash" 
+ *    ]|
+ *  sh$ PID=$(docker inspect --format {{.State.Pid}} e19b324f3483)
+ *  sh$ sudo nsenter --target $PID --mount --uts --ipc --net --pid
+ */
+sh1$ gdb -p 5250               /* session 1: nginx worker process */
+sh2$ gdb -p 5251
+sh3$ gdb -p 5252
+sh4$ gdb -p 5253
+
+
+|+ gdb watch +|
+|[core/ngx_cycle.c
+36:   ngx_cycle_t *
+36:   ngx_init_cycle(ngx_cycle_t *old_cycle)
+36:   {
+...
+456:    if (shm_zone[i].init(&shm_zone[i], oshm_zone[n].data)
+457:      != NGX_OK)
+458:    {
+459:      goto failed;
+460:    }
+...
+1209: ngx_shm_zone_t *
+1210: ngx_shared_memory_add(ngx_conf_t *cf, ngx_str_t *name, size_t size, void *tag)
+1211: {
+...
+1274: shm_zone->init = NULL;
+...
+1279: }
+]|
+You'll notice that 
+
+sh$ gdb --args nginx -c /etc/nginx/nginx.conf
+(gdb) set follow-fork-mode child
+(gdb) b ngx_cycle.c:1274
+(gdb) r
+
+
+|- print Macro -|
+/**
+ * ./configure --with-cc-opt="-ggdb3 -O0"
+ *  --ggdb3  to enable Macro information
+ */
+(gdb) r main
+|[
+189   if (ngx_strerror_init() != NGX_OK) {
+]|
+(gdb) info macro NGX_OK
+|[
+Defined at /docker/nginx-1.9.9/src/core/ngx_core.h:36
+  included at /docker/nginx-1.9.9/src/core/nginx.c:9
+#define NGX_OK 0
+]|
+(gdb) p NGX_OK
+
+(gdb) info macro EPOLLIN    /* no definition */
+(gdb) list ngx_epoll_module.c:0   
+(gdb) info macro EPOLLIN    /* now it has been defined */
+ 
+|! strace !|
+sh$ ps aux | grep nginx
+|[
+root         6  0.0  0.0  25020  2392 ?        S+   20:57   0:00 nginx
+]|
+
+/**
+ * strace
+ *  -T time takes
+ *  -p $pid
+ */
+sh$ strace -T -p 6
+|[
+Process 6 attaced
+epoll_wait(3,                             /* blocking */
+]|
+/* wget localhost:80/index.html  
+    |[
+      Aaron Script
+    ]|
+   -->  to call nginx epoll_wait() 
+*/
+|[
+Process 6 attached
+epoll_wait(3, {{EPOLLIN, {u32=925978640, u64=139870830940176}}}, 512, -1) = 1 <3.977773>
+accept4(6, {sa_family=AF_INET, sin_port=htons(59188), sin_addr=inet_addr("192.168.1.100")}, [16], SOCK_NONBLOCK) = 8 <0.000199>
+epoll_ctl(3, EPOLL_CTL_ADD, 8, {EPOLLIN|EPOLLRDHUP|EPOLLET, {u32=925978848, u64=139870830940384}}) = 0 <0.000247>
+epoll_wait(3, {{EPOLLIN, {u32=925978640, u64=139870830940176}}}, 512, 60000) = 1 <0.000167>
+accept4(6, {sa_family=AF_INET, sin_port=htons(59189), sin_addr=inet_addr("192.168.1.100")}, [16], SOCK_NONBLOCK) = 9 <0.000156>
+epoll_ctl(3, EPOLL_CTL_ADD, 9, {EPOLLIN|EPOLLRDHUP|EPOLLET, {u32=925979057, u64=139870830940593}}) = 0 <0.000144>
+epoll_wait(3, {{EPOLLIN, {u32=925978848, u64=139870830940384}}}, 512, 59999) = 1 <0.001617>
+recvfrom(8, "GET /index.html HTTP/1.1\r\nHost: "..., 1024, 0, NULL, NULL) = 538 <0.000173>
+open("/var/www/htdocs/index.html", O_RDONLY|O_NONBLOCK) = 10 <0.000181>
+fstat(10, {st_mode=S_IFREG|0777, st_size=8, ...}) = 0 <0.000219>
+writev(8, [{"HTTP/1.1 304 Not Modified\r\nServe"..., 177}], 1) = 177 <0.000234>
+write(5, "192.168.1.100 - - [24/Dec/2015:1"..., 205) = 205 <0.000177>
+close(10)                               = 0 <0.000185>
+setsockopt(8, SOL_TCP, TCP_NODELAY, [1], 4) = 0 <0.000194>
+recvfrom(8, 0xeb5d60, 1024, 0, 0, 0)    = -1 EAGAIN (Resource temporarily unavailable) <0.000158>
+epoll_wait(3, {{EPOLLIN|EPOLLRDHUP, {u32=925979057, u64=139870830940593}}}, 512, 59997) = 1 <19.994632>
+recvfrom(9, "", 1024, 0, NULL, NULL)    = 0 <0.000590>
+close(9)                                = 0 <0.000740>
+epoll_wait(3,
+]|
+
+epoll_wait() = 1      there is a readable/writable descriptor
+accpet4() = 8
+epoll_ctl() = 0       listen event appcept4()
+epoll_wait() = 0  
+recvfrom(8, ) = 123   read 123 bytes from descriptor 8(accpet4())
+open()  = 9           descriptor 9 is used for opening file
+fstat() = 0           file status, 0 on exists
+writev()  = 233       response header to accpet4()
+sendfile() = 8
+
+|! pstack !|
+sh$ pstack $pid
+|[
+#0  0x00007f36361b87d3 in __epoll_wait_nocancel () from /lib64/libc.so.6
+#1  0x000000000043aac2 in ngx_epoll_process_events (cycle=0xe9fa50, timer=18446744073709551615, flags=1) at src/event/modules/ngx_epoll_module.c:717
+#2  0x000000000042be25 in ngx_process_events_and_timers (cycle=0xe9fa50) at src/event/ngx_event.c:242
+#3  0x00000000004376ee in ngx_single_process_cycle (cycle=0xe9fa50) at src/os/unix/ngx_process_cycle.c:309
+#4  0x000000000040387a in main (argc=1, argv=0x7ffdf2c0c578) at src/core/nginx.c:356
+]|
+
+

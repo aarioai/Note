@@ -1,0 +1,8 @@
+/**
+ * @see https://en.wikipedia.org/wiki/Message_queue
+ *  Message queues and mailboxes are software-engineering components used for 
+ *  inter-process communication (IPC), or for inter-thread communication within 
+ *  the same process. The message queue paradigm is a sibling of the 
+ *  publisher/subscriber pattern, and is typically one part of a larger 
+ *  message-oriented middleware system.
+ */

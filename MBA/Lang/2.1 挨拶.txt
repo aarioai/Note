@@ -1,0 +1,15 @@
+|! 挨拶（あいさつ） !|
+
+元（げん）気（き）　　 health; robust
+こんにちは。元気ですか？　¿Hola cómo estás?
+元気です　　　　I'm fine
+まあまあです　　Just so so
+最（さい）悪（あく）　　I'm bad
+
+はじめまして　　　                   Encantada de conocerte
+よろしく　お願（ねが）いします　　　　Pleasure to meet you
+私はアリオです
+
+
+ありがとう　ございます   　    {Gracias}
+すみません　　　　　　         {Lo siento}

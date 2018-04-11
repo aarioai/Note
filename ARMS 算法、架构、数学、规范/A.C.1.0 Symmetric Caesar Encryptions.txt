@@ -1,0 +1,77 @@
+|! Caesar Encryption !|
+Encrypt each letter (p) to the next k letter in alphabet. 
+e.g. k = 3, lefz ==> ohjc
+
+C = E(k, p) = (p + k) mod 26    /* C is the encrypted letter */
+p = (C - k) mod 26              /* the formula to decrypt one letter */
+
+Question: 
+  Known encrypted phrase 
+|[
+  BEXTWTLXWXGMTKREBYXMATMBWHGMEBDXBTEPTRLVHGMXFIETMXMAXFXTGBGZHYEBYXHGUXWLHFXHGXFT
+  DXLXFBGXGMVHGMKBUNMBHGLMHTEEUTVAXEHKLUNMPATMVTGBWHBGMAXYNMNKX
+]|
+
+Solution:
+  Count the frequencies of each letter:
+    X: 19
+    M: 15
+    T: 13
+    G: 13
+    B: 12
+    H: 11
+    E: 9
+    L: 6
+    A: 5
+    W: 5
+    F: 5
+    K: 4
+    N: 4
+    U: 4
+    V: 4
+    Y: 4
+    P: 2
+    R: 2
+    D: 2
+    I: 1
+    Z: 1
+  The most common letters are {X M T G B H}. According to the frequencies of each letter in English words by LEWAOO, the encrypted {X T G M H B E} may be {e t a o i n s h}, and {I D Z} may be {b v k j x q z}
+  X may be 'e' probably.
+  There're still a lot of probabilities. We know that 'th' may be the most common part of a word. esp. 'the' 'that'... 
+  Count the frequencies of two closed letters:
+    GM: 6
+    HG: 6
+    XF: 4
+    MA: 3
+    ...
+  'the' may be a very common word in English sentense.  
+  Count the frequencies of three cloesed letters:
+    HGM: 3        // GM must not be 'th', otherwise there'll be a lot of GM?
+    ATM: 2
+    BWH: 2
+    BYX: 2
+    EBY: 2
+    MAX: 2       // this may be 'th', because above MA: 3
+    TGB: 2
+    UNM: 2
+    VHG: 2
+    XGM: 2
+    XHG: 2
+    XMA: 2
+    ...
+    So 'MAX' may be 'the',
+  Let's fill into the sentence and guess,  'th t' may be `that`, 'T' may be 'a'. 
+|[
+  BEXTWTLXWXGMTKREBYX MATM BWHGMEBDXBTEPTRLVHGMXFIETMX MAX 
+    ea a e   ta       that     t     a  a     t    ate the
+  FXTGBGZHYEBYXHGUXWLHFXHGXFTDXLXFBGXGMVHGMKBUNMBHGLMHTEEUTVAXEHKLUNMPATMVTGBWHBG MAX YNMNKX
+   ea         e   e    e  e a e e   e t   t    t    t a   a he      t hat a       the   t  e
+]|
+  It'll still hard to guess the password out. Let's try Caesar Encryption.
+  'm' = E(p, k) = (p + k) mod 26 = ('t' + 19) mod 26
+  'a' = ('h' + 19) mod 26 ... 
+  so parameter k must be 19, we'll get the sentence:  
+|[  
+I lead a sedentary life that I don't like. I always contemplate the meaning of life on bed. Someone
+makes eminent contributions to all bachelors. But what can I do in the future?
+]|

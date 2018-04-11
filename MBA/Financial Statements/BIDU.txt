@@ -1,0 +1,206 @@
+Assets = Liabilities + Equity
+
+/**
+ * Baidu Financial Reports
+ * @see http://ir.baidu.com/phoenix.zhtml?c=188488&p=irol-reportsAnnual
+ */
+
+Condensed/kən'dens/ Consolidated/kən'sɒlɪdeɪt/ Balance Sheets                         
+(In RMB thousands except for number of shares and per share data)
+                                                    June 30 2015  December 31 2014
+                                                  Unaudited     Audited
+/**
+ * Assets
+ *  properties that are owned and have monetary values; for instance, 
+ *    cash, inventory, buildings, equipment.
+ *  the economic resources that are owned or controlled by a business and can be
+ *    expressed in monetary units.
+ *  can be classified into current assets and non-current assets.
+ */
+|+ ASSETS +|
+    |- Current assets: -|
+        /**
+        * 货币资金：cash, bank deposit and others (e.g. outport bank deposit, bill)
+        *  企业可随时支配的资金
+        */
+        Cash and cash equivalents/e'quiv·a·lent/  21,296,827          13,852,725
+        Restricted cash                              646,400             413,010
+
+        /**
+        * 交易性金融资产
+        *  可以随时卖掉的投资
+        */
+        Short-term investments                    53,661,977          43,818,037
+
+        /**
+        * 应收票据
+        *  变现能力
+        */
+        Accounts receivable, net                   3,804,167           3,664,447
+        Amounts due from related parties                  50                  50
+        Deferred tax assets, net                     985,126             684,952
+        Other assets, current                      4,053,862           3,407,427
+        |. Total current assets .|                84,448,409          65,840,648
+
+    |- Non-current assets: -|
+        /**
+        * e.g. hardware equipments
+        */
+        Fixed assets, net                          9,863,213           8,705,364
+        /**
+        * /ɪn'tændʒəbl/
+        * e.g. patent, trademark privileges, the right to the use of land
+        */
+        Intangible assets, net                     3,633,241           3,574,359
+
+        /**
+        * @see https://en.wikipedia.org/wiki/Goodwill_(accounting)
+        */
+        Goodwill                                  17,727,971          17,418,895
+        Long-term investments, net                 5,582,952           2,878,922
+        Deferred tax assets, net                     258,011             259,127
+        Other assets, non-current                  1,197,292             893,952
+        |. Total non-current assets .|            38,262,680          33,730,619
+    
+--------------------------------------------------------------------------------    
+Total assets                                     102,742,338          99,661,508
+--------------------------------------------------------------------------------
+
+/**
+ * Liabilities
+ *  the obligations or debt that a business must pay in money or services at some
+ *    time in the future.
+ *  amounts owned to outsiders, such as notes payable, accounts payable, bonds
+ *    payable.
+ * Owner's Equity
+ *  represents the owner's interest in or claim upon a business net assets which
+ *    is the difference between the amout of assets and the amount of liabilities.
+ *  include owner's investment in a business and accumulated operating results
+ *    since the beginning of the operation.
+ */
+|+ LIABILITIES AND EQUITY +|
+    |- Current liabilities: -|
+        Short-term loans                               49,650             93,000
+        Accounts payable and accrued liabilities   16,057,112         12,964,893
+        Customer advances and deposits              4,691,757          4,296,440
+        Deferred/dɪ'fɜː/ revenue                      313,442            164,809
+        Deferred income                               522,625            518,543
+        Long-term loans, current portion            2,171,870          2,167,405
+        Capital lease obligation                       48,768             57,346
+        Due to Related Parties, Current                 1,521             8 ,385
+        |. Total current liabilities .|            23,856,745         20,270,821
+    |- Non-current liabilities: -|
+        Deferred income
+        Long-term loans
+        Notes payable
+        Amounts due to related parties
+        Deferred tax liabilities
+        Capital lease obligation
+        Other Non Current Liabilities
+        |. Total non-current liabilities .|
+    ----------------------------------------------------------------------------
+    Total liabilities
+    ----------------------------------------------------------------------------
+
+    |- Redeemable/rɪ'dɪːməbl/ noncontrolling interests -|
+    |- Equity -|
+        Class A Ordinary Shares, par value
+         US$0.00005 per share, 825,000,000 shares
+         authorized, and 27,613,315 shares and
+         27,657,626 shares issued and outstanding
+         as at December 31,2014 and June 30, 2015              12             12
+        Class B Ordinary Shares, par value 
+         US$0.00005 per share, 35,400,000 shares 
+         authorized, and 7,492,921 shares and
+         7,492,921 shares issued and outstanding
+         as at December 31, 2014 and June 30, 2015              3              3
+        Additional paid-in capital                      5,497,383      3,633,919
+        Retained earnings                              53,619,055     47,659,772
+        Accumulated other comprehensive income (loss)   1,028,775        231,923
+        |. Total Baidu, Inc. shareholders' equity .|   60,145,228     51,525,629
+        |. Noncontrolling interests .|                  1,671,622      1,085,457
+    ----------------------------------------------------------------------------
+    Total equity                                       61,816,850     52,611,086
+    ----------------------------------------------------------------------------  
+
+--------------------------------------------------------------------------------
+Total liabilities, redeemable 
+noncontrolling interests, and equity                  122,711,089     99,571,267
+--------------------------------------------------------------------------------
+
+ 
+Baidu, Inc. 
+Condensed Consolidated Statements of Income
+June 30,	June 30,	March 31,
+2015	2014	2015
+Unaudited	Unaudited	Unaudited
+16,227,496	11,836,858	12,518,757
+347,742	148,924	205,859
+16,575,238	11,985,782	12,724,616
+(6,503,020)	(4,541,422)	(5,326,103)
+(3,889,844)	(2,148,874)	(2,956,867)
+(2,712,681)	(1,737,216)	(2,286,333)
+(13,105,545)	(8,427,512)	(10,569,303)
+3,469,693	3,558,270	2,155,313
+612,523	463,802	561,213
+(213,522)	(146,045)	(199,128)
+5,396	81	8,992
+(2,417)	(5,501)	(7,979)
+142,382	66,888	90,875
+544,362	379,225	453,973
+4,014,055	3,937,495	2,609,286
+(762,951)	(605,614)	(541,000)
+3,251,104	3,331,881	2,068,286
+(410,909)	(214,815)	(380,994)
+3,662,013	3,546,696	2,449,280
+Three Months Ended (In RMB thousands except for share, per share (or ADS) information)
+ 
+Revenues:
+Online marketing services
+Other services Total revenues
+Operating costs and expenses:
+Cost of revenues (note 1, 2)
+Selling, general and administrative (note 2)
+Research and development (note 2)
+Total operating costs and expenses
+Operating profit
+Other income:
+Interest income
+Interest expense
+Foreign exchange income, net
+Loss from equity method investments
+Other income, net
+Total other income
+Income before income taxes
+Income taxes
+Net income
+Less: net loss attributable to noncontrolling interests Net income attributable to Baidu, Inc.
+Earnings per share for Class A and Class B ordinary shares:
+Net income attributable to Baidu, Inc.-Basic 	                       102.23	                    101.19	                       67.86
+Net income attributable to Baidu, Inc.-Diluted	                       101.86
+Earnings per ADS (1 Class A ordinary share equals 10 ADSs ):	                    100.91	                       67.57
+Net income attributable to Baidu, Inc.-Basic 	                         10.22	                      10.12	                         6.79
+Net income attributable to Baidu, Inc.-Diluted	                         10.19
+Weighted average number of Class A and Class B ordinary shares outstanding:	                      10.09	                         6.76
+Basic 	35,141,734	35,050,662	35,112,842
+Diluted	35,268,366
+(1)  Cost of revenues are detailed as follows :	35,148,579	35,267,371
+Sales tax and surcharges	(1,175,617)	(872,086)	(948,209)
+Traffic acquisition costs	(2,111,734)	(1,517,128)	(1,721,629)
+Bandwidth costs	(896,156)	(700,473)	(849,628)
+Depreciation costs	(616,072)	(461,927)	(582,437)
+Operational costs	(850,503)	(627,052)	(607,068)
+Content costs	(840,223)	(354,294)	(608,420)
+Share-based compensation expenses	(12,715)	(8,462)	(8,712)
+Total cost of revenues
+(6,503,020)	(4,541,422)	(5,326,103)
+(12,715)	(8,462)	(8,712)
+(130,418)	(97,030)	(117,855)
+(211,592)	(115,060)	(164,509)
+(354,725)	(220,552)	(291,076)
+(2)  Includes share-based compensation expenses as follows :
+Cost of revenues
+Selling, general and administrative
+Research and development
+Total share-based compensation expenses
+ 

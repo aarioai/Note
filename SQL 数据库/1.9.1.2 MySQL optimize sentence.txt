@@ -1,0 +1,279 @@
+|! Rules !|
+- Avoid using NULL
+- Use count(*) to instead count(id)
+- Close 
+
+|! mysqlbinlog !|
+/**
+ * @see http://dev.mysql.com/doc/refman/5.7/en/mysqlbinlog.html
+ * Binary Log is use for recording all the DDL and DML sentence, including the 
+ *  update sentence that updated nothing (e.g. nothing change when use DELETE).
+ */
+sh$ vim /etc/my.cnf
+|[
+  [mysqld]
+  log-bin=/var/log/mysql/bin.log
+]|
+db> show variables like 'log_%';
+|[
+  log_bin  ON
+]|
+db> show binary logs;
+db> reset master;           // delete all the binlog of master
+db> reset slave;            // delete all the binlog of slave
+db> purge master logs before '2015-08-08 00:00:00';     // delete before a date
+db> purge master logs to 'binlog.000002';               // delete one
+db> flush logs;
+db> show binlog events;
+|[
+  +------------+------+-------------+-----------+-----------------------------------------------------+
+  | Log_name   | Pos  | Event_type  | Server_id | End_log_pos | Info
+  +------------+------+-------------+-----------+-------------+---------------------------------------+
+  | bin.000001 |    4 | Format_desc |         1 |         106 | Server ver: 5.6.26-log, Binlog ver: 4                                        
+  | bin.000001 |  120 | Rotate      |         1 |         400 | bin.000002;pos=4
+  +------------+------+-------------+-----------+-------------+---------------------------------------+
+]|
+/**
+ * Innodb is a transaction database, so any a DML sentence will be transaction
+ *  first (auto commit). 
+ */
+db> show binlog events in 'bin.000002';
+|[
+  +------------+------+-------------+-----------+-----------------------------------------------------+
+  | Log_name   | Pos  | Event_type  | Server_id | End_log_pos | Info
+  +------------+------+-------------+-----------+-------------+---------------------------------------+                            
+  | bin.000002 |   4  | Format_desc |         1 |         120 | Server ver: 5.6.26-log, Binlog ver: 4   
+  | bin.000002 | 120  | Query       |         1 |         197 | BEGIN
+  | bin.000002 | 197  | Query       |         1 |         313 | use dbname; insert into tb set value=1
+  | bin.000002 | 313  | Xid         |         1 |         344 | COMMIT /* xid=345 */
+  | bin.000002 | 344  | Rotate      |         1 |         391 | mysql-bin.000004;pos=4
+  +------------+------+-------------+-----------+-------------+---------------------------------------+
+]|
+
+
+sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] /var/log/mysql/bin.00001
+sh$ mysqlbinlog [--start-position='106'] [--stop-position='134'] /var/log/mysql/bin.000001
+/**
+ * Backup
+ */
+sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] > mysqlbinlog.bk_20150808
+/**
+ * Restore from bin log file to MySQL
+ */
+sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] bin.000001 | mysql -uroot -p
+
+|! slow_query_log !|
+/**
+ * @see https://dev.mysql.com/doc/refman/5.1/en/slow-query-log.html
+ */
+sh$ vim /etc/my.cnf
+|[
+  [mysqld]
+  long_query_time=1     // more than 1 second
+  log-slow-queries=/var/log/mysql/slow_queries.log
+]|
+ 
+db> show variables like '%query%';
+|[
+  long_query_time       1.000000                  // 1 second
+  slow_query_log        ON
+  slow_query_log_file   /var/log/mysql/slow.query
+]|
+db> show global status like '%queries%';
+|[
+  Slow_queries          0
+]|
+
+
+
+    
+
+
+|+ Partition +|
+/**
+ * 1 million ==> 10 partitions, 100,000 each
+ *  partition1(1-100,000), partition2(100,001, 200,000) ...
+ */
+db> show variables like '%partition%';     /* check if it supports partition */
+/**
+ * MySQL Supports Rang, List, Hash, Key when partition.
+ * When you create paritions, you'll find:
+ *   tb#p#tb_1.ibd  tb#p#tb_2.ibd...                        in InnoDB
+ *   tb#P#tb_1.MYD tb#P#tb_1.MYI   tb#P#tb_2.MYD...         in MyISAM
+ */
+db> SELECT * FROM PARTITIONS WHERE PARTITION_NAME IS NOT NULL; /* show partitions*/
+db> CREATE TABLE tb (id INT NOT NULL AUTO_INCREMENT, time int, PRIMARY KEY(id))
+     ENGINE = INNODB
+     PARTITION BY RANGE (id) (
+        PARTITION tb_1 VALUES LESS THAN(100000),
+        PARTITION tb_2 VALUES LESS THAN(200000),
+        PARTITION tb_9 VALUES LESS THAN MAXVALUE
+     );
+db> ALTER TABLE tb ADD PARTITION (                 /* add partition */
+     PARTITION tb_4 VALUES LESS THAN(300000)
+     );
+db> ALTER TABLE tb DROP PARTITION tb_4;    /* drop partition */     
+|+ Divide tables horizontally +|
+/**
+ * 1 million ==> 10 partitions, 100,000 each
+ *  tb_0(i%10==0), tb_1(id%10==1) ...
+ */
+
+
+
+
+
+db> set @@profiling=1;
+db> SELECT * FROM tb;
+db> show profiles;
+|[
++----------+------------+-------------------+
+| Query_ID | Duration   | Query             |
++----------+------------+-------------------+
+|        1 | 0.84718100 | select * from tb  |
++----------+------------+-------------------+
+]|
+
+|- LIMIT -|
+/**
+ *  http://explainextended.com/2009/10/23/mysql-order-by-limit-performance-late-row-lookups/
+ */
+db> SELECT * FROM tb LIMIT 1000,10                            /* takes 5ms */
+db> SELECT * FROM tb LIMIT 900000,10                          /* takes 180ms */
+db> SELECT * FROM tb WHERE id BETWEEN 900000 and 900010       /* takes */
+
+db> explain SELECT * FROM tb ORDER BY id DESC LIMIT 90000,10\G
+|[
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb
+         type: index
+possible_keys: NULL
+          key: PRIMARY
+      key_len: 4
+          ref: NULL
+         rows: 900010         ------> E = [n]∑[o=1](o+row_count) * p(o) = O(n)
+        Extra: NULL
+1 row in set (0.00 sec)
+]|
+
+Take the last 900010 rows in id order and returns the first 10.
+E = [n]∑[o=1](o+row_count) * p(o)
+Known:
+    row_count = [10,30] is a very tiny number
+    n is an extremely huge number
+Assume:
+    p(o) = 1/n
+Solve:
+    E = (1+2*row_count + n)/2 
+      = n/2
+      = O(n)
+Assume:
+    [990]∑[o=1]p(o) = 99%, and p(o) = 0.1%
+    [n]∑[o=991]p(o) = 1%, and p(o) = 1/(n-990) % = (1/n)%
+Solve:
+    E_l = (1+2*row_count+990)  *990/2   * 0.1%
+        = 500
+    E_g = (991 + 2*row_count + n)* (n-991)/2 * (1/n)%
+        = (1000 + n) * (n-991) / (200*n)
+        = 5 + n/200 - 5000/n - 5
+        = n/200
+    E     = E_l + E_g
+        = 500 + n/200
+        = O(n)
+
+
+
+
+
+db> explain SELECT * FROM tb WHERE i>90000 ORDER BY id DESC LIMIT 10\G
+|[
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb
+         type: index
+possible_keys: NULL
+          key: PRIMARY
+      key_len: 4
+          ref: NULL
+         rows:                          ----->
+        Extra: NULL
+1 row in set (0.00 sec)
+]|
+
+|- EXPLAIN -|
+
+
+
+
+
+db> SELECT * FROM $tb1;
+|[
+331603 rows in (3.891 sec) 
+]|
+
+db> SELECT * FROM $tb1 WHERE $fld1_1 
+    IN (SELECT $fld2_1 FROM $tb2 WHERE $nm="Aaron");
+|[
+123704 rows in (1.421 sec)         --> total 331603 rows
+]|
+db> explain 
+    SELECT * FROM $tb1 WHERE $fld1_1 IN 
+    (SELECT $fld2_1 FROM $tb2 WHERE $nm="Aaron")
+    \G;
+|[
+s(select_type) S(SIMPLE) M(MATERIALIZED)
+<2>(<subquery2>) <a>(<auto_key>) e_r(eq_ref)  pk(possible_keys)
+#(db.tb1.fld1_1)
+  s  tb  type  pk     key k_len ref  rows   Extra
+1 S  tb1 ALL   fld1_1  /    /    /  331143  Using where
+1 S  <2> e_r   <a>    <a>   4    #    1       /
+2 M  tb2 ALL   fld2_1  /    /    /    24    Using where
+]|
+/**
+ * U'll find it scaned 331143 / 331603 rows, so check if index
+ */
+db> SHOW INDEX FROM $tb1;
+db> SHOW INDEX FROM $tb2;
+/**
+ * If index is ok, split the sentence
+ */
+db> explain SELECT $fld2_1 FROM $tb2 WHERE $nm="Aaron" \G;
+db> SELECT * FROM $tb1 WHERE $fld1_1 IN ("lef1", "lef3", "lef5");
+|[
+123704 rows in (1.440 sec)
+]|
+
+db> (select * from dept_emp where dept_no = "d001") 
+    UNION ALL (select * from dept_emp where dept_no = "d003") 
+    UNION ALL (select * from dept_emp where dept_no = "d005");
+|[
+123704 rows in (3.032 sec)
+]|
+
+
+db> SELECT * FROM $tb1 WHERE 
+    $fld1_1 = "lef1" or $fld1_1 =  "lef3" or $fld1_1 ="lef5";
+|[
+123704 rows in (1.448 sec)
+]|
+|+  +|
+db> SELECT * FROM $tb1 
+    WHERE EXITS (
+        SELECT 1 FROM $tb2 WHERE $tb2.$nm="Aaron" AND $tb2.$fld2_1 = $tb1.$fld1_1
+    );
+|[
+123704 rows in (4.589 sec)
+]|
+db> SELECT * FROM $tb1, $tb2 WHERE $tb1.$fld1_1 = $tb2.$fld2_2 WHERE b.$nm="Aaron";
+|[
+123704 rows in (2.184 sec)
+]|
+
+db> SELECT a.* FROM $tb1 a JOIN $tb2 b ON a.$fld1_1 = b.$fld2_1 WHERE b.$nm="Aaron";
+|[
+123704 rows in (2.1 sec)
+]|
+

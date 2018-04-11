@@ -1,0 +1,5 @@
+extension Conf {
+    struct Debug {
+        
+    }
+}

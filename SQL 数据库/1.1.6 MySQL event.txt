@@ -1,0 +1,15 @@
+db> show variables like '%event_scheduler%';
+db> set global event_scheduler = 1;     /* enable even */
+sh$ vim /etc/my.cnf
+|[
+    [mysqld]
+        event_scheduler = ON
+]|
+
+|- Create an Event -|
+db> CREATE EVENT IF NOT EXISTS [event_name] ON SCHEDULE
+    EVERY 100 SECOND
+    ONCOMPLETION PRESERVE
+    DOCALL '[proc_name]'([prco_args]);
+|- Disable an Event -|
+db> ALTER EVENT [event_name] ON COMPLETION PRESERVE DISABLE;

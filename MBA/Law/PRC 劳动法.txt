@@ -1,0 +1,84 @@
+|! Chapter III Labour Contracts and Collective Contracts !|
+
+Article 31 A labourer who intends to revoke his labour contract shall give a written notice to the employing unit 30 days in advance.
+第三十一条　劳动者解除劳动合同，应当提前三十日以书面形式通知用人单位。
+
+Article 32 A labourer may notify at any time the employing unit of his decision to revoke the labour contract in any of the following circumstances: 
+  within the probation period;
+　where the employing unit forces the labourer to work by resorting to violence, intimidation or illegal restriction of personal freedom; 
+  or failure on the part of the employing unit to pay labour remuneration or to provide working conditions as agreed upon in the labour contract.
+第三十二条　有下列情形之一的，劳动者可以随时通知用人单位解除劳动合同：
+  （一）在试用期内的；
+  （二）用人单位以暴力、威胁或者非法限制人身自由的手段强迫劳动的；
+  （三）用人单位未按照劳动合同约定支付劳动报酬或者提供劳动条件的。
+
+Article 33 The staff and workers of an enterprise as one party may conclude a collective contract with the enterprise on matters relating to labour remuneration, working hours, rest and vacations, occupational safety and health, and insurance and welfare. The draft collective contract shall be submitted to the congress of the staff and workers or to all the staff and workers for discussion and adoption. A collective contract shall be concluded by the trade union on behalf of the staff and workers with the enterprise; in an enterprise where the trade union has not yet been set up, such contract shall be also concluded by the representatives elected by the staff and workers with the enterprise.
+第三十三条　企业职工一方与企业可以就劳动报酬、工作时间、休息休假、劳动安全卫生、保险福利等事项，签订集体合同。集体合同草案应当提交职工代表大会或者全体职工讨论通过。集体合同由工会代表职工与企业签订；没有建立工会的企业，由职工推举的代表与企业签订。
+
+Article 34 A collective contract shall be submitted to the labour administrative department after its conclusion. The collective contract shall go into effect automatically if no objections are raised by the labour administrative department within 15 days from the date of the receipt of a copy of the contract.
+第三十四条　集体合同签订后应当报送劳动行政部门；劳动行政部门自收到集体合同文本之日起十五日内未提出异议的，集体合同即行生效。
+
+Article 35 Collective contracts concluded in accordance with the law shall have binding force to both the enterprise and all of its staff and workers. The standards on working conditions and labour payments agreed upon in labour contracts concluded between individual labourers and the enterprises shall not be lower than those as stipulated in collective contracts.
+第三十五条　依法签订的集体合同对企业和企业全体职工具有约束力。职工个人与企业订立的劳动合同中劳动条件和劳动报酬等标准不得低于集体合同的规定。
+
+|! Chapter IV Working Hours, Rest and Vacations !|
+Article 36 The State shall practise a working hour system under which labourers shall work for no more than eight hours a day and no more than 44 hours a week on the average.
+第三十六条　国家实行劳动者每日工作时间不超过八小时、平均每周工作时间不超过四十四小时的工时制度。
+
+Article 38 The employing unit shall guarantee that its staff and workers have at least one day off in a week.
+第三十八条　用人单位应当保证劳动者每周至少休息一日。
+
+Article 39 Where an enterprise can not follow the stipulations in Article 36 and Article 38 of this Law due to its special production nature, it may adopt other rules on working hours and rest with the approval of the labour administrative department.
+第三十九条　企业因生产特点不能实行本法第三十六条、第三十八条规定的，经劳动行政部门批准，可以实行其他工作和休息办法。
+
+Article 41 The employing unit may extend working hours due to the requirements of its production or business after consultation with the trade union and labourers, but the extended working hour for a day shall generally not exceed one hour; if such extension is called for due to special reasons, the extended hours shall not exceed three hours a day under the condition that the health of labourers is guaranteed. However, the total extension in a month shall not exceed thirty six hours.
+第四十一条　用人单位由于生产经营需要，经与工会和劳动者协商后可以延长工作时间，一般每日不得超过一小时；因特殊原因需要延长工作时间的，在保障劳动者身体健康的条件下延长工作时间每日不得超过三小时，但是每月不得超过三十六小时。
+
+Article 44 The employing unit shall, according to the following standards, pay labourers remunerations higher than those for normal working hours under any of the following circumstances:
+  to pay no less than 150 percent of the normal wages if the extension of working hours is arranged;
+  to pay no less than 200 percent of the normal wages if the extended hours are arranged on days of rest and no deferred rest can be taken;
+  and to pay no less than 300 percent of the normal wages if the extended hours are arranged on statutory holidays.
+第四十四条　有下列情形之一的，用人单位应当按照下列标准支付高于劳动者正常工作时间工资的工资报酬：
+  （一）安排劳动者延长工作时间的，支付不低于工资的百分之一百五十的工资报酬；
+  （二）休息日安排劳动者工作又不能安排补休的，支付不低于工资的百分之二百的工资报酬；
+  （三）法定休假日安排劳动者工作的，支付不低于工资的百分之三百的工资报酬。
+
+Article 45 The State shall practise a system of annual vacation with pay. Labourers who have kept working for one year and more shall be entitled to annual vacation with pay. The concrete measures shall be formulated by the State Council.
+第四十五条　国家实行带薪年休假制度。劳动者连续工作一年以上的，享受带薪年休假。具体办法由国务院规定。
+
+|! Chapter V Wages !|
+第五十条　工资应当以货币形式按月支付给劳动者本人。不得克扣或者无故拖欠劳动者的工资。
+/**
+ *  根据《全国年节及纪念日放假办法》规定：
+ *    年工作日 250天
+ *    季工作日 62.5天
+ *    月工作日 20.83天
+ *    工作小时数：每日8小时
+ *  薪资计算：
+ *    日薪：月工资 / 20.83（即月计薪天数）
+ *    时薪：月工资 / 166.64  （即月计薪天数 * 8 小时） 
+ *  故工资计算：
+ *    月工资 / 20.83 * （已工作天数，不含周末）
+ *    e.g. 小明薪资是每个月20000元整，其2015年10月1日至10月14日薪资应该是多少？
+ *      20000 / 20.83 * 10  = 9601 元，其中10 为 10-1至10-14工作日天数
+ */
+Article 51 The employing unit shall pay wages according to law to labourers who observe statutory holidays, take leaves during the periods of marriage or funeral, or participate in social activities in accordance with the law. 
+第五十一条　劳动者在法定休假日和婚丧假期间以及依法参加社会活动期间，用人单位应当依法支付工资。
+
+|! Chapter XII Legal Responsibility !|
+Article 91 Where an employing unit infringes in any of the following ways the legitimate rights and interests of labourers, the labour administrative department shall order it to pay labourers remuneration or to make up for economic losses, and may also order it to pay compensations:
+  to deduct wages or delay in paying wages to labourers without reason;
+  to refuse to pay labourers remuneration for the extended working hours;
+  to pay labourers wages below the local standard on minimum wages; or
+  to fail to provide labourers with economic compensations in accordance with the provisions of his Law after revocation of labour contracts.
+  
+第九十一条　用人单位有下列侵害劳动者合法权益情形之一的，由劳动行政部门责令支付劳动者的工资报酬、经济补偿，并可以责令支付赔偿金：
+  （一）克扣或者无故拖欠劳动者工资的；
+  （二）拒不支付劳动者延长工作时间工资报酬的；
+  （三）低于当地最低工资标准支付劳动者工资的；
+  （四）解除劳动合同后，未依照本法规定给予劳动者经济补偿的。
+
+Article 99 The employing unit that recruits labourers whose labour contracts have not yet been revoked shall, according to law, assume joint responsibility for compensation if economic losses have been caused to the original employing unit of the labourers.  
+第九十九条 用人单位招用尚未解除劳动合同的劳动者，对原用人单位造成经济损失的，该用人单位应当依法承担连带赔偿责任。  
+Article 100 The employing unit that fails to pay social insurance premium without reason shall be ordered by the labour administrative department to pay within fixed period of time. If the unit still fails to make the payment beyond the time limit, an additional arrears payment may be demanded. 
+第一百条　用人单位无故不缴纳社会保险费的，由劳动行政部门责令其限期缴纳，逾期不缴的，可以加收滞纳金。  

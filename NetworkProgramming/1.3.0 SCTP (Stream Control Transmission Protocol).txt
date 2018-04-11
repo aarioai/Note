@@ -1,0 +1,20 @@
+SCTP provides associations, sequencing, flow control and full-duplex[ˈdu:pleks] data transfer.
+|[
+Connection: involves communication between only two IP addresses
+Association: refers to a communication between two systems, which may involve more than two addresses due to multi-homing.
+]|
+
+|~ Compare With TCP ~|
+          write(0)         Nagle Algorithm            read(0)
+[TCP Cli] write(1) o----- Network(connection) ------o read(x) [TCP Serv]
+          write(n)
+             
+          sctp_sendmsg(0)       |- Stream 0 -|       sctp_recvmsg(0)
+        o-sctp_sendmsg(1)-[Peer]|- Stream 1 -|[Peer] sctp_recvmsg(1)-o
+          sctp_sendmsg(n)       |- Stream n -|       sctp_recvmsg(n)
+[SCTP A]o-                                                          -o[SCTP B]
+                                                      
+        o-            Network n - Streams                           -o
+
+TCP is half-close. Any part can send a FIN to terminate connection. But it can 
+still receive data after sending a FIN.

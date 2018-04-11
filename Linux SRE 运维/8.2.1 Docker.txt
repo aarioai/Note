@@ -1,0 +1,141 @@
+|! Installation !|
+https://docs.docker.com/engine/installation/linux/centos/
+
+
+安装
+sh$ curl -fsSL https://get.docker.com/ | sh
+sh$ sudo usermod -aG docker $(whoami)         /* add you to group docker */
+sh$ sudo systemctl start docker
+sh$ sudo systemctl status docker
+sh$ sudo systemctl enable docker
+
+
+关闭session 重启新的session
+sh2$ docker ps      /* change to another session */
+
+
+修改为中国镜像：
+sh$ sudo vi /etc/docker/daemon.json
+|[
+	"registry-mirrors": ["http://hub-mirror.c.163.com"]
+]|
+
+sh$ sudo systemctl daemon-reload
+sh$ sudo systemctl restart docker
+
+
+|! Linux in Docker !|
+/**
+ * docker pull <image[:tag = lasted]>
+ * @see https://docs.docker.com/reference/builder/
+ * @example
+ *  docker pull centos:7      --> pull a centos image and tag it with 7
+ *  docker run -it centos:7 /bin/bash
+ */
+sh$ docker pull centos
+sh$ docker images
+|[
+REPOSITORY     TAG                 IMAGE ID
+aario/nginx             latest            e7beba77db14
+nginx                  latest             ceab60537ad2
+php                     lastest           1fab6e54xadd
+centos                latest              0f73ae75014f
+]|
+/**
+ * docker run -it aario/php /bin/bash
+ */
+sh$ docker run -it centos /bin/bash
+|[
+root@0bdadfsadfas:/#                    <---------- @CONTAINER_ID
+]|
+
+|! Commit Image !|
+sh$ docker ps
+|[
+CONTAINER ID        IMAGE
+0fdc2d1196bb        aa/mysqlslave
+972bce4a356a        aa/nginx
+c23f7842f51c        aa/php
+cba2dc563f04        aa/redis
+17ba9518bb08        aa/mysql
+...
+]|
+/* sh$ docker tag bb06fd8b22f0 aa/nginx:ssl */
+sh$ docker commit -m "comment" -a "Aario" -p 972bce4a356a aario/nginx:ssl
+sh$ docker images
+|[
+REPOSITORY     TAG   IMAGE ID 
+aa-nginx       ssl   bb06fd8b22f0
+]|
+/**
+ * Get an account from https://hub.docker.com/login/
+ */
+sh$ docker login
+|[
+Username:
+Password:
+Email:
+]|
+
+/**
+ * Create a repository https://hub.docker.com/add/repository/
+ *  aario/nginx 
+ */
+sh$ docker push aario/nginx:ssl
+
+sh$ docker pull -t ssl aario/nginx    /* to pull */   
+
+sh$ docker logout
+
+sh$ docker inspect aa/nginx
+
+|+ save images to local file +|
+sh$ docker save -o ~/docker-backup/aarioai-nginx_ssl.tar aarioai/nginx
+sh$ docker load -i ~/docker-backup/aarioai-nginx_ssl.tar    /* to load */
+
+|! Dockerfile !|
+/**
+ * @see https://docs.docker.com/reference/builder/
+ */
+ 
+MAINTAINER <author> 
+ 
+FROM <image>  
+FROM <image>:<tag>         
+FROM <image>@<digest>
+
+/**
+ * ONBUILD and ENTRYPOINT/CMD are NOT supported for ENV variable replacement.
+ */
+ENV BIN_NGINX /usr/bin/nginx     /* variable, or ENV BIN_NGINX=/usr/bin/nginx */
+WORKDIR ${BIN_NGINX}      
+WORKDIR $BIN_NGINX
+WORKDIR ${BIN_NGINX:-/tmp} /* WORKDIR !isset(${BIN_NGINX}) ? /tmp : '' */
+WORKDIR ${BIN_NGINX:+/tmp}   /* WORKDIR isset(${BIN_NGINX}) ? /tmp : '' */
+
+RUN <cmd>            /* run in /bin/sh -c shell form */
+RUN ["<executable>", "<param1>", "<param2>" ...]
+ 
+/**
+ *  ADD redis.tgz /user/aario/Downloads    --> decompress it
+ *  COPY redis.tgz /usr/aario/Downloads    --> /usr/aario/Downloads/redis.tgz
+ */ 
+ADD <source file or URL> <destination in docker>
+COPY <source file or URL> <destination>
+
+CMD ["<excutable>", "<param1>", "<param2>" ...]   /* command in shell */
+ENTRYPOINT ["<excutable>", "<param1>", "<param2>" ...]
+
+EXPOSE <port>
+
+ 
+WORKDIR <path in docker>      /* for RUN, CMD and ENTRYPOINT */
+
+ENV <key> <value>
+
+USER <uid>
+
+/**
+ * sh$ docker run -it --name container-test -h CONTAINER -v dir_host:dir_container
+ */
+VOLUME ["<path in both host and container>"]

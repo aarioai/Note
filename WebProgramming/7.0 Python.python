@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+
+# setting coding with # -*- .. -*-
+
+# line comment
+
+mutable = input('Please input a variable...')
+
+division = 17 / 3           # :float = 5.6666666...7
+floorDiscard = 17 // 3      # :int = 5
+squared = 2 ** 5            # :int = pow(2, 5)
+
+glue = 3 * 'A' + 'ario'     # AAAario
+glue '-concatenate'         # AAAario-concatenate
+glue[0]                     # the first character, A
+glue[-2]                    # the second-last character, t
+glue[2:6]                   # Aario
+glue[2:]                    # glue[2:-1], Aario-concatenate
+len(glue)                   
+print('new\nline')                  # new  LN  line
+print(r'ignore\the\escape\sign')    # ignore\the\escape\sign
+# Use triple-quotes to span string to multiple lines
+print('''\
+    Usage: Aario [OPTIONS]
+        -h  help
+        -i  infomation
+''')
+
+## Lists
+compound = [1, 2, 3]
+compound[:]                 # slice compound[0:-1]
+compound + [4, 5, 6]
+compound.append(7)
+compound[1:2] = [200, 300]  # [1, 200, 300, 4, 5, 6, 7]
+compound[3,4] = []          # [1, 200, 300, 6, 7]
+len(compound)
+
+# range($start, $end, $step)
+range(3)                # [0, 1, 2]
+range(0, 10, 3)         # [0, 3, 6, 9] 
+list(range(3))          # convert range to list [0, 1, 2]
+for halt in ['Aa', 'ri', 'o']   # for halt in ['Aa', 'ri', 'o'][:]
+    print(halt)
+
+def fib(n):
+    a, b = 0, 1
+    while a < n:
+        a, b = b, a + b     # tmp = a, a = b, b += tmp
+fib(100)                    # call function
+mechanism = fib
+mechanism(100)              # fib(100)
+
+

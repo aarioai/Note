@@ -1,0 +1,13 @@
+PODS:
+  - HanekeSwift (0.10.1)
+  - SQLite.swift (0.10.1)
+
+DEPENDENCIES:
+  - HanekeSwift
+  - SQLite.swift (~> 0.10.1)
+
+SPEC CHECKSUMS:
+  HanekeSwift: 08e47d3d0f2899ec58e5d257beba0de619aca9e8
+  SQLite.swift: 6a6e4b034efc317ce4e203b6af2d3024fee2b570
+
+COCOAPODS: 0.39.0

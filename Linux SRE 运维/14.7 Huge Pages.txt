@@ -1,0 +1,77 @@
+|+ Get Memory Page Size +|
+sh$ getconf PAGE_SIZE
+sh$ getconf PAGESIZE
+|[
+4096    /* Byte */
+]|
+
+|! Huge Pages !|
+|+ /proc/ +|
+|- /proc/meminfo -|
+|- /proc/sys/vm/nr_hugepages -|
+the current number of "persistent" huge pages
+|- /proc/sys/vm/nr_overcommit_hugepages-|
+specifies how large the pool of
+huge pages can grow, if more huge pages than /proc/sys/vm/nr_hugepages are
+requested by applications.  Writing any non-zero value into this file
+indicates that the hugetlb subsystem is allowed to try to obtain that
+number of "surplus" huge pages from the kernel's normal page pool, when the
+persistent huge page pool is exhausted. As these surplus huge pages become
+unused, they are freed back to the kernel's normal page pool.
+/**
+ * @see https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt
+ *  HugePages_Free: not yet allocated huge pages in the pool
+ *  HugePages_Rsvd: 
+ *  HugePages_Surp: surplus, above the value in /proc/sys/vm/nr_hugepages.
+ *    Its maxmium is controlled by /proc/sys/vm/nr_overcommit_hugepages.
+ */
+sh$ cat /proc/meminfo
+|[
+..
+HugePages_Total: vvv
+HugePages_Free:  www
+HugePages_Rsvd:  xxx
+HugePages_Surp:  yyy
+Hugepagesize:    zzz kB
+]|
+
+/* to check the per node distribution of huge pages in a NUMA system */
+sh$ cat /sys/devices/system/node/node*/meminfo | fgrep Huge
+
+
+
+/**
+ * @see https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/Tuning_and_Optimizing_Red_Hat_Enterprise_Linux_for_Oracle_9i_and_10g_Databases/sect-Oracle_9i_and_10g_Tuning_Guide-Large_Memory_Optimization_Big_Pages_and_Huge_Pages-Configuring_Huge_Pages_in_Red_Hat_Enterprise_Linux_4_or_5.html
+ */
+sh$ grep Hugepagesize /proc/meminfo
+|[
+Hugepagesize:     2048 kB
+]| 
+/**
+ * Alternatively, you can use sh# `sysctl -w vm.nr_hugepages=512` instead.
+ * @notice
+ *  sh$ `sudo echo 512 > /proc/sys/vm/nr_hugepages` is workless! Login as root is
+ *  necessary.
+ */
+sh# echo 512 > /proc/sys/vm/nr_hugepages
+
+/**
+ * to make the change permanent
+ */
+sh# echo 'vm.nr_hugepages=512' >> /etc/sysctl.conf
+
+/**
+ * The output shows that 512 Huge Pages have been allocated. Since the size of Huge Pages is 2048 KB, a Huge Page pool of 1GB has been allocated and pinned in physical memory.
+If HugePages_Total is lower than what was requested with nr_hugepages, then the system does either not have enough memory or there are not enough physically contiguous free pages. In the latter case the system needs to be rebooted which should give you a better chance of getting the memory.
+ */
+sh$ grep HugePages_Total /proc/meminfo
+|[
+HugePages_Total:   512
+]|
+
+/**
+ * To get the number of free Huge Pages on the system, execute:
+ */
+sh$ grep HugePages_Free /proc/meminfo 
+
+sh$ grep MemFree /proc/meminfo

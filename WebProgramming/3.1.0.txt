@@ -1,0 +1,26 @@
+integer
+float
+double
+
+|! Regex !|
+$hyper = 'He is give to hyper-critism. He created media hype for his movie. 
+          The movie has been hyped up far beyond its worth. I am really hyped up
+          about his movie.
+          ';
+(r|e|g|a|l)  ====  [regal]
+(Aaron|Script)
+
+
+\b the start or end of a word
+|- Back Reference -|
+/**
+ * A back reference matches whatever actually matched the capturing subpattern in the current subject string, rather than anything matching the subpattern itself. 
+ */
+'/(hy|ja)pe\s+\1/'  ==>  'hype hy' or 'jape ja', but not 'hype ja' or 'jape hy'
+
+|- reg(?=pattern_after_reg) -|
+
+/[a-z]+(?=ed)/  ==> 'creat'  'hyp'  'hyp'
+
+|- (?<=pattern_before_reg)reg -|
+(?<=[be]+)[a-z]+  ==> 'en'  'yond'

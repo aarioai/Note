@@ -1,0 +1,106 @@
+|! Binary Tree !|
+/**
+ * @see http://en.wikipedia.org/wiki/Binary_tree
+ *  [Leaf]:  a sub-tree without sub-tree, e.g. O J P Q M are all leaves
+ *  [Nodes]: all elements but the root 
+ *  [Internal Nodes]:  non-leaf nodes
+ *  [Height/Depth]:  the total level, abbreviate to variable h below
+ *  [Sibling]:  the childs that share the same parent
+ */
+
+|+ Encoding into Binary Tree +|
+|[
+                A                                       A
+     /   /   /     \   \   \                          /
+    B   C   D       E   F   G                       B
+  / | \           /   \     |         ==>         /  [\]
+ H  I  J         K     L    M                   H       C
+/ \              |     |                      /  [\]      [\]
+N O              P     Q                     N      I        D
+                                               [\]    [\]      [\]
+                                                  O      J        E
+                                                                /   [\]
+                                                              K         F
+                                                           /    [\]        [\]
+                                                         P          L          G
+                                                                 /           /
+                                                              Q            M
+]|  
+  
+|+ Full/Proper Binary Tree +|
+Every node other than the leaves has two children
+` E_full_max = E_perfect
+` E_full_min = 2h - 1
+` Leaves = (E + 1)/2
+|[
+                    V                                       /* E_full_min */
+                  /   \
+               V        V
+             /   \
+          V        V
+       /     \
+     V         V
+]|
+|+ Perfect Binary Tree +|
+a full binary tree in which all leaves have the same depth or same level.
+` E_perfect = [h]∑[i=1](1 * 2^(i-1)) = 2^h -1      /* A Geometric Progression */
+|+ Complete Binary Tree +|
+every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible
+
+|+ Binary Tree Array +|
+In this compact arrangement, if a node has an index i, its children are found at indices 2i+1 (for the left child) and 2i + 2 (for the right), while its parent (if any) is found at index |(i-1)/2| (assuming the root has index zero).
+This method benefits from more compact storage and better locality of reference, particularly during a preorder traversal. However, it is expensive to grow and wastes space proportional to 2^h - n for a tree of depth h with n nodes. This method of storage is often used for binary heaps. No space is wasted because nodes are added in breadth-first order.
+` E_skewed = h
+|[
+    A                           /* right-skewed Binary Tree */
+      \
+        B
+          \
+            C
+]|
+[0A 1# 2B 3# 4# 5# 6C]
+L_0A = 2i + 1 = 1#;  R_0A = 2i + 2 = 2B
+L_2B = 5#;  R_2B = 6C;
+
+
+|[
+            A                   /* left-skewed B-Tree */
+          /
+        B
+      /
+   Innodb_data_read C
+]|
+[AB#C###]
+
+
+|! B Tree(Balanced binary Tree) !|
+has the minimum possible maximum height (a.k.a. depth) for the leaf nodes, because for any given number of leaf nodes the leaf nodes are placed at the greatest height possible.
+Perfect, complete binary trees are all B Tree.
+1. Value in ptr to left child node should be less than to right
+|[
+
+]|
+
+|! B- Tree !|
+https://en.wikipedia.org/wiki/B-tree
+a node can have more than two children
+
+
+
+|! B+Tree !|
+/**
+ * @see https://en.wikipedia.org/wiki/B%2B_tree
+ * @see http://www.cburch.com/cs/340/reading/btree/index.html
+ */
+1. All leaves are at the same distance from the root
+2.  
+|[
+1, 4, 9, 10, 11, 12, 13, 15, 16, 20, 25
+
+                13
+            /        \
+        9-11             16
+  1|4   9|10  11|12   13-|15  16|20|25     
+
+]|
+

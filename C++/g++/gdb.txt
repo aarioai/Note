@@ -1,0 +1,7 @@
+|~ Core File Analysis[ə'næləsɪs] ~|
+Segmentation Fault (core dumped)
+
+sh$ ulimit -c       // how many bytes for core files, 0 is not allowed;
+sh$ ulimit -c unlimited     // setting core files unlimited
+sh$ gcc xx.c -g -o xx.out
+sh$ gdb ./xx.out core.1568

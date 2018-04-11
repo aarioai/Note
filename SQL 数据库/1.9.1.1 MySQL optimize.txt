@@ -1,0 +1,80 @@
+/**
+ * @note
+ *  HPMSQL-\d: page \d of "High Performance MySQL, 3rd"
+ */
+
+|! Data Type Optimizing !|
+|- Simples is good -|
+HPMYSQL-116
+Comparing integers is better than character, because character sets and collations (sorting rules) make character comparisons complicated.
+|- Avoid NULL if possible  -|
+
+
+|+ String Types +|
+HPMYSQL-130
+Avoid string types for identifiers if possible, using integer types instead.
+Random strings (e.g. MD5() SHA1() or UUID()) can slow INSERT and some types of SELECT queries.
+  the inserted value has to go int a random location in indexes
+If you do store UUID, you should convert the UUID to 16-byte numbers with UNHEX() and store them in a BINARY(16) column. You can retrieve the values in hexadecimal format with the HEX() function.
+
+|- ALTER TABLE may cause table rebuilds -|
+HPMYSQL-171
+MySQL’s ALTER TABLE performance can become a problem with very large tables.MySQL performs most alterations by making an empty table with the desired newstructure, inserting all the data from the old table into the new one, and deleting the old table.
+When you have to ALTER TABLE, you can:
+1. shadow copy approach
+     build a new table, and then perform a rename and drop to swap the two.
+2. Online Schema Change tool from facebook
+     https://launchpad.net/mysqlatfacebook
+Not all ALTER TABLE operations cause table rebuilds.
+sh$ ALTER TABLE tb MODIFY COLUMN fld TINYINT(3) NOT NULL DEFAULT 0;
+sh$ ALTER TABLE tb ALTER COLUMN fld SET DEFAUTL 0;
+
+
+
+
+
+[!] ipv6 用 varbinary / binary  16[!]
+update sso_user_login_log set  ip =0x7F0000011234567568634254362534634563456345645634563363463456;    -->  0x  字节  或者  使用 unhex('')【性能低，弃用】
+
+
+[!] int 长度一定要足够长 [!]
+ 虽然 int(1)  和  int(10) 存储长度一样，而且都可以写入超过 int(1) 的值。注意，如果在一个整型列中存储一个超过显示宽度的更大值时，当 mysql 为某些复杂的联结(join)生成临时表时，你可能会遇到问题，因为在这种情况下，mysql 信任地认为所有的值均适合原始的列宽度。
+ [!] count(*) 比 count(id) 性能更好 [!]
+ 在不加WHERE限制条件的情况下，COUNT(*)与COUNT(COL)基本可以认为是等价的；
+但是在有WHERE限制条件的情况下，COUNT(*)会比COUNT(COL)快非常多；
+1.任何情况下SELECT COUNT(*) FROM tablename是最优选择；
+2.尽量减少SELECT COUNT(*) FROM tablename WHERE COL = 'value' 这种查询；
+3.杜绝SELECT COUNT(COL) FROM tablename WHERE COL2 = 'value' 的出现。
+[!] 请务必使用EXPLAIN  [!]
+
+[!] 数据库引擎选择 [!]
+InnoDB 中不保存表的具体行数，也就是说，执行select count(*) from table时，InnoDB要扫描一遍整个表来计算有多少行，但是MyISAM只要简单的读出保存好的行数即可。注意的是，当count(*)语句包含 where条件时，两种表的操作是一样的。
+
+
+MyISAM 适合于一些需要大量查询的应用，但其对于有大量写操作并不是很好。甚至你只是需要update一个字段，整个表都会被锁起来，而别的进程，就算是读进程都无法操作直到读操作完成。
+InnoDB 的趋势会是一个非常复杂的存储引擎，对于一些小的应用，它会比 MyISAM 还慢。他是它支持“行锁” ，于是在写操作比较多的时候，会更优秀。
+
+
+
+[!] [!]
+INSERT DELAYED 仅仅工作与 ISAM 和 MyISAM 表。注意，因为 MyISAM 表支持并发的 SELECT 和 INSERT，如果在数据文件中没有空闲的块，那你将很少需要对 MyISAM 表使用 INSERT DELAYED。
+
+[!] 尽可能的使用 NOT NULL  [!]
+NULL columns require additional space in the row to record whether their values are NULL. For MyISAM tables, each NULL column takes one bit extra, rounded up to the nearest byte
+
+[!] 避免使用 ENUM  [!]
+ENUM 类型是非常快和紧凑的。在实际上，其保存的是 TINYINT，但其外表上显示为字符串。
+
+如果你有一个字段，比如“性别”，“国家”，“民族”，“状态”或“部门”，你知道这些字段的取值是有限而且固定的，那么，你应该使用 ENUM 而不是 VARCHAR。 
+
+1)         MySQL数据库枚举类型的引入，可能给软件程序的版本发布，存在遗忘数据库结构变更的隐患；
+2)         MySQL数据库枚举类型字段的元素增加，必须以尾部追加的方式，否则影响数据库提供数据服务；
+3)         枚举类型字段不再需要的元素，也不能进行删除，否则影响数据库提供数据服务；
+4)         MySQL数据库枚举类型的字段定义属性元素值，不能随意调整其顺序，否则影响数据库提供数据服务；
+
+MySQL数据库枚举类型是一种有应用场景广泛的数据类型，若是抛开网站程序或软件版本发布，可能会导致开发工程师与数据库维护人员之间没有配合好的问题，非常推荐大家把枚举类型引入到生产环境的数据库应用中，对企业而言也可以起到节省人力、物理等成本。建议大家使用枚举类型的时候，尽量把可能需要用到的枚举元素，都写到MySQL数据库表字段的定义属性中，减少出现漏做DDL变更的故障。
+
+
+但ENUM带来的问题也不少，比如数据迁移的时候，他几乎不可能被其他数据库所支持，如果enum里面是字符串，对于其他数据库来说就更郁闷了，还不能设为tinyint等类型的字段（enum虽然可以存储字符串，但对于内部来说，还是以顺序进行索引，比如'a','b','c'，我们也可以用索引值来获取值select * from tbl_name whre enum = 2，这与select * from tbl_name where enum = 'b'等义）如果你看明白了这两句SQL为什么等义，那么你也就可以了解为什么不主张用enum字段了。
+
+[!] 把IP地址存成 UNSIGNED INT  [!]

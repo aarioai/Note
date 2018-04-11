@@ -1,0 +1,29 @@
+Queue is FIFO(first in first out) data structure. It allows insert at rear and 
+drop at front.
+
+Weibo SNS:
+/**
+ * @table 'feed' (INNODB) like facebook or weibo's news feed
+ * @table 'feedbroadcast' (INNODB) 
+ * @table 'friend' (INNODB)
+ * @table 'feedqueue' (MEMORY)
+ */
+db> CREATE TABLE IF NOT EXISTS 'feed' (
+      'uid' INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+      'msg' VARCHAR(420) DEFAULT NULL COMMENT 'weibo 140*3',
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+db> CREATE TABLE 'friend' (
+      'fid' INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+      'uid' INT(11) UNSIGNED NOT NULL,
+      'frienduid' INT(11) UNSIGNED NOT NULL COMMENT 'friend uid',
+      PRIMARY KEY(fld)
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+db> CREATE TABLE IF NOT EXISTS 'feedqueue' (
+      'qid' INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+      'sort' TINYINT(4) UNSIGNED NOT NULL,
+      'ispushed' TINYINT(4) UNSIGNED NOT NULL DEFAULT '0',
+      'info' varchar(1024) DEFAULT NULL COMMENT 'information',
+      'uid' INT(11) UNSIGNED NOT NULL,
+      't' TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY(qid)
+    ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
