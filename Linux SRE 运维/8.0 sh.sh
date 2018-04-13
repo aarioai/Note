@@ -195,7 +195,8 @@ command > /dev/null 2>&1
 # -o(or) -a(and) !(not)
 # -eq $num -ne $num -gt -lt -ge(great and equal) -le
 # == $string != $string
-# -z $str (isempty($str))  
+# -z $str (isempty($str))
+# -n $str strlen($str) > 0
 # -s $file   is file not empty
 # -b $file  is $file a device file
 # -c $file  is $file a character device file
