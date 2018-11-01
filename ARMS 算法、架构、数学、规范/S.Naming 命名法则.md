@@ -1,3 +1,10 @@
+# Cryptology & Cryptography
+密码(cipher)是指逐个字符或者逐位地进行变换，它不涉及信息的语言结构)
+编码(code)则是指用一个词或符号来代替另一个词)
+明文：Plaintext 或 Message 
+密文：cipher
+Enigma：凯撒密码，简单替换密码；凯撒密码是把明文简单的平移 n 位，得到密文。
+
 # File
     dir/file  完整的路径
     path      部分路径
