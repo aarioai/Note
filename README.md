@@ -6,4 +6,4 @@
 
 > 2016年 To be, and to be yourself  -- Aario
 
-> 2019年 帮助善良的人成功 —— Aario
+> 2019年 帮助善良的人成功，成为值得信赖的人 —— Aario
