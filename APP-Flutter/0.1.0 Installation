@@ -1,0 +1,20 @@
+
+## run 
+andriod/gradle/wrapper/gradle-wrapper.properties
+```
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+# 国内需要修改源地址，最好下载到本地 https://mirrors.cloud.tencent.com/gradle/
+# 注意Java版本和gradle版本对应  Java Compatibility  JDK-22 ===> gradle-8.8    https://docs.gradle.org/current/userguide/compatibility.html#java
+distributionUrl=file:///F:/Dev/APP/Gradle/gradle-8.8-all.zip
+
+```
+
+
+如果运行时候，卡在 gradle，，可以
+```shell
+cd andriod 
+gradle build     查看到底卡在哪个环境
+```
