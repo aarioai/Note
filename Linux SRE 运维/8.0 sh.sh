@@ -211,6 +211,7 @@ command > /dev/null 2>&1
 # -x $file  is executable
 # -s $file  is filesize($file) != 0
 # -e $path  is $path exist
+# -h $path  is a symbolic link
 
 # Put `; do` and `; then` on the same line as the while, for or if.
 
