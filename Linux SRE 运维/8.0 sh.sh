@@ -48,7 +48,9 @@ bitwiseOperate=$((3^7))
 bitwiseOperate=$((3<<7))
 
 i=0
-i=$[ $i + 1 ]
+i=$(( i + 1 ))
+
+b=$(( 10 + i ))
 
 appellation="Aario"   
 appellation=100         # redefine, never quote literal integers
@@ -154,6 +156,40 @@ echo ${NAME:="Aario"}       # DO NOT USE IT to indicate NAME = NAME : NAME ? "Aa
 NAME=${NAME:-"Aario"}       # Suggest!!!
 
 echo "$appellation"
+
+
+#!/bin/bash    
+foo1()
+{
+        for x in "$@"
+        do
+                echo "f1: $x"
+        done
+}
+
+foo2()
+{
+        for x in "$*"
+        do
+                echo "f2: $x"
+        done
+}
+
+foo1 1 2 "3 4 5" 6 7
+echo
+foo2 1 2 "3 4 5" 6 7
+
+
+$  ./foo.sh 
+f1: 1
+f1: 2
+f1: 3 4 5
+f1: 6
+f1: 7
+
+f2: 1 2 3 4 5 6 7
+
+
 
 # Lower-case, with underscores to separate words. Separate libraries with ::. 
 # Parentheses are required after the function name. The keyword function is 
